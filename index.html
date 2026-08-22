@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mikyla and the Frostveil Kingdom</title>
+<title>Mikyla and the Frostveil Kingdom - Magical Quest</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -44,7 +44,7 @@
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
   
   .flipbook {
-    perspective: 2000px; width: 100%; max-width: 800px; height: 600px;
+    perspective: 2000px; width: 100%; max-width: 800px; height: 650px;
     position: relative; z-index: 10; margin-bottom: 20px;
   }
   .book { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
@@ -58,7 +58,7 @@
     position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
     background: linear-gradient(135deg, #faf8f3, #f5f0e8);
     border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    padding: 40px; overflow-y: auto;
+    padding: 30px; overflow-y: auto;
   }
   .page-back { transform: rotateY(180deg); }
   
@@ -67,36 +67,82 @@
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     text-align: center; height: 100%;
   }
-  .cover h2 { font-size: 2.2em; color: #ffd700; margin: 20px 0; }
+  .cover h2 { font-size: 2em; color: #ffd700; margin: 15px 0; }
   .cover .emoji { font-size: 80px; margin-bottom: 20px; }
   
   .chapter-title {
-    font-size: 1.6em; text-align: center; margin-bottom: 20px;
+    font-size: 1.5em; text-align: center; margin-bottom: 15px;
     background: linear-gradient(135deg, #667eea, #764ba2);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
-  .illustration { font-size: 60px; text-align: center; margin: 20px 0; }
-  .story-text { font-size: 1.1em; line-height: 1.8; color: #34495e; text-align: justify; }
-  .story-text p { margin-bottom: 15px; }
-  .page-num { position: absolute; bottom: 15px; right: 40px; color: #999; }
+  .quest-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #ffd700, #ffed4e);
+    color: #1e3c72;
+    padding: 6px 15px;
+    border-radius: 15px;
+    font-weight: bold;
+    margin: 10px 0;
+    font-size: 0.9em;
+  }
+  .illustration { font-size: 50px; text-align: center; margin: 15px 0; }
+  .story-text { font-size: 1.05em; line-height: 1.7; color: #34495e; text-align: justify; }
+  .story-text p { margin-bottom: 12px; }
+  .dialogue {
+    background: rgba(102, 126, 234, 0.1);
+    padding: 10px;
+    border-left: 3px solid #667eea;
+    margin: 10px 0;
+    border-radius: 5px;
+    font-style: italic;
+  }
+  .character-name {
+    color: #667eea;
+    font-weight: bold;
+  }
+  .page-num { position: absolute; bottom: 15px; right: 30px; color: #999; font-size: 0.85em; }
 
   .nav-btns { display: flex; justify-content: space-between; width: 100%; max-width: 800px; z-index: 10; }
   
   #status { text-align: center; color: #666; margin-top: 10px; font-size: 0.9em; }
+  
+  .voice-selector {
+    margin-top: 10px;
+    padding: 10px;
+    background: rgba(255,255,255,0.9);
+    border-radius: 10px;
+  }
+  select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin: 5px;
+  }
 </style>
 </head>
 <body>
 
 <div class="header">
   <h1>Mikyla and the Frostveil Kingdom</h1>
-  <p style="color: #e0f0ff;">A Magical Journey Awaits</p>
+  <p style="color: #e0f0ff;">A Magical Quest Adventure</p>
 </div>
 
 <div class="audio-player">
   <div class="controls">
     <button class="btn" id="playBtn" onclick="togglePlay()">▶️ Play</button>
+    <button class="btn" id="pauseBtn" onclick="pauseAudio()" disabled>⏸️ Pause</button>
     <button class="btn" id="prevBtn" onclick="prevPage()" disabled>⏮️ Prev</button>
     <button class="btn" id="nextBtn" onclick="nextPage()">Next ⏭️</button>
+  </div>
+  <div class="voice-selector">
+    <label for="voiceSelect">🎙️ Voice:</label>
+    <select id="voiceSelect" onchange="changeVoice()"></select>
+    <label for="rateSelect">Speed:</label>
+    <select id="rateSelect" onchange="changeSpeed()">
+      <option value="0.8">Slow</option>
+      <option value="1" selected>Normal</option>
+      <option value="1.2">Fast</option>
+    </select>
   </div>
   <div id="status">Tap anywhere to enable audio, then tap Play</div>
 </div>
@@ -112,12 +158,149 @@
 
 <script>
   const pagesData = [
-    { type: 'cover', title: 'Mikyla and the Frostveil Kingdom', emoji: '🧚‍♀️️', sub: 'A Magical Journey Awaits', content: 'An Epic Family Adventure' },
-    { type: 'chapter', title: 'Chapter 1: The Glowing Door', emoji: '🌳✨🚪', text: 'The air was crisp and biting. Mikyla laughed as she caught a snowflake. Her dogs Chessie and Chloe were having the time of their lives. Suddenly, Chloe dug at an ancient oak tree. Mikyla gasped - there was a door with glowing silver runes! She touched the handle. It opened, spilling golden light. They were swept into the unknown!' },
-    { type: 'chapter', title: 'Chapter 2: Welcome to Frostveil', emoji: '🧊', text: 'They stood in a frozen fairyland. Crystal trees glittered. "Thank goodness you\'re here!" squeaked Pip, a tiny fairy. "The witch Morrigan locked Queen Sylvia in a deep slumber! She wants to freeze everything forever!" "We\'ll help you," Mikyla said firmly.' },
-    { type: 'chapter', title: 'Chapter 3: The Three-Part Quest', emoji: '️🌀', text: 'Pip showed a glowing map. "Three trials: First, the Whispering Ice Maze. Second, the Sunstone guarded by a lonely ice wolf. Third, face Morrigan at the Crystal Spire." Mikyla gripped her gloves and followed her dogs into the unknown.' },
-    { type: 'chapter', title: 'Chapter 4: Warmth Wins', emoji: '❄️🔥', text: 'At the Spire, Morrigan crackled with frost. "You cannot break my winter!" Instead of fighting, Mikyla held up the Sunstone. "You don\'t have to be cold. True magic is warmth and friendship." The golden light melted the ice. Queen Sylvia awoke. The kingdom burst into spring. Mikyla hugged her dogs - they saved the realm!' },
-    { type: 'cover', title: 'The End', emoji: '✨', sub: 'The adventure continues...', content: 'Thank you for reading!' }
+    {
+      type: 'cover',
+      title: 'Mikyla and the Frostveil Kingdom',
+      emoji: '‍♀️🐕️',
+      sub: 'A Magical Quest Adventure',
+      content: 'Join Mikyla, Chessie, and Chloe on an epic journey to save the frozen kingdom!'
+    },
+    {
+      type: 'chapter',
+      title: 'Chapter 1: The Mysterious Door',
+      emoji: '✨🚪',
+      text: `The enchanted forest behind Mikyla's house sparkled with fresh snow. Mikyla, wearing her pink winter jacket and white beanie, laughed as snowflakes landed on her nose.
+
+Beside her bounded her two beloved Pekingese dogs. <span class="character-name">Chessie</span>, with his light fawn coat, stood alert and protective. <span class="character-name">Chloe</span>, with her rich brown fur, sniffed excitedly at every snowdrift.
+
+<span class="dialogue"><span class="character-name">"Woof!"</span> Chloe barked sharply, digging frantically at an ancient oak tree.</span>
+
+Mikyla rushed over. Brushing away snow, she gasped. Embedded in the trunk was a wooden door covered in glowing silver runes that pulsed with magical light.
+
+<span class="dialogue"><span class="character-name">Chessie</span> growled softly, stepping back protectively.</span>
+
+But Mikyla felt drawn to the door. She reached out and touched the ornate handle. With a soft click, it swung open, spilling warm golden light and diamond dust into the snowy air.
+
+Before she could react, a playful wind swept them across the threshold into the unknown!`
+    },
+    {
+      type: 'chapter',
+      title: 'Chapter 2: Welcome to Frostveil',
+      emoji: '🏰🧊✨',
+      text: `They landed in a breathtaking frozen kingdom. Crystal trees glittered under a twilight sky. Ice palaces sparkled in the distance.
+
+<span class="dialogue"><span class="character-name">"Oh, thank goodness you're here!"</span> squeaked a tiny voice.</span>
+
+A fairy with mother-of-pearl wings fluttered down. She wore a shimmering blue dress.
+
+<span class="dialogue"><span class="character-name">"I'm Pip, scout fairy of Frostveil!"</span> she panted anxiously. <span class="character-name">"The wicked witch Morrigan has cast a dark ice spell over our kingdom! She's trapped Queen Sylvia in an eternal slumber at the Crystal Spire!"</span></span>
+
+<span class="dialogue"><span class="character-name">Chloe</span> let out a brave yip and wagged her tail encouragingly.</span>
+
+<span class="dialogue"><span class="character-name">Pip</span> continued, <span class="character-name">"Morrigan wants to freeze everything forever and rule as the Ice Queen! Only three magical quests can break her spell and save our kingdom!"</span></span>
+
+Mikyla's heart ached for the frozen kingdom. <span class="dialogue"><span class="character-name">"We'll help you!"</span> she declared firmly. <span class="character-name">"Tell us about these three quests!"</span></span>`
+    },
+    {
+      type: 'chapter',
+      title: 'Quest 1: The Whispering Ice Maze',
+      emoji: '🌀🧊🗝️',
+      text: `<span class="quest-badge">QUEST 1: The Whispering Ice Maze</span>
+
+Pip unfolded a glowing map. <span class="dialogue"><span class="character-name">"First, you must navigate the Whispering Ice Maze,"</span> she explained. <span class="character-name">"Its shifting walls echo your deepest fears and doubts. Many have entered, but few found their way out!"</span></span>
+
+The maze appeared before them - towering walls of translucent ice that seemed to move when they weren't looking.
+
+<span class="dialogue"><span class="character-name">"I hear whispers..."</span> Mikyla whispered, shivering.</span>
+
+<span class="dialogue"><span class="character-name">"You'll never find the Sunstone!"</span> the walls hissed. <span class="character-name">"Turn back!"</span></span>
+
+<span class="dialogue"><span class="character-name">Chessie</span> barked loudly, his keen senses detecting the true path through the illusions. <span class="character-name">"Trust Chessie!"</span> Mikyla cried. <span class="character-name">"He'll guide us!"</span></span>
+
+Following Chessie's lead, they weaved through the maze. <span class="dialogue"><span class="character-name">Chloe</span> playfully bounded ahead, her curiosity finding hidden passages.</span>
+
+At the center, they found a glowing key made of starlight!
+
+<span class="dialogue"><span class="character-name">"The Key of Courage!"</span> Pip cheered. <span class="character-name">"One quest down, two to go!"</span></span>`
+    },
+    {
+      type: 'chapter',
+      title: 'Quest 2: The Sunstone Guardian',
+      emoji: '🐺💎',
+      text: `<span class="quest-badge">QUEST 2: The Sunstone of Glimmerwood</span>
+
+<span class="dialogue"><span class="character-name">"Now we must find the Sunstone,"</span> Pip said. <span class="character-name">"It holds the pure warmth of the sun. But it's guarded by Fenrir, an ancient ice wolf. He's not evil, just lonely and protective."</span></span>
+
+Deep in the frozen forest, they found a magnificent wolf made of ice and starlight. His eyes glowed sapphire blue.
+
+<span class="dialogue"><span class="character-name">"Who dares seek the Sunstone?"</span> Fenrir's voice echoed like cracking ice.</span>
+
+<span class="dialogue"><span class="character-name">"We're here to save Frostveil!"</span> Mikyla said bravely.</span>
+
+<span class="dialogue"><span class="character-name">Fenrir</span> growled. <span class="character-name">"Many have promised to save the kingdom. All have failed. Why should I trust you?"</span></span>
+
+<span class="dialogue"><span class="character-name">Chloe</span> bounded forward and licked the wolf's icy paw. Her playful spirit melted his cold heart.</span>
+
+<span class="dialogue"><span class="character-name">Fenrir</span> softened. <span class="character-name">"Such kindness... I've been alone so long. Very well. Prove your courage, and the Sunstone is yours."</span></span>
+
+Mikyla faced three challenges Fenrir set. With Chessie's loyalty and Chloe's cleverness, they succeeded!
+
+<span class="dialogue"><span class="character-name">Fenrir</span> bowed. <span class="character-name">"You've earned the Sunstone. And perhaps... a new friend?"</span></span>
+
+The golden Sunstone appeared in Mikyla's hands, radiating warmth!`
+    },
+    {
+      type: 'chapter',
+      title: 'Quest 3: The Crystal Spire',
+      emoji: '❄️👑',
+      text: `<span class="quest-badge">QUEST 3: The Crystal Spire Siege</span>
+
+<span class="dialogue"><span class="character-name">"Now for the final quest!"</span> Pip announced. <span class="character-name">"We must reach the Crystal Spire, face Morrigan, and awaken Queen Sylvia!"</span></span>
+
+The Spire towered above them, covered in dark ice. At the summit, they found Queen Sylvia frozen on her throne. Before her stood Morrigan, the Frost-Weaver, crackling with jagged frost.
+
+<span class="dialogue"><span class="character-name">"Fools!"</span> Morrigan's voice echoed with ancient pain. <span class="character-name">"You cannot break my winter! Cold is safe! Cold doesn't leave you!"</span></span>
+
+<span class="dialogue"><span class="character-name">Mikyla</span> stepped forward, holding the Sunstone. <span class="character-name">"Morrigan, we don't want to fight you. We want to help you!"</span></span>
+
+<span class="dialogue"><span class="character-name">"Help me?"</span> Morrigan's voice cracked. <span class="character-name">"No one can help me. I lost everyone I loved. The cold keeps the pain away."</span></span>
+
+<span class="dialogue"><span class="character-name">"But cold also keeps the love away,"</span> Mikyla said gently. <span class="character-name">"Look around you. Pip never gave up hope. Fenrir became our friend. My dogs came with me without fear. And I'm here now. You're not alone anymore!"</span></span>
+
+The golden light of the Sunstone washed over the Spire. Morrigan's dark ice dissolved into sparkling water.`
+    },
+    {
+      type: 'chapter',
+      title: 'The Kingdom Saved!',
+      emoji: '✨👑',
+      text: `Morrigan looked down at her hands, now warm and gentle instead of sharp and cold. Tears streamed down her face.
+
+<span class="dialogue"><span class="character-name">"I forgot..."</span> she sobbed. <span class="character-name">"I forgot what warmth felt like. I forgot I didn't have to be alone."</span></span>
+
+With Morrigan's transformation, the spell shattered! Queen Sylvia stirred and opened her eyes with a warm smile.
+
+<span class="dialogue"><span class="character-name">Queen Sylvia</span> rose from her throne. <span class="character-name">"Well done, brave child! You didn't fight ice with ice. You fought it with warmth and compassion. You saved us all!"</span></span>
+
+The entire kingdom burst into life! Crystal bells rang. Frozen villagers thawed and embraced. Flowers bloomed in the ice. Eternal spring balanced with winter.
+
+<span class="dialogue"><span class="character-name">Morrigan</span>, now gentle and warm, approached. <span class="character-name">"Thank you for seeing the hurt beneath the ice. Will you... be my friend?"</span></span>
+
+<span class="dialogue"><span class="character-name">Mikyla</span> smiled. <span class="character-name">"Of course! Frostveil will always have friends in us!"</span></span>
+
+Mikyla hugged Chessie and Chloe tightly. <span class="dialogue"><span class="character-name">"Ready to go home?"</span> she asked. The dogs barked happily.</span>
+
+As they stepped through the portal home, Mikyla knew this was just the beginning of their magical adventures!
+
+<span style="text-align: center; display: block; margin-top: 20px; font-size: 1.3em; color: #667eea;"><strong>~ The End ~</strong></span>
+<span style="text-align: center; display: block; color: #999; font-style: italic;">But the adventure continues...</span>`
+    },
+    {
+      type: 'cover',
+      title: 'The End',
+      emoji: '✨🐕🧚‍♀️',
+      sub: 'Thank you for reading!',
+      content: 'Mikyla, Chessie, and Chloe saved the kingdom with courage, kindness, and friendship!'
+    }
   ];
 
   const book = document.getElementById('book');
@@ -126,13 +309,32 @@
   let synth = window.speechSynthesis;
   let isPlaying = false;
   let audioEnabled = false;
+  let currentUtterance = null;
+  let voices = [];
 
   // Enable audio on first user interaction
   document.body.addEventListener('click', function enableAudio() {
     audioEnabled = true;
     document.getElementById('status').textContent = 'Audio enabled! Tap Play to start reading.';
-    document.body.removeEventListener('click', enableAudio);
-  }, { once: false });
+  }, { once: true });
+
+  function loadVoices() {
+    voices = synth.getVoices();
+    const select = document.getElementById('voiceSelect');
+    select.innerHTML = '';
+    
+    voices.forEach((voice, i) => {
+      const option = document.createElement('option');
+      option.textContent = `${voice.name} (${voice.lang})`;
+      option.value = i;
+      select.appendChild(option);
+    });
+  }
+
+  loadVoices();
+  if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = loadVoices;
+  }
 
   function renderPages() {
     pagesData.forEach((page, i) => {
@@ -141,9 +343,9 @@
       el.style.zIndex = total - i;
       
       if (page.type === 'cover') {
-        el.innerHTML = `<div class="page-front cover"><div class="emoji">${page.emoji}</div><h2>${page.title}</h2><p style="font-size:1.3em; font-style:italic; margin:15px 0;">${page.sub}</p><p style="font-size:1.1em; color:#ffd700;">${page.content}</p><div class="page-num">${i === 0 ? 'Cover' : 'Back'}</div></div>`;
+        el.innerHTML = `<div class="page-front cover"><div class="emoji">${page.emoji}</div><h2>${page.title}</h2><p style="font-size:1.2em; font-style:italic; margin:15px 0;">${page.sub}</p><p style="font-size:1.1em; color:#ffd700;">${page.content}</p><div class="page-num">${i === 0 ? 'Cover' : 'Back'}</div></div>`;
       } else {
-        el.innerHTML = `<div class="page-front"><div class="illustration">${page.emoji}</div><h2 class="chapter-title">${page.title}</h2><div class="story-text"><p>${page.text}</p></div><div class="page-num">${i}</div></div>`;
+        el.innerHTML = `<div class="page-front"><div class="illustration">${page.emoji}</div><h2 class="chapter-title">${page.title}</h2><div class="story-text">${page.text}</div><div class="page-num">${i}</div></div>`;
       }
       book.appendChild(el);
     });
@@ -160,6 +362,8 @@
     document.getElementById('navPrev').disabled = currentPage === 0;
     document.getElementById('nextBtn').disabled = currentPage === total - 1;
     document.getElementById('navNext').disabled = currentPage === total - 1;
+    document.getElementById('playBtn').disabled = isPlaying;
+    document.getElementById('pauseBtn').disabled = !isPlaying;
   }
 
   function speakCurrentPage() {
@@ -168,78 +372,68 @@
       return;
     }
     
-    if (currentPage >= total - 1 || pagesData[currentPage].type === 'cover') {
-      document.getElementById('status').textContent = 'No audio for cover pages. Navigate to a chapter.';
+    if (pagesData[currentPage].type === 'cover') {
+      document.getElementById('status').textContent = 'Cover page - no audio. Navigate to a chapter.';
       return;
     }
 
     synth.cancel();
-    const text = pagesData[currentPage].text;
-    const utterance = new SpeechSynthesisUtterance(text);
-    utterance.rate = 0.9;
-    utterance.pitch = 1.1;
     
-    utterance.onend = () => {
+    // Strip HTML tags for speech
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = pagesData[currentPage].text;
+    const cleanText = tempDiv.textContent || tempDiv.innerText || "";
+    
+    currentUtterance = new SpeechSynthesisUtterance(cleanText);
+    
+    const voiceIdx = document.getElementById('voiceSelect').value;
+    if (voices[voiceIdx]) currentUtterance.voice = voices[voiceIdx];
+    currentUtterance.rate = parseFloat(document.getElementById('rateSelect').value);
+    currentUtterance.pitch = 1.1;
+    
+    currentUtterance.onend = () => {
       isPlaying = false;
-      document.getElementById('playBtn').innerHTML = '▶️ Play';
       document.getElementById('status').textContent = 'Finished reading page ' + (currentPage + 1);
+      updateUI();
     };
     
-    synth.speak(utterance);
+    currentUtterance.onerror = () => {
+      isPlaying = false;
+      updateUI();
+    };
+    
+    synth.speak(currentUtterance);
     document.getElementById('status').textContent = 'Reading page ' + (currentPage + 1) + '...';
   }
 
   function togglePlay() {
     if (!audioEnabled) {
-      alert('Tap anywhere on the screen first to enable audio, then try Play again.');
+      alert('Tap anywhere on the screen first to enable audio.');
       return;
     }
     
     if (isPlaying) {
-      synth.cancel();
-      isPlaying = false;
-      document.getElementById('playBtn').innerHTML = '▶️ Play';
-      document.getElementById('status').textContent = 'Paused';
+      pauseAudio();
     } else {
       isPlaying = true;
-      document.getElementById('playBtn').innerHTML = '⏸️ Pause';
       speakCurrentPage();
-    }
-  }
-
-  function nextPage() {
-    if (currentPage < total - 1) {
-      currentPage++;
       updateUI();
-      if (isPlaying) {
-        setTimeout(speakCurrentPage, 500);
-      }
     }
   }
 
-  function prevPage() {
-    if (currentPage > 0) {
-      currentPage--;
-      updateUI();
-      if (isPlaying) {
-        setTimeout(speakCurrentPage, 500);
-      }
+  function pauseAudio() {
+    synth.pause();
+    isPlaying = false;
+    document.getElementById('status').textContent = 'Paused';
+    updateUI();
+  }
+
+  function changeVoice() {
+    if (currentUtterance && voices[document.getElementById('voiceSelect').value]) {
+      currentUtterance.voice = voices[document.getElementById('voiceSelect').value];
     }
   }
 
-  // Snowfall
-  for(let i=0; i<40; i++) {
-    const s = document.createElement('div');
-    s.className = 'snowflake';
-    s.textContent = '❄';
-    s.style.left = Math.random() * 100 + 'vw';
-    s.style.animationDuration = (Math.random() * 3 + 2) + 's';
-    s.style.animationDelay = Math.random() * 5 + 's';
-    s.style.fontSize = (Math.random() * 10 + 10) + 'px';
-    document.body.appendChild(s);
-  }
-
-  updateUI();
-</script>
-</body>
- </html>
+  function changeSpeed() {
+    if (currentUtterance) {
+      currentUtterance.rate = parseFloat(document.getElementById('rateSel
