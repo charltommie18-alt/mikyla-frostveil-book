@@ -52,7 +52,7 @@
     flex: 1;
     min-width: 80px;
   }
-  .btn:disabled { opacity: 0.5; }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
   
   select {
     padding: 8px;
@@ -60,6 +60,7 @@
     border: 1px solid #ddd;
     margin: 5px;
     width: calc(50% - 10px);
+    font-size: 0.85em;
   }
   
   #status { 
@@ -72,7 +73,6 @@
     border-radius: 5px;
   }
   
-  /* BOOK CONTAINER */
   .book-container {
     position: relative;
     width: 100%;
@@ -148,11 +148,26 @@
   }
   .story-text { 
     font-size: 0.95em; 
-    line-height: 1.6; 
+    line-height: 1.7; 
     color: #34495e; 
     flex: 1;
   }
   .story-text p { margin-bottom: 10px; }
+  
+  /* READ-ALONG HIGHLIGHTING */
+  .word {
+    display: inline;
+    padding: 2px 3px;
+    border-radius: 3px;
+    transition: all 0.2s;
+  }
+  .word.active {
+    background-color: #FFD700;
+    color: #1e3c72;
+    font-weight: bold;
+    box-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+  }
+  
   .dialogue {
     background: rgba(102, 126, 234, 0.1);
     padding: 8px;
@@ -191,22 +206,22 @@
 
 <div class="controls-box">
   <div class="btn-row">
-    <button class="btn" onclick="playAudio()">▶️ Play</button>
-    <button class="btn" onclick="pauseAudio()" disabled>⏸️ Pause</button>
+    <button class="btn" onclick="playAudio()" id="playBtn">▶️ Play</button>
+    <button class="btn" onclick="pauseAudio()" id="pauseBtn" disabled>⏸️ Pause</button>
   </div>
   <div class="btn-row">
-    <button class="btn" onclick="prevPage()" disabled>⏮️ Prev</button>
-    <button class="btn" onclick="nextPage()">Next ⏭️</button>
+    <button class="btn" onclick="prevPage()" id="prevBtn" disabled>️ Prev</button>
+    <button class="btn" onclick="nextPage()" id="nextBtn">Next ⏭️</button>
   </div>
   <div style="margin-top: 10px;">
-    <select id="voiceSelect" onchange="loadVoice()"></select>
-    <select id="speedSelect">
+    <select id="voiceSelect" onchange="voiceChanged()"></select>
+    <select id="speedSelect" onchange="speedChanged()">
       <option value="0.8">Slow</option>
       <option value="1" selected>Normal</option>
       <option value="1.2">Fast</option>
     </select>
   </div>
-  <div id="status"> Tap Play to start reading aloud</div>
+  <div id="status">📖 Tap Play to start reading aloud</div>
 </div>
 
 <div class="book-container" id="bookContainer">
@@ -231,16 +246,16 @@ const pages = [
   {
     type: 'chapter',
     title: 'Chapter 1: The Mysterious Door',
-    emoji: '🌲✨🚪',
+    emoji: '🌲✨',
     text: `The enchanted forest sparkled with fresh snow. Mikyla laughed as snowflakes landed on her pink winter jacket.
 
-Beside her, <span class="character">Chessie</span> (light fawn coat) stood alert and protective. <span class="character">Chloe</span> (rich brown fur) sniffed excitedly at every snowdrift.
+Beside her, Chessie (light fawn coat) stood alert and protective. Chloe (rich brown fur) sniffed excitedly at every snowdrift.
 
-<div class="dialogue"><span class="character">"Woof!"</span> Chloe barked, digging frantically at an ancient oak tree.</div>
+"Woof!" Chloe barked, digging frantically at an ancient oak tree.
 
 Mikyla rushed over. Brushing away snow, she gasped. Embedded in the trunk was a wooden door covered in glowing silver runes!
 
-<div class="dialogue"><span class="character">Chessie</span> growled softly, stepping back.</div>
+Chessie growled softly, stepping back.
 
 Mikyla touched the ornate handle. With a soft click, it swung open, spilling warm golden light and diamond dust into the air.
 
@@ -252,103 +267,103 @@ A playful wind swept them across the threshold into the unknown!`
     emoji: '🏰🧚',
     text: `They landed in a breathtaking frozen kingdom. Crystal trees glittered under a twilight sky.
 
-<div class="dialogue"><span class="character">"Oh, thank goodness you're here!"</span> squeaked a tiny voice.</div>
+"Oh, thank goodness you're here!" squeaked a tiny voice.
 
 A fairy with mother-of-pearl wings fluttered down in a shimmering blue dress.
 
-<div class="dialogue"><span class="character">"I'm Pip, scout fairy of Frostveil!"</span> she panted. <span class="character">"The wicked witch Morrigan has trapped Queen Sylvia in an eternal slumber at the Crystal Spire!"</span></div>
+"I'm Pip, scout fairy of Frostveil!" she panted. "The wicked witch Morrigan has trapped Queen Sylvia in an eternal slumber at the Crystal Spire!"
 
-<div class="dialogue"><span class="character">Chloe</span> let out a brave yip.</div>
+Chloe let out a brave yip.
 
-<div class="dialogue"><span class="character">Pip</span> continued, <span class="character">"Morrigan wants to freeze everything forever! Only three magical quests can break her spell!"</span></div>
+Pip continued, "Morrigan wants to freeze everything forever! Only three magical quests can break her spell!"
 
-<div class="dialogue"><span class="character">"We'll help you!"</span> Mikyla declared. <span class="character">"Tell us about these quests!"</span></div>`
+"We'll help you!" Mikyla declared. "Tell us about these quests!"`
   },
   {
     type: 'chapter',
     title: 'Quest 1: The Whispering Ice Maze',
-    emoji: '🌀🧊🗝️',
-    text: `<div class="quest-badge">QUEST 1: The Whispering Ice Maze</div>
+    emoji: '🌀🗝️',
+    text: `QUEST 1: The Whispering Ice Maze
 
-<div class="dialogue"><span class="character">"First, navigate the Whispering Ice Maze,"</span> Pip explained. <span class="character">"Its walls echo your deepest fears!"</span></div>
+"First, navigate the Whispering Ice Maze," Pip explained. "Its walls echo your deepest fears!"
 
 Towering walls of translucent ice appeared before them, seeming to move when they weren't looking.
 
-<div class="dialogue"><span class="character">"I hear whispers..."</span> Mikyla whispered.</div>
+"I hear whispers..." Mikyla whispered.
 
-<div class="dialogue">"You'll never find the Sunstone!" the walls hissed. "Turn back!"</div>
+"You'll never find the Sunstone!" the walls hissed. "Turn back!"
 
-<div class="dialogue"><span class="character">Chessie</span> barked loudly, detecting the true path. <span class="character">"Trust Chessie!"</span> Mikyla cried.</div>
+Chessie barked loudly, detecting the true path. "Trust Chessie!" Mikyla cried.
 
-Following Chessie's lead, they weaved through the maze. <span class="character">Chloe</span> playfully bounded ahead, finding hidden passages.
+Following Chessie's lead, they weaved through the maze. Chloe playfully bounded ahead, finding hidden passages.
 
 At the center, they found a glowing key made of starlight!
 
-<div class="dialogue"><span class="character">"The Key of Courage!"</span> Pip cheered. <span class="character">"One quest down!"</span></div>`
+"The Key of Courage!" Pip cheered. "One quest down!"`
   },
   {
     type: 'chapter',
     title: 'Quest 2: The Sunstone Guardian',
     emoji: '🐺💎☀️',
-    text: `<div class="quest-badge">QUEST 2: The Sunstone of Glimmerwood</div>
+    text: `QUEST 2: The Sunstone of Glimmerwood
 
-<div class="dialogue"><span class="character">"Now find the Sunstone,"</span> Pip said. <span class="character">"It's guarded by Fenrir, an ancient ice wolf. He's lonely, not evil."</span></div>
+"Now find the Sunstone," Pip said. "It's guarded by Fenrir, an ancient ice wolf. He's lonely, not evil."
 
 Deep in the frozen forest, they found a magnificent wolf made of ice and starlight.
 
-<div class="dialogue"><span class="character">"Who dares seek the Sunstone?"</span> Fenrir's voice echoed.</div>
+"Who dares seek the Sunstone?" Fenrir's voice echoed.
 
-<div class="dialogue"><span class="character">"We're here to save Frostveil!"</span> Mikyla said bravely.</div>
+"We're here to save Frostveil!" Mikyla said bravely.
 
-<div class="dialogue"><span class="character">Fenrir</span> growled. <span class="character">"Why should I trust you?"</span></div>
+Fenrir growled. "Why should I trust you?"
 
-<div class="dialogue"><span class="character">Chloe</span> bounded forward and licked the wolf's icy paw.</div>
+Chloe bounded forward and licked the wolf's icy paw.
 
-<div class="dialogue"><span class="character">Fenrir</span> softened. <span class="character">"Such kindness... Prove your courage, and the Sunstone is yours."</span></div>
+Fenrir softened. "Such kindness... Prove your courage, and the Sunstone is yours."
 
 With Chessie's loyalty and Chloe's cleverness, they succeeded! The golden Sunstone appeared in Mikyla's hands!`
   },
   {
     type: 'chapter',
     title: 'Quest 3: The Crystal Spire',
-    emoji: '❄️👑⚔️',
-    text: `<div class="quest-badge">QUEST 3: The Crystal Spire</div>
+    emoji: '❄️👑️',
+    text: `QUEST 3: The Crystal Spire
 
-<div class="dialogue"><span class="character">"Face Morrigan and awaken Queen Sylvia!"</span> Pip announced.</div>
+"Face Morrigan and awaken Queen Sylvia!" Pip announced.
 
 At the summit, Queen Sylvia sat frozen on her throne. Before her stood Morrigan, crackling with jagged frost.
 
-<div class="dialogue"><span class="character">"You cannot break my winter!"</span> Morrigan cried. <span class="character">"Cold is safe! Cold doesn't leave you!"</span></div>
+"You cannot break my winter!" Morrigan cried. "Cold is safe! Cold doesn't leave you!"
 
-<div class="dialogue"><span class="character">Mikyla</span> stepped forward with the Sunstone. <span class="character">"Morrigan, we want to help you!"</span></div>
+Mikyla stepped forward with the Sunstone. "Morrigan, we want to help you!"
 
-<div class="dialogue"><span class="character">"Help me?"</span> Morrigan's voice cracked. <span class="character">"I lost everyone. The cold keeps the pain away."</span></div>
+"Help me?" Morrigan's voice cracked. "I lost everyone. The cold keeps the pain away."
 
-<div class="dialogue"><span class="character">"But cold keeps love away too,"</span> Mikyla said gently. <span class="character">"Pip never gave up. Fenrir became our friend. You're not alone anymore!"</span></div>
+"But cold keeps love away too," Mikyla said gently. "Pip never gave up. Fenrir became our friend. You're not alone anymore!"
 
 The golden light washed over the Spire. Morrigan's dark ice dissolved into sparkling water.`
   },
   {
     type: 'chapter',
     title: 'The Kingdom Saved!',
-    emoji: '✨🌸',
+    emoji: '✨',
     text: `Morrigan looked at her hands, now warm instead of cold. Tears streamed down her face.
 
-<div class="dialogue"><span class="character">"I forgot what warmth felt like,"</span> she sobbed. <span class="character">"I forgot I didn't have to be alone."</span></div>
+"I forgot what warmth felt like," she sobbed. "I forgot I didn't have to be alone."
 
 The spell shattered! Queen Sylvia stirred and opened her eyes.
 
-<div class="dialogue"><span class="character">Queen Sylvia</span> rose. <span class="character">"You fought ice with warmth and compassion. You saved us all!"</span></div>
+Queen Sylvia rose. "You fought ice with warmth and compassion. You saved us all!"
 
 The kingdom burst into life! Crystal bells rang. Flowers bloomed in the ice.
 
-<div class="dialogue"><span class="character">Morrigan</span>, now warm, approached. <span class="character">"Will you... be my friend?"</span></div>
+Morrigan, now warm, approached. "Will you... be my friend?"
 
-<div class="dialogue"><span class="character">Mikyla</span> smiled. <span class="character">"Of course!"</span></div>
+Mikyla smiled. "Of course!"
 
 Mikyla hugged Chessie and Chloe tightly. As they stepped through the portal home, Mikyla knew this was just the beginning!
 
-<div style="text-align: center; margin-top: 20px; font-size: 1.2em; color: #667eea;"><strong>~ The End ~</strong></div>`
+~ The End ~`
   },
   {
     type: 'cover',
@@ -363,11 +378,14 @@ Mikyla hugged Chessie and Chloe tightly. As they stepped through the portal home
 let currentPage = 0;
 const totalPages = pages.length;
 let isPlaying = false;
+let isPaused = false;
 let synth = window.speechSynthesis;
 let voices = [];
 let currentUtterance = null;
+let selectedVoiceIndex = 0;
+let currentSpeed = 1;
 
-// RENDER PAGES
+// RENDER PAGES WITH WORD SPANS
 function renderPages() {
   const container = document.getElementById('bookContainer');
   container.innerHTML = '';
@@ -376,6 +394,7 @@ function renderPages() {
     const pageDiv = document.createElement('div');
     pageDiv.className = 'book-page';
     pageDiv.style.zIndex = totalPages - index;
+    pageDiv.id = `page-${index}`;
     
     if (page.type === 'cover') {
       pageDiv.innerHTML = `
@@ -388,11 +407,13 @@ function renderPages() {
         </div>
       `;
     } else {
+      // Wrap each word in a span for highlighting
+      const textWithSpans = wrapWordsInSpans(page.text, index);
       pageDiv.innerHTML = `
         <div class="page-content">
           <div class="illustration">${page.emoji}</div>
           <h2 class="chapter-title">${page.title}</h2>
-          <div class="story-text">${page.text}</div>
+          <div class="story-text" id="story-${index}">${textWithSpans}</div>
           <div class="page-num">Page ${index}</div>
         </div>
       `;
@@ -402,6 +423,22 @@ function renderPages() {
   });
   
   updateDisplay();
+}
+
+// WRAP WORDS IN SPANS FOR HIGHLIGHTING
+function wrapWordsInSpans(text, pageIndex) {
+  // Split by paragraphs first
+  const paragraphs = text.split('\n\n');
+  return paragraphs.map((para, pIdx) => {
+    // Split paragraph into words
+    const words = para.split(/(\s+)/); // Keep spaces
+    const wordsWithSpans = words.map((word, wIdx) => {
+      if (word.trim() === '') return word; // Keep spaces as-is
+      const wordId = `word-${pageIndex}-${pIdx}-${wIdx}`;
+      return `<span class="word" id="${wordId}">${word}</span>`;
+    }).join('');
+    return `<p>${wordsWithSpans}</p>`;
+  }).join('');
 }
 
 // UPDATE DISPLAY
@@ -415,8 +452,11 @@ function updateDisplay() {
     }
   });
   
+  document.getElementById('prevBtn').disabled = currentPage === 0;
   document.getElementById('btnPrev').disabled = currentPage === 0;
+  document.getElementById('nextBtn').disabled = currentPage === totalPages - 1;
   document.getElementById('btnNext').disabled = currentPage === totalPages - 1;
+  document.getElementById('prevBtn').disabled = currentPage === 0;
   
   const statusEl = document.getElementById('status');
   if (pages[currentPage].type === 'cover') {
@@ -426,12 +466,20 @@ function updateDisplay() {
   }
 }
 
+// CLEAR ALL HIGHLIGHTS
+function clearHighlights() {
+  document.querySelectorAll('.word.active').forEach(el => {
+    el.classList.remove('active');
+  });
+}
+
 // NAVIGATION
 function nextPage() {
   if (currentPage < totalPages - 1) {
     currentPage++;
+    clearHighlights();
     updateDisplay();
-    if (isPlaying) {
+    if (isPlaying && !isPaused) {
       setTimeout(playCurrentPage, 600);
     }
   }
@@ -440,8 +488,9 @@ function nextPage() {
 function prevPage() {
   if (currentPage > 0) {
     currentPage--;
+    clearHighlights();
     updateDisplay();
-    if (isPlaying) {
+    if (isPlaying && !isPaused) {
       setTimeout(playCurrentPage, 600);
     }
   }
@@ -461,8 +510,22 @@ function loadVoices() {
   });
 }
 
-function loadVoice() {
-  // Voice will be loaded when playing
+function voiceChanged() {
+  const select = document.getElementById('voiceSelect');
+  selectedVoiceIndex = parseInt(select.value);
+  // If currently playing, restart with new voice
+  if (isPlaying && !isPaused) {
+    playCurrentPage();
+  }
+}
+
+function speedChanged() {
+  const select = document.getElementById('speedSelect');
+  currentSpeed = parseFloat(select.value);
+  // If currently playing, update rate
+  if (currentUtterance) {
+    currentUtterance.rate = currentSpeed;
+  }
 }
 
 function playAudio() {
@@ -471,21 +534,43 @@ function playAudio() {
     return;
   }
   
-  isPlaying = true;
-  document.getElementById('status').textContent = '🔊 Reading...';
-  playCurrentPage();
+  if (isPaused) {
+    // Resume from pause
+    synth.resume();
+    isPaused = false;
+    isPlaying = true;
+    document.getElementById('status').textContent = '🔊 Reading...';
+    updatePlayButtons();
+  } else {
+    // Start playing
+    isPlaying = true;
+    isPaused = false;
+    document.getElementById('status').textContent = '🔊 Reading...';
+    updatePlayButtons();
+    playCurrentPage();
+  }
 }
 
 function pauseAudio() {
-  synth.cancel();
-  isPlaying = false;
-  document.getElementById('status').textContent = '⏸️ Paused';
+  if (isPlaying) {
+    synth.pause();
+    isPaused = true;
+    isPlaying = false;
+    document.getElementById('status').textContent = '⏸️ Paused';
+    updatePlayButtons();
+  }
+}
+
+function updatePlayButtons() {
+  document.getElementById('playBtn').disabled = isPlaying && !isPaused;
+  document.getElementById('pauseBtn').disabled = !isPlaying || isPaused;
 }
 
 function playCurrentPage() {
   if (pages[currentPage].type === 'cover') return;
   
   synth.cancel();
+  clearHighlights();
   
   // Get clean text (remove HTML tags)
   const tempDiv = document.createElement('div');
@@ -494,26 +579,54 @@ function playCurrentPage() {
   
   currentUtterance = new SpeechSynthesisUtterance(cleanText);
   
-  const voiceIndex = document.getElementById('voiceSelect').value;
-  if (voices[voiceIndex]) {
-    currentUtterance.voice = voices[voiceIndex];
+  // Set voice
+  if (voices[selectedVoiceIndex]) {
+    currentUtterance.voice = voices[selectedVoiceIndex];
   }
   
-  currentUtterance.rate = parseFloat(document.getElementById('speedSelect').value);
+  currentUtterance.rate = currentSpeed;
   currentUtterance.pitch = 1.05;
+  
+  // Track word boundaries for highlighting
+  let charIndex = 0;
+  const words = cleanText.split(/(\s+)/);
+  let wordIndex = 0;
+  
+  currentUtterance.onboundary = function(event) {
+    if (event.name === 'word') {
+      // Clear previous highlight
+      clearHighlights();
+      
+      // Find and highlight current word
+      const wordId = `word-${currentPage}-0-${wordIndex}`;
+      const wordEl = document.getElementById(wordId);
+      if (wordEl) {
+        wordEl.classList.add('active');
+        wordEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      
+      wordIndex++;
+    }
+  };
   
   currentUtterance.onend = function() {
     isPlaying = false;
+    isPaused = false;
+    clearHighlights();
     document.getElementById('status').textContent = '✅ Finished page ' + currentPage;
+    updatePlayButtons();
   };
   
-  currentUtterance.onerror = function() {
+  currentUtterance.onerror = function(e) {
+    console.error('Speech error:', e);
     isPlaying = false;
+    isPaused = false;
+    clearHighlights();
     document.getElementById('status').textContent = '❌ Audio error - try again';
+    updatePlayButtons();
   };
   
   synth.speak(currentUtterance);
-  document.getElementById('status').textContent = '🔊 Reading page ' + currentPage + '...';
 }
 
 // SNOWFALL EFFECT
@@ -540,6 +653,9 @@ window.onload = function() {
   if (speechSynthesis.onvoiceschanged !== undefined) {
     speechSynthesis.onvoiceschanged = loadVoices;
   }
+  
+  // Set initial button states
+  updatePlayButtons();
 };
 </script>
 
