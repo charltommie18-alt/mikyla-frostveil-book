@@ -33,228 +33,80 @@
     margin-bottom: 15px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.3);
   }
-  .btn-row { 
-    display: flex; 
-    gap: 8px; 
-    margin-bottom: 10px;
-    flex-wrap: wrap;
-  }
+  .btn-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
   .btn {
     background: linear-gradient(135deg, #667eea, #764ba2); 
-    color: white;
-    border: none; 
-    padding: 10px 15px; 
-    border-radius: 20px; 
-    cursor: pointer;
-    font-size: 0.9em;
-    flex: 1;
-    min-width: 80px;
+    color: white; border: none; padding: 10px 15px; border-radius: 20px; 
+    cursor: pointer; font-size: 0.9em; flex: 1; min-width: 80px;
   }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .btn-paypal {
     background: linear-gradient(135deg, #0070ba, #003087);
-    font-weight: bold;
-    font-size: 1.1em;
-    padding: 12px 20px;
+    font-weight: bold; font-size: 1.1em; padding: 12px 20px; text-decoration: none; display: block; text-align: center; margin-bottom: 15px; color: white; border-radius: 20px;
   }
   
-  select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    margin: 5px;
-    width: 100%;
-    font-size: 0.85em;
-  }
-  
-  #status { 
-    text-align: center; 
-    color: #666; 
-    font-size: 0.85em; 
-    margin-top: 10px;
-    padding: 8px;
-    background: #f0f0f0;
-    border-radius: 5px;
-  }
+  select { padding: 8px; border-radius: 5px; border: 1px solid #ddd; margin: 5px; width: 100%; font-size: 0.85em; }
+  #status { text-align: center; color: #666; font-size: 0.85em; margin-top: 10px; padding: 8px; background: #f0f0f0; border-radius: 5px; }
   
   .book-container {
-    position: relative;
-    width: 100%;
-    max-width: 500px;
-    height: 600px;
-    margin: 0 auto 15px;
-    perspective: 1500px;
+    position: relative; width: 100%; max-width: 500px; height: 600px;
+    margin: 0 auto 15px; perspective: 1500px;
   }
-  
   .book-page {
-    position: absolute;
-    width: 100%;
-    height: 100%;
+    position: absolute; width: 100%; height: 100%;
     background: linear-gradient(135deg, #faf8f3, #f5f0e8);
-    border-radius: 10px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    padding: 20px;
-    overflow-y: auto;
-    transition: transform 0.6s;
-    transform-origin: left center;
-    transform-style: preserve-3d;
+    border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    padding: 20px; overflow-y: auto; transition: transform 0.6s;
+    transform-origin: left center; transform-style: preserve-3d;
   }
-  
   .book-page.flipped { transform: rotateY(-180deg); }
-  
-  .page-content {
-    backface-visibility: hidden;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
+  .page-content { backface-visibility: hidden; height: 100%; display: flex; flex-direction: column; }
   
   .cover-page {
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-    color: white;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 30px 20px;
+    background: linear-gradient(135deg, #1e3c72, #2a5298); color: white;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 30px 20px;
   }
-  .cover-emoji { 
-    font-size: 70px; 
-    margin-bottom: 20px;
-    animation: float 3s ease-in-out infinite;
-  }
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-  .cover-page h2 { 
-    font-size: 1.7em; 
-    color: #ffd700; 
-    margin: 15px 0;
-    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-  }
-  .cover-page .subtitle {
-    font-size: 1.2em; 
-    font-style: italic; 
-    margin: 10px 0;
-    color: #e0f0ff;
-  }
-  .cover-page .content {
-    font-size: 1.1em; 
-    color: #ffd700;
-    margin-top: 20px;
-  }
-  .page-num { 
-    text-align: right;
-    color: #999; 
-    font-size: 0.8em;
-    margin-top: auto;
-    padding-top: 10px;
-  }
+  .cover-emoji { font-size: 70px; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+  .cover-page h2 { font-size: 1.7em; color: #ffd700; margin: 15px 0; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+  .cover-page .subtitle { font-size: 1.2em; font-style: italic; margin: 10px 0; color: #e0f0ff; }
+  .cover-page .content { font-size: 1.1em; color: #ffd700; margin-top: 20px; }
+  .page-num { text-align: right; color: #999; font-size: 0.8em; margin-top: auto; padding-top: 10px; }
   
-  .chapter-title {
-    font-size: 1.3em; 
-    text-align: center; 
-    margin-bottom: 10px;
-    color: #667eea;
-  }
-  .illustration { 
-    font-size: 50px; 
-    text-align: center; 
-    margin: 10px 0; 
-  }
-  .story-text { 
-    font-size: 1em; 
-    line-height: 1.8; 
-    color: #34495e; 
-    flex: 1;
-  }
-  .story-text p { 
-    margin-bottom: 12px;
-    padding: 6px;
-    border-radius: 6px;
-    transition: all 0.3s;
-  }
+  .chapter-title { font-size: 1.3em; text-align: center; margin-bottom: 10px; color: #667eea; }
+  .illustration { font-size: 50px; text-align: center; margin: 10px 0; }
+  .story-text { font-size: 1em; line-height: 1.8; color: #34495e; flex: 1; }
+  .story-text p { margin-bottom: 12px; padding: 6px; border-radius: 6px; transition: all 0.3s; }
   .story-text p.active {
-    background-color: #FFD700 !important;
-    color: #1e3c72 !important;
-    font-weight: bold;
-    box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
+    background-color: #FFD700 !important; color: #1e3c72 !important;
+    font-weight: bold; box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
   }
   
-  .nav-buttons { 
-    display: flex; 
-    justify-content: space-between; 
-    max-width: 500px;
-    margin: 0 auto;
-    gap: 10px;
-  }
+  .nav-buttons { display: flex; justify-content: space-between; max-width: 500px; margin: 0 auto; gap: 10px; }
 
-  /* MODAL STYLES */
   .modal-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.85);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 9999;
-    padding: 20px;
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.85); display: flex; align-items: center;
+    justify-content: center; z-index: 9999; padding: 20px;
   }
   .modal-box {
-    background: white;
-    border-radius: 20px;
-    padding: 30px;
-    max-width: 400px;
-    width: 100%;
-    text-align: center;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    background: white; border-radius: 20px; padding: 30px; max-width: 400px;
+    width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
     animation: popIn 0.3s ease-out;
   }
-  @keyframes popIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-  }
-  .modal-box h2 {
-    color: #1e3c72;
-    margin-bottom: 15px;
-    font-size: 1.5em;
-  }
-  .modal-box p {
-    color: #555;
-    margin-bottom: 20px;
-    line-height: 1.5;
-  }
+  @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+  .modal-box h2 { color: #1e3c72; margin-bottom: 15px; font-size: 1.5em; }
+  .modal-box p { color: #555; margin-bottom: 20px; line-height: 1.5; }
   .modal-input {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #ddd;
-    border-radius: 10px;
-    font-size: 1em;
-    margin-bottom: 15px;
-    text-align: center;
+    width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px;
+    font-size: 1em; margin-bottom: 15px; text-align: center;
   }
-  .modal-input:focus {
-    border-color: #667eea;
-    outline: none;
-  }
-  .lock-icon {
-    font-size: 60px;
-    margin-bottom: 15px;
-  }
+  .modal-input:focus { border-color: #667eea; outline: none; }
+  .lock-icon { font-size: 60px; margin-bottom: 15px; }
   .hidden { display: none !important; }
-  
-  .reset-link {
-    text-align: center;
-    margin-top: 20px;
-    font-size: 0.8em;
-  }
-  .reset-link a {
-    color: rgba(255,255,255,0.6);
-    text-decoration: underline;
-    cursor: pointer;
-  }
+  .reset-link { text-align: center; margin-top: 20px; font-size: 0.8em; }
+  .reset-link a { color: rgba(255,255,255,0.6); text-decoration: underline; cursor: pointer; }
 </style>
 </head>
 <body>
@@ -276,7 +128,7 @@
     <div class="lock-icon">🔒</div>
     <h2>Continue the Adventure!</h2>
     <p>You've reached the end of the free preview. To unlock the full story and help Mikyla save the kingdom, please complete the secure payment below.</p>
-    <a href="https://www.paypal.com/ncp/payment/ZAC7WNMVSB67E" target="_blank" class="btn btn-paypal" style="display: block; text-decoration: none; margin-bottom: 15px;" onclick="markAsPaid()">
+    <a href="https://www.paypal.com/ncp/payment/ZAC7WNMVSB67E" target="_blank" class="btn-paypal" onclick="setTimeout(confirmPayment, 3000)">
       💳 Pay Securely with PayPal
     </a>
     <button class="btn" onclick="confirmPayment()" style="background: #28a745; width: 100%;">
@@ -328,142 +180,14 @@ let hasPaid = localStorage.getItem('mikyla_has_paid') === 'true';
 let isCreator = userEmail.toLowerCase() === CREATOR_EMAIL.toLowerCase();
 
 const pages = [
-  {
-    type: 'cover',
-    emoji: '❄️',
-    title: 'Mikyla and the Frostveil Kingdom',
-    subtitle: 'A Magical Quest Adventure',
-    content: 'An Epic Family Adventure'
-  },
-  {
-    type: 'chapter',
-    title: 'Chapter 1: The Mysterious Door',
-    emoji: '✨',
-    text: `The enchanted forest sparkled with fresh snow. Mikyla laughed as snowflakes landed on her pink winter jacket.
-
-Beside her, Chessie stood alert and protective. Chloe sniffed excitedly at every snowdrift.
-
-"Woof!" Chloe barked, digging frantically at an ancient oak tree.
-
-Mikyla rushed over. Brushing away snow, she gasped. Embedded in the trunk was a wooden door covered in glowing silver runes!
-
-Chessie growled softly, stepping back.
-
-Mikyla touched the ornate handle. With a soft click, it swung open, spilling warm golden light and diamond dust into the air.
-
-A playful wind swept them across the threshold into the unknown!`
-  },
-  {
-    type: 'chapter',
-    title: 'Chapter 2: Welcome to Frostveil',
-    emoji: '🧚',
-    text: `They landed in a breathtaking frozen kingdom. Crystal trees glittered under a twilight sky.
-
-"Oh, thank goodness you're here!" squeaked a tiny voice.
-
-A fairy with mother-of-pearl wings fluttered down in a shimmering blue dress.
-
-"I'm Pip, scout fairy of Frostveil!" she panted. "The wicked witch Morrigan has trapped Queen Sylvia in an eternal slumber at the Crystal Spire!"
-
-Chloe let out a brave yip.
-
-Pip continued, "Morrigan wants to freeze everything forever! Only three magical quests can break her spell!"
-
-"We'll help you!" Mikyla declared. "Tell us about these quests!"`
-  },
-  {
-    type: 'chapter',
-    title: 'Quest 1: The Whispering Ice Maze',
-    emoji: '🌀🧊🗝️',
-    text: `QUEST 1: The Whispering Ice Maze
-
-"First, navigate the Whispering Ice Maze," Pip explained. "Its walls echo your deepest fears!"
-
-Towering walls of translucent ice appeared before them, seeming to move when they weren't looking.
-
-"I hear whispers..." Mikyla whispered.
-
-"You'll never find the Sunstone!" the walls hissed. "Turn back!"
-
-Chessie barked loudly, detecting the true path. "Trust Chessie!" Mikyla cried.
-
-Following Chessie's lead, they weaved through the maze. Chloe playfully bounded ahead, finding hidden passages.
-
-At the center, they found a glowing key made of starlight!
-
-"The Key of Courage!" Pip cheered. "One quest down!"`
-  },
-  {
-    type: 'chapter',
-    title: 'Quest 2: The Sunstone Guardian',
-    emoji: '🐺💎☀️',
-    text: `QUEST 2: The Sunstone of Glimmerwood
-
-"Now find the Sunstone," Pip said. "It's guarded by Fenrir, an ancient ice wolf. He's lonely, not evil."
-
-Deep in the frozen forest, they found a magnificent wolf made of ice and starlight.
-
-"Who dares seek the Sunstone?" Fenrir's voice echoed.
-
-"We're here to save Frostveil!" Mikyla said bravely.
-
-Fenrir growled. "Why should I trust you?"
-
-Chloe bounded forward and licked the wolf's icy paw.
-
-Fenrir softened. "Such kindness... Prove your courage, and the Sunstone is yours."
-
-With Chessie's loyalty and Chloe's cleverness, they succeeded! The golden Sunstone appeared in Mikyla's hands!`
-  },
-  {
-    type: 'chapter',
-    title: 'Quest 3: The Crystal Spire',
-    emoji: '❄️👑⚔️',
-    text: `QUEST 3: The Crystal Spire
-
-"Face Morrigan and awaken Queen Sylvia!" Pip announced.
-
-At the summit, Queen Sylvia sat frozen on her throne. Before her stood Morrigan, crackling with jagged frost.
-
-"You cannot break my winter!" Morrigan cried. "Cold is safe! Cold doesn't leave you!"
-
-Mikyla stepped forward with the Sunstone. "Morrigan, we want to help you!"
-
-"Help me?" Morrigan's voice cracked. "I lost everyone. The cold keeps the pain away."
-
-"But cold keeps love away too," Mikyla said gently. "Pip never gave up. Fenrir became our friend. You're not alone anymore!"
-
-The golden light washed over the Spire. Morrigan's dark ice dissolved into sparkling water.`
-  },
-  {
-    type: 'chapter',
-    title: 'The Kingdom Saved!',
-    emoji: '✨🌸',
-    text: `Morrigan looked at her hands, now warm instead of cold. Tears streamed down her face.
-
-"I forgot what warmth felt like," she sobbed. "I forgot I didn't have to be alone."
-
-The spell shattered! Queen Sylvia stirred and opened her eyes.
-
-Queen Sylvia rose. "You fought ice with warmth and compassion. You saved us all!"
-
-The kingdom burst into life! Crystal bells rang. Flowers bloomed in the ice.
-
-Morrigan, now warm, approached. "Will you... be my friend?"
-
-Mikyla smiled. "Of course!"
-
-Mikyla hugged Chessie and Chloe tightly. As they stepped through the portal home, Mikyla knew this was just the beginning!
-
-~ The End ~`
-  },
-  {
-    type: 'cover',
-    emoji: '✨🐕',
-    title: 'The End',
-    subtitle: 'Thank you for reading!',
-    content: 'Mikyla, Chessie, and Chloe saved the kingdom!'
-  }
+  { type: 'cover', emoji: '❄️', title: 'Mikyla and the Frostveil Kingdom', subtitle: 'A Magical Quest Adventure', content: 'An Epic Family Adventure' },
+  { type: 'chapter', title: 'Chapter 1: The Mysterious Door', emoji: '✨', text: `The enchanted forest sparkled with fresh snow. Mikyla laughed as snowflakes landed on her pink winter jacket.\n\nBeside her, Chessie stood alert and protective. Chloe sniffed excitedly at every snowdrift.\n\n"Woof!" Chloe barked, digging frantically at an ancient oak tree.\n\nMikyla rushed over. Brushing away snow, she gasped. Embedded in the trunk was a wooden door covered in glowing silver runes!\n\nChessie growled softly, stepping back.\n\nMikyla touched the ornate handle. With a soft click, it swung open, spilling warm golden light and diamond dust into the air.\n\nA playful wind swept them across the threshold into the unknown!` },
+  { type: 'chapter', title: 'Chapter 2: Welcome to Frostveil', emoji: '🧚', text: `They landed in a breathtaking frozen kingdom. Crystal trees glittered under a twilight sky.\n\n"Oh, thank goodness you're here!" squeaked a tiny voice.\n\nA fairy with mother-of-pearl wings fluttered down in a shimmering blue dress.\n\n"I'm Pip, scout fairy of Frostveil!" she panted. "The wicked witch Morrigan has trapped Queen Sylvia in an eternal slumber at the Crystal Spire!"\n\nChloe let out a brave yip.\n\nPip continued, "Morrigan wants to freeze everything forever! Only three magical quests can break her spell!"\n\n"We'll help you!" Mikyla declared. "Tell us about these quests!"` },
+  { type: 'chapter', title: 'Quest 1: The Whispering Ice Maze', emoji: '🌀🧊🗝️', text: `QUEST 1: The Whispering Ice Maze\n\n"First, navigate the Whispering Ice Maze," Pip explained. "Its walls echo your deepest fears!"\n\nTowering walls of translucent ice appeared before them, seeming to move when they weren't looking.\n\n"I hear whispers..." Mikyla whispered.\n\n"You'll never find the Sunstone!" the walls hissed. "Turn back!"\n\nChessie barked loudly, detecting the true path. "Trust Chessie!" Mikyla cried.\n\nFollowing Chessie's lead, they weaved through the maze. Chloe playfully bounded ahead, finding hidden passages.\n\nAt the center, they found a glowing key made of starlight!\n\n"The Key of Courage!" Pip cheered. "One quest down!"` },
+  { type: 'chapter', title: 'Quest 2: The Sunstone Guardian', emoji: '🐺💎☀️', text: `QUEST 2: The Sunstone of Glimmerwood\n\n"Now find the Sunstone," Pip said. "It's guarded by Fenrir, an ancient ice wolf. He's lonely, not evil."\n\nDeep in the frozen forest, they found a magnificent wolf made of ice and starlight.\n\n"Who dares seek the Sunstone?" Fenrir's voice echoed.\n\n"We're here to save Frostveil!" Mikyla said bravely.\n\nFenrir growled. "Why should I trust you?"\n\nChloe bounded forward and licked the wolf's icy paw.\n\nFenrir softened. "Such kindness... Prove your courage, and the Sunstone is yours."\n\nWith Chessie's loyalty and Chloe's cleverness, they succeeded! The golden Sunstone appeared in Mikyla's hands!` },
+  { type: 'chapter', title: 'Quest 3: The Crystal Spire', emoji: '❄️👑⚔️', text: `QUEST 3: The Crystal Spire\n\n"Face Morrigan and awaken Queen Sylvia!" Pip announced.\n\nAt the summit, Queen Sylvia sat frozen on her throne. Before her stood Morrigan, crackling with jagged frost.\n\n"You cannot break my winter!" Morrigan cried. "Cold is safe! Cold doesn't leave you!"\n\nMikyla stepped forward with the Sunstone. "Morrigan, we want to help you!"\n\n"Help me?" Morrigan's voice cracked. "I lost everyone. The cold keeps the pain away."\n\n"But cold keeps love away too," Mikyla said gently. "Pip never gave up. Fenrir became our friend. You're not alone anymore!"\n\nThe golden light washed over the Spire. Morrigan's dark ice dissolved into sparkling water.` },
+  { type: 'chapter', title: 'The Kingdom Saved!', emoji: '✨🌸', text: `Morrigan looked at her hands, now warm instead of cold. Tears streamed down her face.\n\n"I forgot what warmth felt like," she sobbed. "I forgot I didn't have to be alone."\n\nThe spell shattered! Queen Sylvia stirred and opened her eyes.\n\nQueen Sylvia rose. "You fought ice with warmth and compassion. You saved us all!"\n\nThe kingdom burst into life! Crystal bells rang. Flowers bloomed in the ice.\n\nMorrigan, now warm, approached. "Will you... be my friend?"\n\nMikyla smiled. "Of course!"\n\nMikyla hugged Chessie and Chloe tightly. As they stepped through the portal home, Mikyla knew this was just the beginning!\n\n~ The End ~` },
+  { type: 'cover', emoji: '✨🐕', title: 'The End', subtitle: 'Thank you for reading!', content: 'Mikyla, Chessie, and Chloe saved the kingdom!' }
 ];
 
 let currentPage = 0;
@@ -475,16 +199,14 @@ let currentSpeed = 1;
 let currentParagraphIndex = 0;
 let pausedParagraphIndex = 0;
 
-// --- AUTH & PAYMENT LOGIC ---
 function checkAccess() {
   if (!userEmail) {
     document.getElementById('loginModal').classList.remove('hidden');
-  } else if (!isCreator && !hasPaid) {
-    // Allow preview up to page 1 (Cover + Chapter 1). Page 2 is Chapter 2.
-    if (currentPage >= 2) {
-      document.getElementById('paymentModal').classList.remove('hidden');
-      return false;
-    }
+    return false;
+  }
+  if (!isCreator && !hasPaid && currentPage >= 2) {
+    document.getElementById('paymentModal').classList.remove('hidden');
+    return false;
   }
   return true;
 }
@@ -498,17 +220,10 @@ function handleLogin() {
   userEmail = input;
   localStorage.setItem('mikyla_user_email', userEmail);
   isCreator = userEmail.toLowerCase() === CREATOR_EMAIL.toLowerCase();
-  
   document.getElementById('loginModal').classList.add('hidden');
-  
   if (isCreator) {
     document.getElementById('status').textContent = '👑 Creator Access Granted: Full Book Unlocked';
   }
-}
-
-function markAsPaid() {
-  // This runs when they click the PayPal link
-  console.log("PayPal link opened");
 }
 
 function confirmPayment() {
@@ -519,45 +234,25 @@ function confirmPayment() {
 }
 
 function resetAccess() {
-  if (confirm("This will clear your login and payment status. Are you sure?")) {
+  if (confirm("This will clear your login and payment status to test the flow. Are you sure?")) {
     localStorage.removeItem('mikyla_user_email');
     localStorage.removeItem('mikyla_has_paid');
     location.reload();
   }
 }
 
-// --- BOOK LOGIC ---
 function renderPages() {
   const container = document.getElementById('bookContainer');
   container.innerHTML = '';
-  
   pages.forEach((page, index) => {
     const pageDiv = document.createElement('div');
     pageDiv.className = 'book-page';
     pageDiv.style.zIndex = totalPages - index;
-    
     if (page.type === 'cover') {
-      pageDiv.innerHTML = `
-        <div class="page-content cover-page">
-          <div class="cover-emoji">${page.emoji}</div>
-          <h2>${page.title}</h2>
-          <p class="subtitle">${page.subtitle}</p>
-          <p class="content">${page.content}</p>
-          <div class="page-num">${index === 0 ? 'Cover' : 'Back'}</div>
-        </div>
-      `;
+      pageDiv.innerHTML = `<div class="page-content cover-page"><div class="cover-emoji">${page.emoji}</div><h2>${page.title}</h2><p class="subtitle">${page.subtitle}</p><p class="content">${page.content}</p><div class="page-num">${index === 0 ? 'Cover' : 'Back'}</div></div>`;
     } else {
       const paragraphs = page.text.split('\n\n');
-      pageDiv.innerHTML = `
-        <div class="page-content">
-          <div class="illustration">${page.emoji}</div>
-          <h2 class="chapter-title">${page.title}</h2>
-          <div class="story-text" id="story-${index}">
-            ${paragraphs.map((p, i) => `<p id="p-${index}-${i}">${p}</p>`).join('')}
-          </div>
-          <div class="page-num">Page ${index}</div>
-        </div>
-      `;
+      pageDiv.innerHTML = `<div class="page-content"><div class="illustration">${page.emoji}</div><h2 class="chapter-title">${page.title}</h2><div class="story-text" id="story-${index}">${paragraphs.map((p, i) => `<p id="p-${index}-${i}">${p}</p>`).join('')}</div><div class="page-num">Page ${index}</div></div>`;
     }
     container.appendChild(pageDiv);
   });
@@ -566,21 +261,14 @@ function renderPages() {
 
 function updateDisplay() {
   const pageElements = document.querySelectorAll('.book-page');
-  pageElements.forEach((page, index) => {
-    page.classList.toggle('flipped', index < currentPage);
-  });
-  
+  pageElements.forEach((page, index) => page.classList.toggle('flipped', index < currentPage));
   document.getElementById('prevBtn').disabled = currentPage === 0;
   document.getElementById('btnPrev').disabled = currentPage === 0;
   document.getElementById('nextBtn').disabled = currentPage === totalPages - 1;
   document.getElementById('btnNext').disabled = currentPage === totalPages - 1;
-  
   const statusEl = document.getElementById('status');
-  if (pages[currentPage].type === 'cover') {
-    statusEl.textContent = '📖 Cover page - Tap Next for Chapter 1';
-  } else {
-    statusEl.textContent = `📖 Page ${currentPage} of ${totalPages - 1}`;
-  }
+  if (pages[currentPage].type === 'cover') statusEl.textContent = '📖 Cover page - Tap Next for Chapter 1';
+  else statusEl.textContent = `📖 Page ${currentPage} of ${totalPages - 1}`;
 }
 
 function clearHighlights() {
@@ -597,17 +285,17 @@ function highlightParagraph(index) {
 }
 
 function nextPage() {
-  if (!checkAccess()) return; // BLOCK if payment required
-  
+  if (currentPage === 1 && !isCreator && !hasPaid) {
+    document.getElementById('paymentModal').classList.remove('hidden');
+    return;
+  }
   if (currentPage < totalPages - 1) {
     currentPage++;
     currentParagraphIndex = 0;
     pausedParagraphIndex = 0;
     clearHighlights();
     updateDisplay();
-    if (isPlaying && !isPaused) {
-      setTimeout(() => speakCurrentPage(0), 800);
-    }
+    if (isPlaying && !isPaused) setTimeout(() => speakCurrentPage(0), 800);
   }
 }
 
@@ -618,9 +306,7 @@ function prevPage() {
     pausedParagraphIndex = 0;
     clearHighlights();
     updateDisplay();
-    if (isPlaying && !isPaused) {
-      setTimeout(() => speakCurrentPage(0), 800);
-    }
+    if (isPlaying && !isPaused) setTimeout(() => speakCurrentPage(0), 800);
   }
 }
 
@@ -630,10 +316,8 @@ function changeSpeed() {
 
 function speakCurrentPage(startIndex) {
   if (pages[currentPage].type === 'cover') return;
-  
   synth.cancel();
   clearHighlights();
-  
   const page = pages[currentPage];
   const paragraphs = page.text.split('\n\n');
   currentParagraphIndex = startIndex;
@@ -648,37 +332,30 @@ function speakCurrentPage(startIndex) {
       }
       return;
     }
-    
     highlightParagraph(currentParagraphIndex);
     const text = paragraphs[currentParagraphIndex];
-    
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = currentSpeed;
     utterance.pitch = 1.0;
     utterance.volume = 1.0;
-    
     utterance.onend = function() {
       if (!isPaused) {
         currentParagraphIndex++;
         setTimeout(speakNext, 400);
       }
     };
-    
     synth.speak(utterance);
   }
-  
   document.getElementById('status').textContent = '🔊 Reading page ' + currentPage + '...';
   speakNext();
 }
 
 function playAudio() {
   if (!checkAccess()) return;
-  
   if (pages[currentPage].type === 'cover') {
     document.getElementById('status').textContent = '⚠️ Navigate to Chapter 1 for audio';
     return;
   }
-  
   if (isPaused) {
     isPaused = false;
     isPlaying = true;
@@ -705,4 +382,29 @@ function pauseAudio() {
 }
 
 function updatePlayButtons() {
-  docum
+  document.getElementById('playBtn').disabled = isPlaying;
+  document.getElementById('pauseBtn').disabled = !isPlaying;
+}
+
+function createSnowfall() {
+  for (let i = 0; i < 30; i++) {
+    const snowflake = document.createElement('div');
+    snowflake.className = 'snowflake';
+    snowflake.textContent = '❄';
+    snowflake.style.left = Math.random() * 100 + 'vw';
+    snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    snowflake.style.animationDelay = Math.random() * 5 + 's';
+    snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+    document.body.appendChild(snowflake);
+  }
+}
+
+window.onload = function() {
+  renderPages();
+  createSnowfall();
+  updatePlayButtons();
+  checkAccess();
+};
+</script>
+</body>
+</html>
