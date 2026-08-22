@@ -182,16 +182,16 @@
   }
   .story-text p { margin-bottom: 12px; }
   
-  /* READ-ALONG HIGHLIGHTING */
+  /* READ-ALONG HIGHLIGHTING - YELLOW GLOW */
   .word {
     display: inline;
-    padding: 2px 3px;
-    border-radius: 3px;
-    transition: all 0.2s;
+    padding: 2px 4px;
+    border-radius: 4px;
+    transition: all 0.15s ease;
   }
   .word.active {
-    background-color: #FFD700;
-    color: #1e3c72;
+    background-color: #FFD700 !important;
+    color: #1e3c72 !important;
     font-weight: bold;
     box-shadow: 0 0 10px rgba(255, 215, 0, 0.9);
     transform: scale(1.1);
@@ -232,7 +232,7 @@
     <button class="btn" onclick="pauseAudio()" id="pauseBtn" disabled>⏸️ Pause</button>
   </div>
   <div class="btn-row">
-    <button class="btn" onclick="prevPage()" id="prevBtn" disabled>️ Prev</button>
+    <button class="btn" onclick="prevPage()" id="prevBtn" disabled>⏮️ Prev</button>
     <button class="btn" onclick="nextPage()" id="nextBtn">Next ⏭️</button>
   </div>
   <div style="margin-top: 10px;">
@@ -322,7 +322,7 @@ At the center, they found a glowing key made of starlight!
   {
     type: 'chapter',
     title: 'Quest 2: The Sunstone Guardian',
-    emoji: '🐺💎️',
+    emoji: '🐺💎☀️',
     text: `QUEST 2: The Sunstone of Glimmerwood
 
 "Now find the Sunstone," Pip said. "It's guarded by Fenrir, an ancient ice wolf. He's lonely, not evil."
@@ -344,7 +344,7 @@ With Chessie's loyalty and Chloe's cleverness, they succeeded! The golden Sunsto
   {
     type: 'chapter',
     title: 'Quest 3: The Crystal Spire',
-    emoji: '❄️👑⚔️',
+    emoji: '❄️👑️',
     text: `QUEST 3: The Crystal Spire
 
 "Face Morrigan and awaken Queen Sylvia!" Pip announced.
@@ -364,7 +364,7 @@ The golden light washed over the Spire. Morrigan's dark ice dissolved into spark
   {
     type: 'chapter',
     title: 'The Kingdom Saved!',
-    emoji: '✨',
+    emoji: '✨🌸',
     text: `Morrigan looked at her hands, now warm instead of cold. Tears streamed down her face.
 
 "I forgot what warmth felt like," she sobbed. "I forgot I didn't have to be alone."
@@ -385,7 +385,7 @@ Mikyla hugged Chessie and Chloe tightly. As they stepped through the portal home
   },
   {
     type: 'cover',
-    emoji: '✨🧚',
+    emoji: '✨🐕🧚',
     title: 'The End',
     subtitle: 'Thank you for reading!',
     content: 'Mikyla, Chessie, and Chloe saved the kingdom!'
@@ -399,6 +399,8 @@ let isPaused = false;
 let synth = window.speechSynthesis;
 let currentUtterance = null;
 let currentSpeed = 1;
+let currentWordIndex = 0;
+let wordSpans = [];
 
 function renderPages() {
   const container = document.getElementById('bookContainer');
@@ -420,13 +422,11 @@ function renderPages() {
         </div>
       `;
     } else {
-      // Wrap each word in span for highlighting
-      const wordsWrapped = wrapTextWithSpans(page.text, index);
       pageDiv.innerHTML = `
         <div class="page-content">
           <div class="illustration">${page.emoji}</div>
           <h2 class="chapter-title">${page.title}</h2>
-          <div class="story-text" id="story-${index}">${wordsWrapped}</div>
+          <div class="story-text" id="story-${index}"></div>
           <div class="page-num">Page ${index}</div>
         </div>
       `;
@@ -435,19 +435,32 @@ function renderPages() {
     container.appendChild(pageDiv);
   });
   
+  // Wrap words in spans after rendering
+  wrapWordsInSpans();
   updateDisplay();
 }
 
-function wrapTextWithSpans(text, pageIndex) {
-  const paragraphs = text.split('\n\n');
-  return paragraphs.map((para, pIdx) => {
-    const words = para.split(/(\s+)/);
-    const wordsWithSpans = words.map((word, wIdx) => {
-      if (word.trim() === '') return word;
-      return `<span class="word" data-page="${pageIndex}" data-p="${pIdx}" data-w="${wIdx}">${word}</span>`;
-    }).join('');
-    return `<p>${wordsWithSpans}</p>`;
-  }).join('');
+function wrapWordsInSpans() {
+  wordSpans = [];
+  
+  pages.forEach((page, pageIndex) => {
+    if (page.type === 'chapter') {
+      const storyEl = document.getElementById(`story-${pageIndex}`);
+      if (storyEl) {
+        const paragraphs = page.text.split('\n\n');
+        storyEl.innerHTML = paragraphs.map((para, pIdx) => {
+          const words = para.split(/(\s+)/);
+          const wordsWithSpans = words.map((word, wIdx) => {
+            if (word.trim() === '') return word;
+            const spanId = `word-${pageIndex}-${pIdx}-${wIdx}`;
+            wordSpans.push({id: spanId, text: word, pageIndex, pIdx, wIdx});
+            return `<span class="word" id="${spanId}">${word}</span>`;
+          }).join('');
+          return `<p>${wordsWithSpans}</p>`;
+        }).join('');
+      }
+    }
+  });
 }
 
 function updateDisplay() {
@@ -463,23 +476,37 @@ function updateDisplay() {
   
   const statusEl = document.getElementById('status');
   if (pages[currentPage].type === 'cover') {
-    statusEl.textContent = ' Cover page - Tap Next for Chapter 1';
+    statusEl.textContent = '📖 Cover page - Tap Next for Chapter 1';
   } else {
     statusEl.textContent = `📖 Page ${currentPage} of ${totalPages - 1}`;
   }
 }
 
 function clearHighlights() {
-  document.querySelectorAll('.word.active').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.word.active').forEach(el => {
+    el.classList.remove('active');
+  });
+}
+
+function highlightWord(index) {
+  clearHighlights();
+  if (wordSpans[index] && wordSpans[index].pageIndex === currentPage) {
+    const wordEl = document.getElementById(wordSpans[index].id);
+    if (wordEl) {
+      wordEl.classList.add('active');
+      wordEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }
 }
 
 function nextPage() {
   if (currentPage < totalPages - 1) {
     currentPage++;
+    currentWordIndex = 0;
     clearHighlights();
     updateDisplay();
     if (isPlaying && !isPaused) {
-      setTimeout(playCurrentPage, 800);
+      setTimeout(() => speakPageFromStart(), 800);
     }
   }
 }
@@ -487,10 +514,11 @@ function nextPage() {
 function prevPage() {
   if (currentPage > 0) {
     currentPage--;
+    currentWordIndex = 0;
     clearHighlights();
     updateDisplay();
     if (isPlaying && !isPaused) {
-      setTimeout(playCurrentPage, 800);
+      setTimeout(() => speakPageFromStart(), 800);
     }
   }
 }
@@ -502,46 +530,12 @@ function changeSpeed() {
   }
 }
 
-function playAudio() {
-  if (pages[currentPage].type === 'cover') {
-    document.getElementById('status').textContent = '⚠️ Navigate to Chapter 1 for audio';
-    return;
-  }
-  
-  if (isPaused) {
-    isPaused = false;
-    isPlaying = true;
-    updatePlayButtons();
-    playCurrentPage();
-  } else if (!isPlaying) {
-    isPlaying = true;
-    isPaused = false;
-    updatePlayButtons();
-    playCurrentPage();
-  }
-}
-
-function pauseAudio() {
-  if (isPlaying) {
-    synth.cancel();
-    isPlaying = false;
-    isPaused = true;
-    clearHighlights();
-    document.getElementById('status').textContent = '⏸️ Paused - Tap Play to resume';
-    updatePlayButtons();
-  }
-}
-
-function updatePlayButtons() {
-  document.getElementById('playBtn').disabled = isPlaying;
-  document.getElementById('pauseBtn').disabled = !isPlaying;
-}
-
-function playCurrentPage() {
+function speakPageFromStart() {
   if (pages[currentPage].type === 'cover') return;
   
   synth.cancel();
   clearHighlights();
+  currentWordIndex = 0;
   
   const page = pages[currentPage];
   currentUtterance = new SpeechSynthesisUtterance(page.text);
@@ -549,23 +543,7 @@ function playCurrentPage() {
   currentUtterance.pitch = 1.0;
   currentUtterance.volume = 1.0;
   
-  let wordCount = 0;
-  
-  currentUtterance.onboundary = function(event) {
-    if (event.name === 'word') {
-      // Find the word element by counting
-      const allWords = document.querySelectorAll(`#story-${currentPage} .word`);
-      if (wordCount < allWords.length) {
-        clearHighlights();
-        const wordEl = allWords[wordCount];
-        if (wordEl) {
-          wordEl.classList.add('active');
-          wordEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        }
-        wordCount++;
-      }
-    }
-  };
+  setupWordHighlighting();
   
   currentUtterance.onend = function() {
     isPlaying = false;
@@ -585,6 +563,64 @@ function playCurrentPage() {
   
   document.getElementById('status').textContent = '🔊 Reading page ' + currentPage + '...';
   synth.speak(currentUtterance);
+}
+
+function setupWordHighlighting() {
+  let charIndex = 0;
+  const pageText = pages[currentPage].text;
+  const pageWords = wordSpans.filter(w => w.pageIndex === currentPage);
+  
+  currentUtterance.onboundary = function(event) {
+    if (event.name === 'word') {
+      // Find which word corresponds to this character position
+      const textUpToChar = pageText.substring(0, event.charIndex);
+      const wordsUpToChar = textUpToChar.trim().split(/\s+/).filter(w => w.length > 0);
+      const wordNum = wordsUpToChar.length;
+      
+      if (wordNum < pageWords.length) {
+        highlightWord(wordSpans.indexOf(pageWords[wordNum]));
+      }
+    }
+  };
+}
+
+function playAudio() {
+  if (pages[currentPage].type === 'cover') {
+    document.getElementById('status').textContent = '⚠️ Navigate to Chapter 1 for audio';
+    return;
+  }
+  
+  if (isPaused) {
+    // Resume from where we paused
+    isPaused = false;
+    isPlaying = true;
+    updatePlayButtons();
+    document.getElementById('status').textContent = '🔊 Reading page ' + currentPage + '...';
+    // Resume the current utterance
+    synth.resume();
+  } else if (!isPlaying) {
+    // Start playing from beginning of page
+    isPlaying = true;
+    isPaused = false;
+    updatePlayButtons();
+    speakPageFromStart();
+  }
+}
+
+function pauseAudio() {
+  if (isPlaying && !isPaused) {
+    synth.pause();
+    isPaused = true;
+    isPlaying = false;
+    clearHighlights();
+    document.getElementById('status').textContent = '️ Paused - Tap Play to resume';
+    updatePlayButtons();
+  }
+}
+
+function updatePlayButtons() {
+  document.getElementById('playBtn').disabled = isPlaying && !isPaused;
+  document.getElementById('pauseBtn').disabled = !isPlaying || isPaused;
 }
 
 function createSnowfall() {
