@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mikyla and the Frostveil Kingdom - Magical Quest</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Mikyla and the Frostveil Kingdom</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -14,7 +14,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    padding: 10px;
   }
   .snowflake {
     position: fixed; top: -10px; color: white;
@@ -22,77 +22,183 @@
   }
   @keyframes fall { to { transform: translateY(105vh); } }
   
-  .header { text-align: center; color: white; margin-bottom: 20px; z-index: 10; }
+  .header { 
+    text-align: center; 
+    color: white; 
+    margin-bottom: 15px; 
+    z-index: 10;
+    width: 100%;
+  }
   .header h1 {
-    font-size: 2em;
+    font-size: 1.8em;
     background: linear-gradient(to right, #ffd700, #fff, #87ceeb);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent;
+    margin: 10px 0;
+  }
+  .header p {
+    font-size: 1em;
+    color: #e0f0ff;
+    font-style: italic;
   }
   
   .audio-player {
-    background: rgba(255,255,255,0.95); border-radius: 15px; padding: 20px;
-    width: 100%; max-width: 800px; margin-bottom: 20px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 10;
+    background: rgba(255,255,255,0.95); 
+    border-radius: 15px; 
+    padding: 15px;
+    width: 100%; 
+    max-width: 600px; 
+    margin-bottom: 15px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3); 
+    z-index: 10;
   }
-  .controls { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+  .controls { 
+    display: grid; 
+    grid-template-columns: 1fr 1fr;
+    gap: 10px; 
+    margin-bottom: 15px; 
+  }
   .btn {
-    background: linear-gradient(135deg, #667eea, #764ba2); color: white;
-    border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer;
-    font-size: 1em; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    background: linear-gradient(135deg, #667eea, #764ba2); 
+    color: white;
+    border: none; 
+    padding: 12px 20px; 
+    border-radius: 25px; 
+    cursor: pointer;
+    font-size: 0.95em; 
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    font-weight: bold;
   }
   .btn:active { transform: scale(0.95); }
   .btn:disabled { opacity: 0.5; cursor: not-allowed; }
   
-  .flipbook {
-    perspective: 2000px; width: 100%; max-width: 800px; height: 650px;
-    position: relative; z-index: 10; margin-bottom: 20px;
+  .voice-selector {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: rgba(240,240,240,0.8);
+    border-radius: 8px;
   }
-  .book { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
+  .voice-selector label {
+    font-weight: bold;
+    color: #333;
+  }
+  select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    flex: 1;
+    min-width: 100px;
+  }
+  
+  #status { 
+    text-align: center; 
+    color: #666; 
+    font-size: 0.85em; 
+    padding: 8px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 5px;
+  }
+  
+  .flipbook {
+    perspective: 2000px; 
+    width: 100%; 
+    max-width: 600px; 
+    height: 500px;
+    position: relative; 
+    z-index: 10; 
+    margin-bottom: 15px;
+  }
+  .book { 
+    position: relative; 
+    width: 100%; 
+    height: 100%; 
+    transform-style: preserve-3d; 
+  }
   .page {
-    position: absolute; width: 100%; height: 100%;
-    transform-origin: left center; transition: transform 0.8s;
+    position: absolute; 
+    width: 100%; 
+    height: 100%;
+    transform-origin: left center; 
+    transition: transform 0.8s;
     transform-style: preserve-3d;
   }
   .page.flipped { transform: rotateY(-180deg); }
   .page-front, .page-back {
-    position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+    position: absolute; 
+    width: 100%; 
+    height: 100%; 
+    backface-visibility: hidden;
     background: linear-gradient(135deg, #faf8f3, #f5f0e8);
-    border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-    padding: 30px; overflow-y: auto;
+    border-radius: 10px; 
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    padding: 20px; 
+    overflow-y: auto;
   }
   .page-back { transform: rotateY(180deg); }
   
   .cover {
-    background: linear-gradient(135deg, #1e3c72, #2a5298); color: white;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
-    text-align: center; height: 100%;
+    background: linear-gradient(135deg, #1e3c72, #2a5298); 
+    color: white;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
+    text-align: center; 
+    height: 100%;
   }
-  .cover h2 { font-size: 2em; color: #ffd700; margin: 15px 0; }
-  .cover .emoji { font-size: 80px; margin-bottom: 20px; }
+  .cover h2 { 
+    font-size: 1.8em; 
+    color: #ffd700; 
+    margin: 10px 0; 
+  }
+  .cover .emoji { 
+    font-size: 60px; 
+    margin-bottom: 15px; 
+  }
   
   .chapter-title {
-    font-size: 1.5em; text-align: center; margin-bottom: 15px;
+    font-size: 1.3em; 
+    text-align: center; 
+    margin-bottom: 15px;
     background: linear-gradient(135deg, #667eea, #764ba2);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text; 
+    -webkit-text-fill-color: transparent;
   }
   .quest-badge {
     display: inline-block;
     background: linear-gradient(135deg, #ffd700, #ffed4e);
     color: #1e3c72;
-    padding: 6px 15px;
+    padding: 5px 12px;
     border-radius: 15px;
     font-weight: bold;
     margin: 10px 0;
-    font-size: 0.9em;
+    font-size: 0.85em;
+    text-align: center;
+    width: 100%;
   }
-  .illustration { font-size: 50px; text-align: center; margin: 15px 0; }
-  .story-text { font-size: 1.05em; line-height: 1.7; color: #34495e; text-align: justify; }
-  .story-text p { margin-bottom: 12px; }
+  .illustration { 
+    font-size: 50px; 
+    text-align: center; 
+    margin: 10px 0; 
+  }
+  .story-text { 
+    font-size: 1em; 
+    line-height: 1.6; 
+    color: #34495e; 
+    text-align: justify; 
+  }
+  .story-text p { 
+    margin-bottom: 10px; 
+  }
   .dialogue {
     background: rgba(102, 126, 234, 0.1);
-    padding: 10px;
+    padding: 8px;
     border-left: 3px solid #667eea;
-    margin: 10px 0;
+    margin: 8px 0;
     border-radius: 5px;
     font-style: italic;
   }
@@ -100,23 +206,34 @@
     color: #667eea;
     font-weight: bold;
   }
-  .page-num { position: absolute; bottom: 15px; right: 30px; color: #999; font-size: 0.85em; }
-
-  .nav-btns { display: flex; justify-content: space-between; width: 100%; max-width: 800px; z-index: 10; }
-  
-  #status { text-align: center; color: #666; margin-top: 10px; font-size: 0.9em; }
-  
-  .voice-selector {
-    margin-top: 10px;
-    padding: 10px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 10px;
+  .page-num { 
+    position: absolute; 
+    bottom: 10px; 
+    right: 20px; 
+    color: #999; 
+    font-size: 0.8em; 
   }
-  select {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    margin: 5px;
+
+  .nav-btns { 
+    display: flex; 
+    justify-content: space-between; 
+    width: 100%; 
+    max-width: 600px; 
+    z-index: 10;
+    gap: 10px;
+  }
+  .nav-btns .btn {
+    flex: 1;
+  }
+  
+  /* Mobile optimizations */
+  @media (max-width: 480px) {
+    .header h1 { font-size: 1.5em; }
+    .flipbook { height: 450px; }
+    .cover h2 { font-size: 1.5em; }
+    .chapter-title { font-size: 1.2em; }
+    .story-text { font-size: 0.95em; }
+    .btn { padding: 10px 15px; font-size: 0.9em; }
   }
 </style>
 </head>
@@ -124,7 +241,7 @@
 
 <div class="header">
   <h1>Mikyla and the Frostveil Kingdom</h1>
-  <p style="color: #e0f0ff;">A Magical Quest Adventure</p>
+  <p>A Magical Quest Adventure</p>
 </div>
 
 <div class="audio-player">
@@ -136,9 +253,9 @@
   </div>
   <div class="voice-selector">
     <label for="voiceSelect">🎙️ Voice:</label>
-    <select id="voiceSelect" onchange="changeVoice()"></select>
+    <select id="voiceSelect"></select>
     <label for="rateSelect">Speed:</label>
-    <select id="rateSelect" onchange="changeSpeed()">
+    <select id="rateSelect">
       <option value="0.8">Slow</option>
       <option value="1" selected>Normal</option>
       <option value="1.2">Fast</option>
@@ -161,7 +278,7 @@
     {
       type: 'cover',
       title: 'Mikyla and the Frostveil Kingdom',
-      emoji: '‍♀️🐕️',
+      emoji: '👸❄️',
       sub: 'A Magical Quest Adventure',
       content: 'Join Mikyla, Chessie, and Chloe on an epic journey to save the frozen kingdom!'
     },
@@ -291,13 +408,13 @@ Mikyla hugged Chessie and Chloe tightly. <span class="dialogue"><span class="cha
 
 As they stepped through the portal home, Mikyla knew this was just the beginning of their magical adventures!
 
-<span style="text-align: center; display: block; margin-top: 20px; font-size: 1.3em; color: #667eea;"><strong>~ The End ~</strong></span>
+<span style="text-align: center; display: block; margin-top: 20px; font-size: 1.2em; color: #667eea;"><strong>~ The End ~</strong></span>
 <span style="text-align: center; display: block; color: #999; font-style: italic;">But the adventure continues...</span>`
     },
     {
       type: 'cover',
       title: 'The End',
-      emoji: '✨🐕🧚‍♀️',
+      emoji: '✨🐕‍♀️',
       sub: 'Thank you for reading!',
       content: 'Mikyla, Chessie, and Chloe saved the kingdom with courage, kindness, and friendship!'
     }
@@ -315,7 +432,8 @@ As they stepped through the portal home, Mikyla knew this was just the beginning
   // Enable audio on first user interaction
   document.body.addEventListener('click', function enableAudio() {
     audioEnabled = true;
-    document.getElementById('status').textContent = 'Audio enabled! Tap Play to start reading.';
+    document.getElementById('status').textContent = '✅ Audio enabled! Tap Play to start reading.';
+    document.getElementById('status').style.background = 'rgba(100,255,100,0.3)';
   }, { once: true });
 
   function loadVoices() {
@@ -343,7 +461,7 @@ As they stepped through the portal home, Mikyla knew this was just the beginning
       el.style.zIndex = total - i;
       
       if (page.type === 'cover') {
-        el.innerHTML = `<div class="page-front cover"><div class="emoji">${page.emoji}</div><h2>${page.title}</h2><p style="font-size:1.2em; font-style:italic; margin:15px 0;">${page.sub}</p><p style="font-size:1.1em; color:#ffd700;">${page.content}</p><div class="page-num">${i === 0 ? 'Cover' : 'Back'}</div></div>`;
+        el.innerHTML = `<div class="page-front cover"><div class="emoji">${page.emoji}</div><h2>${page.title}</h2><p style="font-size:1.1em; font-style:italic; margin:10px 0;">${page.sub}</p><p style="font-size:1em; color:#ffd700;">${page.content}</p><div class="page-num">${i === 0 ? 'Cover' : 'Back'}</div></div>`;
       } else {
         el.innerHTML = `<div class="page-front"><div class="illustration">${page.emoji}</div><h2 class="chapter-title">${page.title}</h2><div class="story-text">${page.text}</div><div class="page-num">${i}</div></div>`;
       }
@@ -373,13 +491,12 @@ As they stepped through the portal home, Mikyla knew this was just the beginning
     }
     
     if (pagesData[currentPage].type === 'cover') {
-      document.getElementById('status').textContent = 'Cover page - no audio. Navigate to a chapter.';
+      document.getElementById('status').textContent = 'Cover page - Navigate to Chapter 1 for audio';
       return;
     }
 
     synth.cancel();
     
-    // Strip HTML tags for speech
     const tempDiv = document.createElement('div');
     tempDiv.innerHTML = pagesData[currentPage].text;
     const cleanText = tempDiv.textContent || tempDiv.innerText || "";
@@ -392,48 +509,4 @@ As they stepped through the portal home, Mikyla knew this was just the beginning
     currentUtterance.pitch = 1.1;
     
     currentUtterance.onend = () => {
-      isPlaying = false;
-      document.getElementById('status').textContent = 'Finished reading page ' + (currentPage + 1);
-      updateUI();
-    };
-    
-    currentUtterance.onerror = () => {
-      isPlaying = false;
-      updateUI();
-    };
-    
-    synth.speak(currentUtterance);
-    document.getElementById('status').textContent = 'Reading page ' + (currentPage + 1) + '...';
-  }
-
-  function togglePlay() {
-    if (!audioEnabled) {
-      alert('Tap anywhere on the screen first to enable audio.');
-      return;
-    }
-    
-    if (isPlaying) {
-      pauseAudio();
-    } else {
-      isPlaying = true;
-      speakCurrentPage();
-      updateUI();
-    }
-  }
-
-  function pauseAudio() {
-    synth.pause();
-    isPlaying = false;
-    document.getElementById('status').textContent = 'Paused';
-    updateUI();
-  }
-
-  function changeVoice() {
-    if (currentUtterance && voices[document.getElementById('voiceSelect').value]) {
-      currentUtterance.voice = voices[document.getElementById('voiceSelect').value];
-    }
-  }
-
-  function changeSpeed() {
-    if (currentUtterance) {
-      currentUtterance.rate = parseFloat(document.getElementById('rateSel
+      isPlayin
