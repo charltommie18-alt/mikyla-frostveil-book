@@ -77,7 +77,7 @@
     position: relative;
     width: 100%;
     max-width: 500px;
-    height: 550px;
+    height: 600px;
     margin: 0 auto 15px;
     perspective: 1500px;
   }
@@ -107,6 +107,7 @@
     flex-direction: column;
   }
   
+  /* IMPROVED COVER PAGE */
   .cover-page {
     background: linear-gradient(135deg, #1e3c72, #2a5298);
     color: white;
@@ -115,13 +116,41 @@
     align-items: center;
     justify-content: center;
     text-align: center;
+    padding: 30px 20px;
+  }
+  .cover-emoji { 
+    font-size: 70px; 
+    margin-bottom: 20px;
+    animation: float 3s ease-in-out infinite;
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
   }
   .cover-page h2 { 
-    font-size: 1.6em; 
+    font-size: 1.7em; 
     color: #ffd700; 
-    margin: 10px 0; 
+    margin: 15px 0;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
   }
-  .cover-emoji { font-size: 60px; margin-bottom: 15px; }
+  .cover-page .subtitle {
+    font-size: 1.2em; 
+    font-style: italic; 
+    margin: 10px 0;
+    color: #e0f0ff;
+  }
+  .cover-page .content {
+    font-size: 1.1em; 
+    color: #ffd700;
+    margin-top: 20px;
+  }
+  .page-num { 
+    text-align: right;
+    color: #999; 
+    font-size: 0.8em;
+    margin-top: auto;
+    padding-top: 10px;
+  }
   
   .chapter-title {
     font-size: 1.3em; 
@@ -154,19 +183,19 @@
   }
   .story-text p { margin-bottom: 12px; }
   
-  /* READ-ALONG HIGHLIGHTING - YELLOW GLOW */
+  /* READ-ALONG HIGHLIGHTING - FIXED */
   .word {
     display: inline;
-    padding: 2px 4px;
-    border-radius: 4px;
-    transition: all 0.15s ease;
+    padding: 2px 3px;
+    border-radius: 3px;
+    transition: all 0.2s;
   }
   .word.active {
     background-color: #FFD700;
     color: #1e3c72;
     font-weight: bold;
-    box-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
-    transform: scale(1.05);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.9);
+    transform: scale(1.1);
   }
   
   .dialogue {
@@ -180,13 +209,6 @@
   .character {
     color: #667eea;
     font-weight: bold;
-  }
-  .page-num { 
-    text-align: right;
-    color: #999; 
-    font-size: 0.8em;
-    margin-top: auto;
-    padding-top: 10px;
   }
 
   .nav-buttons { 
@@ -221,12 +243,10 @@
       <option value="1.1">Slightly Faster</option>
     </select>
   </div>
-  <div id="status">📖 Tap Play to start reading aloud</div>
+  <div id="status"> Tap Play to start reading aloud</div>
 </div>
 
-<div class="book-container" id="bookContainer">
-  <!-- Pages will be inserted here -->
-</div>
+<div class="book-container" id="bookContainer"></div>
 
 <div class="nav-buttons">
   <button class="btn" onclick="prevPage()" id="btnPrev" disabled>← Previous</button>
@@ -234,11 +254,10 @@
 </div>
 
 <script>
-// STORY PAGES
 const pages = [
   {
     type: 'cover',
-    emoji: '👸❄️',
+    emoji: '👸️',
     title: 'Mikyla and the Frostveil Kingdom',
     subtitle: 'A Magical Quest Adventure',
     content: 'An Epic Family Adventure'
@@ -246,10 +265,10 @@ const pages = [
   {
     type: 'chapter',
     title: 'Chapter 1: The Mysterious Door',
-    emoji: '🌲✨',
+    emoji: '✨',
     text: `The enchanted forest sparkled with fresh snow. Mikyla laughed as snowflakes landed on her pink winter jacket.
 
-Beside her, Chessie (light fawn coat) stood alert and protective. Chloe (rich brown fur) sniffed excitedly at every snowdrift.
+Beside her, Chessie stood alert and protective. Chloe sniffed excitedly at every snowdrift.
 
 "Woof!" Chloe barked, digging frantically at an ancient oak tree.
 
@@ -282,7 +301,7 @@ Pip continued, "Morrigan wants to freeze everything forever! Only three magical 
   {
     type: 'chapter',
     title: 'Quest 1: The Whispering Ice Maze',
-    emoji: '🌀🗝️',
+    emoji: '🌀️',
     text: `QUEST 1: The Whispering Ice Maze
 
 "First, navigate the Whispering Ice Maze," Pip explained. "Its walls echo your deepest fears!"
@@ -374,7 +393,6 @@ Mikyla hugged Chessie and Chloe tightly. As they stepped through the portal home
   }
 ];
 
-// VARIABLES
 let currentPage = 0;
 const totalPages = pages.length;
 let isPlaying = false;
@@ -382,10 +400,8 @@ let isPaused = false;
 let synth = window.speechSynthesis;
 let currentUtterance = null;
 let currentSpeed = 1;
-let wordElements = [];
-let currentWordIndex = 0;
+let allWords = [];
 
-// RENDER PAGES WITH WORD SPANS
 function renderPages() {
   const container = document.getElementById('bookContainer');
   container.innerHTML = '';
@@ -394,26 +410,23 @@ function renderPages() {
     const pageDiv = document.createElement('div');
     pageDiv.className = 'book-page';
     pageDiv.style.zIndex = totalPages - index;
-    pageDiv.id = `page-${index}`;
     
     if (page.type === 'cover') {
       pageDiv.innerHTML = `
         <div class="page-content cover-page">
           <div class="cover-emoji">${page.emoji}</div>
           <h2>${page.title}</h2>
-          <p style="font-size: 1.1em; font-style: italic; margin: 10px 0;">${page.subtitle}</p>
-          <p style="color: #ffd700;">${page.content}</p>
+          <p class="subtitle">${page.subtitle}</p>
+          <p class="content">${page.content}</p>
           <div class="page-num">${index === 0 ? 'Cover' : 'Back'}</div>
         </div>
       `;
     } else {
-      // Wrap each word in a span for highlighting
-      const textWithSpans = wrapWordsInSpans(page.text, index);
       pageDiv.innerHTML = `
         <div class="page-content">
           <div class="illustration">${page.emoji}</div>
           <h2 class="chapter-title">${page.title}</h2>
-          <div class="story-text" id="story-${index}">${textWithSpans}</div>
+          <div class="story-text" id="story-${index}"></div>
           <div class="page-num">Page ${index}</div>
         </div>
       `;
@@ -422,32 +435,38 @@ function renderPages() {
     container.appendChild(pageDiv);
   });
   
+  // Add word spans after rendering
+  wrapWordsInSpans();
   updateDisplay();
 }
 
-// WRAP WORDS IN SPANS FOR HIGHLIGHTING
-function wrapWordsInSpans(text, pageIndex) {
-  const paragraphs = text.split('\n\n');
-  return paragraphs.map((para, pIdx) => {
-    const words = para.split(/(\s+)/);
-    const wordsWithSpans = words.map((word, wIdx) => {
-      if (word.trim() === '') return word;
-      const wordId = `word-${pageIndex}-${pIdx}-${wIdx}`;
-      return `<span class="word" id="${wordId}">${word}</span>`;
-    }).join('');
-    return `<p>${wordsWithSpans}</p>`;
-  }).join('');
+function wrapWordsInSpans() {
+  allWords = [];
+  
+  pages.forEach((page, pageIndex) => {
+    if (page.type === 'chapter') {
+      const storyEl = document.getElementById(`story-${pageIndex}`);
+      if (storyEl) {
+        const paragraphs = page.text.split('\n\n');
+        storyEl.innerHTML = paragraphs.map(para => {
+          const words = para.split(/(\s+)/);
+          const wordsWithSpans = words.map((word, wordIndex) => {
+            if (word.trim() === '') return word;
+            const wordId = `w-${pageIndex}-${allWords.length}`;
+            allWords.push({id: wordId, text: word});
+            return `<span class="word" id="${wordId}">${word}</span>`;
+          }).join('');
+          return `<p>${wordsWithSpans}</p>`;
+        }).join('');
+      }
+    }
+  });
 }
 
-// UPDATE DISPLAY
 function updateDisplay() {
   const pageElements = document.querySelectorAll('.book-page');
   pageElements.forEach((page, index) => {
-    if (index < currentPage) {
-      page.classList.add('flipped');
-    } else {
-      page.classList.remove('flipped');
-    }
+    page.classList.toggle('flipped', index < currentPage);
   });
   
   document.getElementById('prevBtn').disabled = currentPage === 0;
@@ -463,14 +482,10 @@ function updateDisplay() {
   }
 }
 
-// CLEAR ALL HIGHLIGHTS
 function clearHighlights() {
-  document.querySelectorAll('.word.active').forEach(el => {
-    el.classList.remove('active');
-  });
+  document.querySelectorAll('.word.active').forEach(el => el.classList.remove('active'));
 }
 
-// NAVIGATION
 function nextPage() {
   if (currentPage < totalPages - 1) {
     currentPage++;
@@ -493,16 +508,13 @@ function prevPage() {
   }
 }
 
-// SPEED CONTROL
 function changeSpeed() {
-  const select = document.getElementById('speedSelect');
-  currentSpeed = parseFloat(select.value);
+  currentSpeed = parseFloat(document.getElementById('speedSelect').value);
   if (currentUtterance) {
     currentUtterance.rate = currentSpeed;
   }
 }
 
-// AUDIO FUNCTIONS
 function playAudio() {
   if (pages[currentPage].type === 'cover') {
     document.getElementById('status').textContent = '⚠️ Navigate to Chapter 1 for audio';
@@ -510,13 +522,11 @@ function playAudio() {
   }
   
   if (isPaused) {
-    // Resume from pause - start fresh
     isPaused = false;
     isPlaying = true;
     updatePlayButtons();
     playCurrentPage();
   } else if (!isPlaying) {
-    // Start playing
     isPlaying = true;
     isPaused = false;
     updatePlayButtons();
@@ -545,24 +555,25 @@ function playCurrentPage() {
   
   synth.cancel();
   clearHighlights();
-  currentWordIndex = 0;
   
-  // Get clean text
-  const tempDiv = document.createElement('div');
-  tempDiv.innerHTML = pages[currentPage].text;
-  const cleanText = tempDiv.textContent || tempDiv.innerText || "";
-  
-  currentUtterance = new SpeechSynthesisUtterance(cleanText);
-  
-  // MORE NATURAL STORYTELLING VOICE SETTINGS
+  const page = pages[currentPage];
+  currentUtterance = new SpeechSynthesisUtterance(page.text);
   currentUtterance.rate = currentSpeed;
-  currentUtterance.pitch = 1.0;  // Natural pitch (not robotic)
+  currentUtterance.pitch = 1.0;
   currentUtterance.volume = 1.0;
   
-  // Word boundary tracking for highlighting
+  let wordIndex = 0;
+  const pageWords = allWords.filter(w => w.id.startsWith(`w-${currentPage}-`));
+  
   currentUtterance.onboundary = function(event) {
-    if (event.name === 'word' || event.name === 'sentence') {
-      highlightCurrentWord(event.charIndex, cleanText);
+    if (event.name === 'word' && wordIndex < pageWords.length) {
+      clearHighlights();
+      const wordEl = document.getElementById(pageWords[wordIndex].id);
+      if (wordEl) {
+        wordEl.classList.add('active');
+        wordEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+      wordIndex++;
     }
   };
   
@@ -570,16 +581,15 @@ function playCurrentPage() {
     isPlaying = false;
     isPaused = false;
     clearHighlights();
-    document.getElementById('status').textContent = '✅ Finished page ' + currentPage + ' - Tap Next to continue';
+    document.getElementById('status').textContent = '✅ Finished page ' + currentPage;
     updatePlayButtons();
   };
   
-  currentUtterance.onerror = function(e) {
-    console.error('Speech error:', e);
+  currentUtterance.onerror = function() {
     isPlaying = false;
     isPaused = false;
     clearHighlights();
-    document.getElementById('status').textContent = '❌ Audio error - try again';
+    document.getElementById('status').textContent = '❌ Audio error';
     updatePlayButtons();
   };
   
@@ -587,33 +597,6 @@ function playCurrentPage() {
   synth.speak(currentUtterance);
 }
 
-// HIGHLIGHT CURRENT WORD BASED ON CHARACTER INDEX
-function highlightCurrentWord(charIndex, fullText) {
-  clearHighlights();
-  
-  // Count words up to this character position
-  const textUpToChar = fullText.substring(0, charIndex);
-  const wordsUpToChar = textUpToChar.trim().split(/\s+/).filter(w => w.length > 0);
-  const wordCount = wordsUpToChar.length;
-  
-  // Find and highlight the word
-  let found = false;
-  for (let p = 0; p < 10 && !found; p++) {
-    for (let w = 0; w < 50 && !found; w++) {
-      const wordEl = document.getElementById(`word-${currentPage}-${p}-${w}`);
-      if (wordEl) {
-        if (wordCount === found) {
-          wordEl.classList.add('active');
-          wordEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          found = true;
-        }
-        found++;
-      }
-    }
-  }
-}
-
-// SNOWFALL EFFECT
 function createSnowfall() {
   for (let i = 0; i < 30; i++) {
     const snowflake = document.createElement('div');
@@ -627,7 +610,6 @@ function createSnowfall() {
   }
 }
 
-// INITIALIZE
 window.onload = function() {
   renderPages();
   createSnowfall();
@@ -636,4 +618,4 @@ window.onload = function() {
 </script>
 
 </body>
-</html>
+ </html>
