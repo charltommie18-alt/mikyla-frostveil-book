@@ -153,18 +153,6 @@
     margin-bottom: 10px;
     color: #667eea;
   }
-  .quest-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, #ffd700, #ffed4e);
-    color: #1e3c72;
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-weight: bold;
-    margin: 8px 0;
-    font-size: 0.85em;
-    width: 100%;
-    text-align: center;
-  }
   .illustration { 
     font-size: 50px; 
     text-align: center; 
@@ -178,15 +166,16 @@
   }
   .story-text p { 
     margin-bottom: 12px;
-    padding: 5px;
-    border-radius: 5px;
+    padding: 6px;
+    border-radius: 6px;
     transition: all 0.3s;
   }
+  /* YELLOW READ-ALONG HIGHLIGHT */
   .story-text p.active {
-    background-color: #FFD700;
-    color: #1e3c72;
+    background-color: #FFD700 !important;
+    color: #1e3c72 !important;
     font-weight: bold;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+    box-shadow: 0 0 12px rgba(255, 215, 0, 0.8);
   }
   
   .nav-buttons { 
@@ -211,7 +200,7 @@
     <button class="btn" onclick="pauseAudio()" id="pauseBtn" disabled>⏸️ Pause</button>
   </div>
   <div class="btn-row">
-    <button class="btn" onclick="prevPage()" id="prevBtn" disabled>️ Prev</button>
+    <button class="btn" onclick="prevPage()" id="prevBtn" disabled>⏮️ Prev</button>
     <button class="btn" onclick="nextPage()" id="nextBtn">Next ⏭️</button>
   </div>
   <div style="margin-top: 10px;">
@@ -235,7 +224,7 @@
 const pages = [
   {
     type: 'cover',
-    emoji: '👸❄️',
+    emoji: '❄️',
     title: 'Mikyla and the Frostveil Kingdom',
     subtitle: 'A Magical Quest Adventure',
     content: 'An Epic Family Adventure'
@@ -243,7 +232,7 @@ const pages = [
   {
     type: 'chapter',
     title: 'Chapter 1: The Mysterious Door',
-    emoji: '🌲✨',
+    emoji: '✨',
     text: `The enchanted forest sparkled with fresh snow. Mikyla laughed as snowflakes landed on her pink winter jacket.
 
 Beside her, Chessie stood alert and protective. Chloe sniffed excitedly at every snowdrift.
@@ -261,7 +250,7 @@ A playful wind swept them across the threshold into the unknown!`
   {
     type: 'chapter',
     title: 'Chapter 2: Welcome to Frostveil',
-    emoji: '🏰🧚',
+    emoji: '🧚',
     text: `They landed in a breathtaking frozen kingdom. Crystal trees glittered under a twilight sky.
 
 "Oh, thank goodness you're here!" squeaked a tiny voice.
@@ -301,7 +290,7 @@ At the center, they found a glowing key made of starlight!
   {
     type: 'chapter',
     title: 'Quest 2: The Sunstone Guardian',
-    emoji: '🐺💎️',
+    emoji: '🐺💎☀️',
     text: `QUEST 2: The Sunstone of Glimmerwood
 
 "Now find the Sunstone," Pip said. "It's guarded by Fenrir, an ancient ice wolf. He's lonely, not evil."
@@ -323,7 +312,7 @@ With Chessie's loyalty and Chloe's cleverness, they succeeded! The golden Sunsto
   {
     type: 'chapter',
     title: 'Quest 3: The Crystal Spire',
-    emoji: '❄️️',
+    emoji: '❄️👑⚔️',
     text: `QUEST 3: The Crystal Spire
 
 "Face Morrigan and awaken Queen Sylvia!" Pip announced.
@@ -364,7 +353,7 @@ Mikyla hugged Chessie and Chloe tightly. As they stepped through the portal home
   },
   {
     type: 'cover',
-    emoji: '✨🐕🧚',
+    emoji: '✨🐕',
     title: 'The End',
     subtitle: 'Thank you for reading!',
     content: 'Mikyla, Chessie, and Chloe saved the kingdom!'
@@ -376,10 +365,9 @@ const totalPages = pages.length;
 let isPlaying = false;
 let isPaused = false;
 let synth = window.speechSynthesis;
-let currentUtterance = null;
 let currentSpeed = 1;
-let sentences = [];
-let currentSentenceIndex = 0;
+let currentParagraphIndex = 0;
+let pausedParagraphIndex = 0; // Remembers where we stopped!
 
 function renderPages() {
   const container = document.getElementById('bookContainer');
@@ -413,10 +401,8 @@ function renderPages() {
         </div>
       `;
     }
-    
     container.appendChild(pageDiv);
   });
-  
   updateDisplay();
 }
 
@@ -440,9 +426,7 @@ function updateDisplay() {
 }
 
 function clearHighlights() {
-  document.querySelectorAll('.story-text p.active').forEach(el => {
-    el.classList.remove('active');
-  });
+  document.querySelectorAll('.story-text p.active').forEach(el => el.classList.remove('active'));
 }
 
 function highlightParagraph(index) {
@@ -457,11 +441,12 @@ function highlightParagraph(index) {
 function nextPage() {
   if (currentPage < totalPages - 1) {
     currentPage++;
-    currentSentenceIndex = 0;
+    currentParagraphIndex = 0;
+    pausedParagraphIndex = 0;
     clearHighlights();
     updateDisplay();
     if (isPlaying && !isPaused) {
-      setTimeout(() => speakCurrentPage(), 800);
+      setTimeout(() => speakCurrentPage(0), 800);
     }
   }
 }
@@ -469,11 +454,12 @@ function nextPage() {
 function prevPage() {
   if (currentPage > 0) {
     currentPage--;
-    currentSentenceIndex = 0;
+    currentParagraphIndex = 0;
+    pausedParagraphIndex = 0;
     clearHighlights();
     updateDisplay();
     if (isPlaying && !isPaused) {
-      setTimeout(() => speakCurrentPage(), 800);
+      setTimeout(() => speakCurrentPage(0), 800);
     }
   }
 }
@@ -482,7 +468,8 @@ function changeSpeed() {
   currentSpeed = parseFloat(document.getElementById('speedSelect').value);
 }
 
-function speakCurrentPage() {
+// FIXED SPEECH LOGIC
+function speakCurrentPage(startIndex) {
   if (pages[currentPage].type === 'cover') return;
   
   synth.cancel();
@@ -490,20 +477,21 @@ function speakCurrentPage() {
   
   const page = pages[currentPage];
   const paragraphs = page.text.split('\n\n');
-  currentSentenceIndex = 0;
+  currentParagraphIndex = startIndex;
   
-  function speakNextParagraph() {
-    if (currentSentenceIndex >= paragraphs.length) {
-      isPlaying = false;
-      isPaused = false;
-      clearHighlights();
-      document.getElementById('status').textContent = '✅ Finished page ' + currentPage;
-      updatePlayButtons();
+  function speakNext() {
+    if (currentParagraphIndex >= paragraphs.length || isPaused) {
+      if (!isPaused) {
+        isPlaying = false;
+        clearHighlights();
+        document.getElementById('status').textContent = '✅ Finished page ' + currentPage;
+        updatePlayButtons();
+      }
       return;
     }
     
-    const text = paragraphs[currentSentenceIndex];
-    highlightParagraph(currentSentenceIndex);
+    highlightParagraph(currentParagraphIndex);
+    const text = paragraphs[currentParagraphIndex];
     
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = currentSpeed;
@@ -511,18 +499,20 @@ function speakCurrentPage() {
     utterance.volume = 1.0;
     
     utterance.onend = function() {
-      currentSentenceIndex++;
-      setTimeout(speakNextParagraph, 300);
+      if (!isPaused) {
+        currentParagraphIndex++;
+        setTimeout(speakNext, 400);
+      }
     };
     
-    currentUtterance = utterance;
     synth.speak(utterance);
   }
   
   document.getElementById('status').textContent = '🔊 Reading page ' + currentPage + '...';
-  speakNextParagraph();
+  speakNext();
 }
 
+// FIXED PLAY & PAUSE
 function playAudio() {
   if (pages[currentPage].type === 'cover') {
     document.getElementById('status').textContent = '⚠️ Navigate to Chapter 1 for audio';
@@ -530,24 +520,27 @@ function playAudio() {
   }
   
   if (isPaused) {
+    // RESUME FROM WHERE WE LEFT OFF
     isPaused = false;
     isPlaying = true;
     updatePlayButtons();
-    speakCurrentPage();
+    speakCurrentPage(pausedParagraphIndex); 
   } else if (!isPlaying) {
+    // START FROM BEGINNING OF PAGE
     isPlaying = true;
     isPaused = false;
+    pausedParagraphIndex = 0;
     updatePlayButtons();
-    speakCurrentPage();
+    speakCurrentPage(0);
   }
 }
 
 function pauseAudio() {
   if (isPlaying) {
     synth.cancel();
-    isPlaying = false;
     isPaused = true;
-    clearHighlights();
+    isPlaying = false;
+    pausedParagraphIndex = currentParagraphIndex; // SAVE THE EXACT SPOT!
     document.getElementById('status').textContent = '⏸️ Paused - Tap Play to resume';
     updatePlayButtons();
   }
@@ -579,4 +572,4 @@ window.onload = function() {
 </script>
 
 </body>
-</html>
+ </html>
