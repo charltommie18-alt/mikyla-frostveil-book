@@ -18,9 +18,7 @@
   }
   @keyframes fall { to { transform: translateY(105vh); } }
   
-  .header { 
-    text-align: center; color: white; margin-bottom: 15px; 
-  }
+  .header { text-align: center; color: white; margin-bottom: 15px; }
   .header h1 {
     font-size: 1.6em;
     background: linear-gradient(to right, #ffd700, #fff);
@@ -96,9 +94,7 @@
     transform-style: preserve-3d;
   }
   
-  .book-page.flipped {
-    transform: rotateY(-180deg);
-  }
+  .book-page.flipped { transform: rotateY(-180deg); }
   
   .page-content {
     backface-visibility: hidden;
@@ -180,36 +176,19 @@
     color: #34495e; 
     flex: 1;
   }
-  .story-text p { margin-bottom: 12px; }
-  
-  /* READ-ALONG HIGHLIGHTING - YELLOW GLOW */
-  .word {
-    display: inline;
-    padding: 2px 4px;
-    border-radius: 4px;
-    transition: all 0.15s ease;
-  }
-  .word.active {
-    background-color: #FFD700 !important;
-    color: #1e3c72 !important;
-    font-weight: bold;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.9);
-    transform: scale(1.1);
-  }
-  
-  .dialogue {
-    background: rgba(102, 126, 234, 0.1);
-    padding: 8px;
-    border-left: 3px solid #667eea;
-    margin: 8px 0;
+  .story-text p { 
+    margin-bottom: 12px;
+    padding: 5px;
     border-radius: 5px;
-    font-style: italic;
+    transition: all 0.3s;
   }
-  .character {
-    color: #667eea;
+  .story-text p.active {
+    background-color: #FFD700;
+    color: #1e3c72;
     font-weight: bold;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
   }
-
+  
   .nav-buttons { 
     display: flex; 
     justify-content: space-between; 
@@ -232,7 +211,7 @@
     <button class="btn" onclick="pauseAudio()" id="pauseBtn" disabled>⏸️ Pause</button>
   </div>
   <div class="btn-row">
-    <button class="btn" onclick="prevPage()" id="prevBtn" disabled>⏮️ Prev</button>
+    <button class="btn" onclick="prevPage()" id="prevBtn" disabled>️ Prev</button>
     <button class="btn" onclick="nextPage()" id="nextBtn">Next ⏭️</button>
   </div>
   <div style="margin-top: 10px;">
@@ -322,7 +301,7 @@ At the center, they found a glowing key made of starlight!
   {
     type: 'chapter',
     title: 'Quest 2: The Sunstone Guardian',
-    emoji: '🐺💎☀️',
+    emoji: '🐺💎️',
     text: `QUEST 2: The Sunstone of Glimmerwood
 
 "Now find the Sunstone," Pip said. "It's guarded by Fenrir, an ancient ice wolf. He's lonely, not evil."
@@ -344,7 +323,7 @@ With Chessie's loyalty and Chloe's cleverness, they succeeded! The golden Sunsto
   {
     type: 'chapter',
     title: 'Quest 3: The Crystal Spire',
-    emoji: '❄️👑️',
+    emoji: '❄️️',
     text: `QUEST 3: The Crystal Spire
 
 "Face Morrigan and awaken Queen Sylvia!" Pip announced.
@@ -399,8 +378,8 @@ let isPaused = false;
 let synth = window.speechSynthesis;
 let currentUtterance = null;
 let currentSpeed = 1;
-let currentWordIndex = 0;
-let wordSpans = [];
+let sentences = [];
+let currentSentenceIndex = 0;
 
 function renderPages() {
   const container = document.getElementById('bookContainer');
@@ -422,11 +401,14 @@ function renderPages() {
         </div>
       `;
     } else {
+      const paragraphs = page.text.split('\n\n');
       pageDiv.innerHTML = `
         <div class="page-content">
           <div class="illustration">${page.emoji}</div>
           <h2 class="chapter-title">${page.title}</h2>
-          <div class="story-text" id="story-${index}"></div>
+          <div class="story-text" id="story-${index}">
+            ${paragraphs.map((p, i) => `<p id="p-${index}-${i}">${p}</p>`).join('')}
+          </div>
           <div class="page-num">Page ${index}</div>
         </div>
       `;
@@ -435,32 +417,7 @@ function renderPages() {
     container.appendChild(pageDiv);
   });
   
-  // Wrap words in spans after rendering
-  wrapWordsInSpans();
   updateDisplay();
-}
-
-function wrapWordsInSpans() {
-  wordSpans = [];
-  
-  pages.forEach((page, pageIndex) => {
-    if (page.type === 'chapter') {
-      const storyEl = document.getElementById(`story-${pageIndex}`);
-      if (storyEl) {
-        const paragraphs = page.text.split('\n\n');
-        storyEl.innerHTML = paragraphs.map((para, pIdx) => {
-          const words = para.split(/(\s+)/);
-          const wordsWithSpans = words.map((word, wIdx) => {
-            if (word.trim() === '') return word;
-            const spanId = `word-${pageIndex}-${pIdx}-${wIdx}`;
-            wordSpans.push({id: spanId, text: word, pageIndex, pIdx, wIdx});
-            return `<span class="word" id="${spanId}">${word}</span>`;
-          }).join('');
-          return `<p>${wordsWithSpans}</p>`;
-        }).join('');
-      }
-    }
-  });
 }
 
 function updateDisplay() {
@@ -483,30 +440,28 @@ function updateDisplay() {
 }
 
 function clearHighlights() {
-  document.querySelectorAll('.word.active').forEach(el => {
+  document.querySelectorAll('.story-text p.active').forEach(el => {
     el.classList.remove('active');
   });
 }
 
-function highlightWord(index) {
+function highlightParagraph(index) {
   clearHighlights();
-  if (wordSpans[index] && wordSpans[index].pageIndex === currentPage) {
-    const wordEl = document.getElementById(wordSpans[index].id);
-    if (wordEl) {
-      wordEl.classList.add('active');
-      wordEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+  const para = document.getElementById(`p-${currentPage}-${index}`);
+  if (para) {
+    para.classList.add('active');
+    para.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }
 }
 
 function nextPage() {
   if (currentPage < totalPages - 1) {
     currentPage++;
-    currentWordIndex = 0;
+    currentSentenceIndex = 0;
     clearHighlights();
     updateDisplay();
     if (isPlaying && !isPaused) {
-      setTimeout(() => speakPageFromStart(), 800);
+      setTimeout(() => speakCurrentPage(), 800);
     }
   }
 }
@@ -514,74 +469,58 @@ function nextPage() {
 function prevPage() {
   if (currentPage > 0) {
     currentPage--;
-    currentWordIndex = 0;
+    currentSentenceIndex = 0;
     clearHighlights();
     updateDisplay();
     if (isPlaying && !isPaused) {
-      setTimeout(() => speakPageFromStart(), 800);
+      setTimeout(() => speakCurrentPage(), 800);
     }
   }
 }
 
 function changeSpeed() {
   currentSpeed = parseFloat(document.getElementById('speedSelect').value);
-  if (currentUtterance) {
-    currentUtterance.rate = currentSpeed;
-  }
 }
 
-function speakPageFromStart() {
+function speakCurrentPage() {
   if (pages[currentPage].type === 'cover') return;
   
   synth.cancel();
   clearHighlights();
-  currentWordIndex = 0;
   
   const page = pages[currentPage];
-  currentUtterance = new SpeechSynthesisUtterance(page.text);
-  currentUtterance.rate = currentSpeed;
-  currentUtterance.pitch = 1.0;
-  currentUtterance.volume = 1.0;
+  const paragraphs = page.text.split('\n\n');
+  currentSentenceIndex = 0;
   
-  setupWordHighlighting();
-  
-  currentUtterance.onend = function() {
-    isPlaying = false;
-    isPaused = false;
-    clearHighlights();
-    document.getElementById('status').textContent = '✅ Finished page ' + currentPage;
-    updatePlayButtons();
-  };
-  
-  currentUtterance.onerror = function() {
-    isPlaying = false;
-    isPaused = false;
-    clearHighlights();
-    document.getElementById('status').textContent = '❌ Audio error';
-    updatePlayButtons();
-  };
+  function speakNextParagraph() {
+    if (currentSentenceIndex >= paragraphs.length) {
+      isPlaying = false;
+      isPaused = false;
+      clearHighlights();
+      document.getElementById('status').textContent = '✅ Finished page ' + currentPage;
+      updatePlayButtons();
+      return;
+    }
+    
+    const text = paragraphs[currentSentenceIndex];
+    highlightParagraph(currentSentenceIndex);
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = currentSpeed;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    
+    utterance.onend = function() {
+      currentSentenceIndex++;
+      setTimeout(speakNextParagraph, 300);
+    };
+    
+    currentUtterance = utterance;
+    synth.speak(utterance);
+  }
   
   document.getElementById('status').textContent = '🔊 Reading page ' + currentPage + '...';
-  synth.speak(currentUtterance);
-}
-
-function setupWordHighlighting() {
-  let charIndex = 0;
-  const pageText = pages[currentPage].text;
-  const pageWords = wordSpans.filter(w => w.pageIndex === currentPage);
-  
-  currentUtterance.onboundary = function(event) {
-    if (event.name === 'word') {
-      // Find which word corresponds to this character position
-      const textUpToChar = pageText.substring(0, event.charIndex);
-      const wordsUpToChar = textUpToChar.trim().split(/\s+/).filter(w => w.length > 0);
-      const wordNum = wordsUpToChar.length;
-      
-      if (wordNum < pageWords.length) {
-        highlightWord(wordSpans.indexOf(pageWords[wordNum]));
-      }
-    }
-  };
+  speakNextParagraph();
 }
 
 function playAudio() {
@@ -591,36 +530,32 @@ function playAudio() {
   }
   
   if (isPaused) {
-    // Resume from where we paused
     isPaused = false;
     isPlaying = true;
     updatePlayButtons();
-    document.getElementById('status').textContent = '🔊 Reading page ' + currentPage + '...';
-    // Resume the current utterance
-    synth.resume();
+    speakCurrentPage();
   } else if (!isPlaying) {
-    // Start playing from beginning of page
     isPlaying = true;
     isPaused = false;
     updatePlayButtons();
-    speakPageFromStart();
+    speakCurrentPage();
   }
 }
 
 function pauseAudio() {
-  if (isPlaying && !isPaused) {
-    synth.pause();
-    isPaused = true;
+  if (isPlaying) {
+    synth.cancel();
     isPlaying = false;
+    isPaused = true;
     clearHighlights();
-    document.getElementById('status').textContent = '️ Paused - Tap Play to resume';
+    document.getElementById('status').textContent = '⏸️ Paused - Tap Play to resume';
     updatePlayButtons();
   }
 }
 
 function updatePlayButtons() {
-  document.getElementById('playBtn').disabled = isPlaying && !isPaused;
-  document.getElementById('pauseBtn').disabled = !isPlaying || isPaused;
+  document.getElementById('playBtn').disabled = isPlaying;
+  document.getElementById('pauseBtn').disabled = !isPlaying;
 }
 
 function createSnowfall() {
@@ -644,4 +579,4 @@ window.onload = function() {
 </script>
 
 </body>
- </html>
+</html>
