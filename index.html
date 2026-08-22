@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mikyla and the Frostveil Kingdom</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Georgia', serif;
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e8ba3 100%);
+    min-height: 100vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+  }
+  .snowflake {
+    position: fixed; top: -10px; color: white;
+    animation: fall linear infinite; z-index: 1; pointer-events: none;
+  }
+  @keyframes fall { to { transform: translateY(105vh); } }
+  
+  .header { text-align: center; color: white; margin-bottom: 20px; z-index: 10; }
+  .header h1 {
+    font-size: 2.5em;
+    background: linear-gradient(to right, #ffd700, #fff, #87ceeb);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  
+  .audio-player {
+    background: rgba(255,255,255,0.95); border-radius: 15px; padding: 20px;
+    width: 100%; max-width: 800px; margin-bottom: 30px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.3); z-index: 10;
+  }
+  .controls { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
+  .btn {
+    background: linear-gradient(135deg, #667eea, #764ba2); color: white;
+    border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer;
+    font-size: 1em; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+  }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .progress-bar {
+    width: 100%; height: 8px; background: #e0e0e0; border-radius: 4px;
+    overflow: hidden; cursor: pointer; margin-bottom: 10px;
+  }
+  .progress-fill {
+    height: 100%; background: linear-gradient(90deg, #667eea, #764ba2); width: 0%;
+  }
+
+  .flipbook {
+    perspective: 2000px; width: 100%; max-width: 800px; height: 600px;
+    position: relative; z-index: 10; margin-bottom: 30px;
+  }
+  .book { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; }
+  .page {
+    position: absolute; width: 100%; height: 100%;
+    transform-origin: left center; transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1);
+    transform-style: preserve-3d; cursor: pointer;
+  }
+  .page.flipped { transform: rotateY(-180deg); }
+  .page-front, .page-back {
+    position: absolute; width: 100%; height: 100%; backface-visibility: hidden;
+    background: linear-gradient(135deg, #faf8f3, #f5f0e8);
+    border-radius: 10px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    padding: 40px; overflow-y: auto;
+  }
+  .page-back { transform: rotateY(180deg); background: #f5f0e8; }
+  
+  .cover {
+    background: linear-gradient(135deg, #1e3c72, #2a5298); color: white;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+  }
+  .cover h2 { font-size: 2.5em; color: #ffd700; margin-bottom: 20px; }
+  .cover .emoji { font-size: 80px; margin-bottom: 20px; }
+  
+  .chapter-title {
+    font-size: 1.8em; text-align: center; margin-bottom: 20px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .illustration { font-size: 60px; text-align: center; margin: 20px 0; }
+  .story-text { font-size: 1.1em; line-height: 1.8; color: #34495e; text-align: justify; }
+  .story-text p { margin-bottom: 15px; }
+  .page-num { position: absolute; bottom: 15px; right: 40px; color: #999; }
+
+  .nav-btns { display: flex; justify-content: space-between; width: 100%; max-width: 800px; z-index: 10; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Mikyla and the Frostveil Kingdom</h1>
+  <p style="color: #e0f0ff; font-style: italic;">A Magical Journey Awaits</p>
+</div>
+
+<div class="audio-player">
+  <div class="controls">
+    <button class="btn" id="playBtn">▶️ Play</button>
+    <button class="btn" id="prevBtn" disabled>⏮️ Prev</button>
+    <button class="btn" id="nextBtn">Next ⏭️</button>
+  </div>
+  <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+  <div style="text-align: center; color: #555;">Page <span id="pageNum">1</span> of <span id="totalPages">6</span></div>
+</div>
+
+<div class="flipbook">
+  <div class="book" id="book">
+    <!-- Pages injected by JS -->
+  </div>
+</div>
+
+<div class="nav-btns">
+  <button class="btn" id="navPrev" disabled>← Previous Page</button>
+  <button class="btn" id="navNext">Next Page →</button>
+</div>
+
+<script>
+  const pagesData = [
+    { type: 'cover', title: 'Mikyla and the Frostveil Kingdom', emoji: '🧚‍♀️❄️', sub: 'A Magical Journey Awaits', content: 'An Epic Family Adventure' },
+    { type: 'chapter', title: 'Chapter 1: The Glowing Door', emoji: '🌳✨🚪', text: 'The air was crisp and biting, carrying the scent of winter magic. A thick blanket of fresh snow covered the enchanted forest behind Mikyla\'s house. Mikyla laughed as she caught a falling snowflake on her pink winter jacket.\n\nBeside her, Chessie (light fawn) and Chloe (rich brown), her two Pekingese dogs, were having the time of their lives. Suddenly, Chloe dug frantically at an ancient oak tree.\n\nBrushing away the snow, Mikyla gasped. Embedded in the trunk was a wooden door covered in glowing silver runes. She touched the handle. With a soft click, it opened, spilling warm golden light and diamond dust. A playful wind swept them across the threshold!' },
+    { type: 'chapter', title: 'Chapter 2: Welcome to Frostveil', emoji: '🏰🧊', text: 'They stood at the edge of a breathtaking frozen fairyland. Crystal trees glittered under a twilight sky.\n\n"Oh, thank goodness you\'re here!" squeaked a tiny voice. It was Pip, a scout fairy with mother-of-pearl wings.\n\n"I\'m Pip! The wicked witch Morrigan has cast a dark ice spell. She locked Queen Sylvia in a deep slumber at the Crystal Spire to freeze everything forever!"\n\nChloe let out a brave yip. "We\'ll help you, Pip," Mikyla said firmly. "Where do we start?"' },
+    { type: 'chapter', title: 'Chapter 3: The Three-Part Quest', emoji: '🗺️🌀', text: 'Pip unfolded a glowing map. "To save the Queen, we must complete three trials."\n\nFirst: The Whispering Ice Maze, where walls echo your deepest doubts. Chessie barked, ready to guide them with his keen senses.\n\nSecond: The Sunstone of Glimmerwood, guarded by a lonely ice wolf. Chloe bounded forward, ready to make a new friend.\n\nThird: The Crystal Spire Siege, to face Morrigan and remind her that warmth is stronger than ice.\n\nMikyla gripped her gloves tight and followed her loyal pack into the unknown.' },
+    { type: 'chapter', title: 'Chapter 4: The Warmth of the Heart', emoji: '❄️', text: 'At the Spire\'s summit, Morrigan crackled with jagged frost. "You cannot break my winter!" she cried, her voice echoing with ancient loneliness.\n\nInstead of fighting, Mikyla stepped forward holding the glowing Sunstone. "You don\'t have to be cold, Morrigan. True magic is about warmth and friendship."\n\nThe golden light washed over the Spire. Morrigan\'s ice dissolved. She realized she didn\'t have to be alone. Queen Sylvia awoke with a warm smile, and the kingdom burst into eternal spring.\n\nMikyla hugged her dogs tightly. Their grand adventure had saved the realm!' },
+    { type: 'cover', title: 'The End', emoji: '✨🐕‍♀️', sub: 'But the adventure continues...', content: 'Thank you for reading!' }
+  ];
+
+  const book = document.getElementById('book');
+  let currentPage = 0;
+  const total = pagesData.length;
+
+  // Render Pages
+  pagesData.forEach((page, i) => {
+    const el = document.createElement('div');
+    el.className = 'page';
+    el.style.zIndex = total - i;
+    
+    if (page.type === 'cover') {
+      el.innerHTML = `
+        <div class="page-front cover">
+          <div class="emoji">${page.emoji}</div>
+          <h2>${page.title}</h2>
+          <p style="font-size:1.4em; font-style:italic; margin-bottom:20px;">${page.sub}</p>
+          <p style="font-size:1.2em; color:#ffd700;">${page.content}</p>
+          <p style="margin-top:40px; opacity:0.7;">(Click Next to begin)</p>
+          <div class="page-num">${i === 0 ? 'Cover' : 'Back'}</div>
+        </div>`;
+    } else {
+      const paragraphs = page.text.split('\n\n').map(p => `<p>${p}</p>`).join('');
+      el.innerHTML = `
+        <div class="page-front">
+          <div class="illustration">${page.emoji}</div>
+          <h2 class="chapter-title">${page.title}</h2>
+          <div class="story-text">${paragraphs}</div>
+          <div class="page-num">${i}</div>
+        </div>`;
+    }
+    book.appendChild(el);
+  });
+
+  document.getElementById('totalPages').textContent = total;
+
+  function updateUI() {
+    const pages = document.querySelectorAll('.page');
+    pages.forEach((p, i) => {
+      if (i < currentPage) p.classList.add('flipped');
+      else p.classList.remove('flipped');
+    });
+    
+    document.getElementById('pageNum').textContent = currentPage + 1;
+    document.getElementById('progressFill').style.width = `${(currentPage / (total - 1)) * 100}%`;
+    
+    document.getElementById('prevBtn').disabled = currentPage === 0;
+    document.getElementById('navPrev').disabled = currentPage === 0;
+    document.getElementById('nextBtn').disabled = currentPage === total - 1;
+    document.getElementById('navNext').disabled = currentPage === total - 1;
+  }
+
+  document.getElementById('nextBtn').onclick = () => { if (currentPage < total - 1) { currentPage++; updateUI(); } };
+  document.getElementById('navNext').onclick = () => { if (currentPage < total - 1) { currentPage++; updateUI(); } };
+  document.getElementById('prevBtn').onclick = () => { if (currentPage > 0) { currentPage--; updateUI(); } };
+  document.getElementById('navPrev').onclick = () => { if (currentPage > 0) { currentPage--; updateUI(); } };
+  
+  document.getElementById('progressBar').onclick = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const pct = (e.clientX - rect.left) / rect.width;
+    currentPage = Math.round(pct * (total - 1));
+    updateUI();
+  };
+
+  // Snowfall
+  for(let i=0; i<40; i++) {
+    const s = document.createElement('div');
+    s.className = 'snowflake';
+    s.textContent = '❄';
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    s.style.animationDelay = Math.random() * 5 + 's';
+    s.style.fontSize = (Math.random() * 10 + 10) + 'px';
+    document.body.appendChild(s);
+  }
+
+  updateUI();
+</script>
+</body>
+                                               </html>
