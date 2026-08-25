@@ -21,7 +21,8 @@ body { font-family: Georgia, serif; background: linear-gradient(135deg, #1e3c72 
 .btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9em; flex: 1; min-width: 80px; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-paypal { background: linear-gradient(135deg, #0070ba, #003087); font-weight: bold; font-size: 1.1em; padding: 12px 20px; text-decoration: none; display: block; text-align: center; margin-bottom: 15px; color: white; border-radius: 20px; }
-.btn-download { background: linear-gradient(135deg, #11998e, #38ef7d); font-weight: bold; font-size: 1em; padding: 12px 20px; margin-top: 10px; width: 100%; }
+.btn-download { background: linear-gradient(135deg, #11998e, #38ef7d); font-weight: bold; font-size: 1em; padding: 12px 20px; margin-top: 10px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; }
+.btn-download .icon { font-size: 1.3em; }
 select { padding: 8px; border-radius: 5px; border: 1px solid #ddd; margin: 5px; width: 100%; font-size: 0.85em; }
 #status { text-align: center; color: #666; font-size: 0.85em; margin-top: 10px; padding: 8px; background: #f0f0f0; border-radius: 5px; }
 .book-container { position: relative; width: 100%; max-width: 500px; height: 600px; margin: 0 auto 15px; perspective: 1500px; }
@@ -65,7 +66,7 @@ select { padding: 8px; border-radius: 5px; border: 1px solid #ddd; margin: 5px; 
 
 <div id="loginModal" class="modal-overlay">
   <div class="modal-box">
-    <div style="font-size: 50px; margin-bottom: 15px;">✨</div>
+    <div style="font-size: 50px; margin-bottom: 15px;">&#x1F4D6;&#x2728;</div>
     <h2>Welcome to Frostveil!</h2>
     <p>Please enter your email to begin your magical adventure.</p>
     <input type="email" id="emailInput" class="modal-input" placeholder="your@email.com">
@@ -75,19 +76,19 @@ select { padding: 8px; border-radius: 5px; border: 1px solid #ddd; margin: 5px; 
 
 <div id="paymentModal" class="modal-overlay hidden">
   <div class="modal-box">
-    <div class="lock-icon">🔒</div>
+    <div class="lock-icon">&#x1F512;</div>
     <h2>Continue the Adventure!</h2>
     <p>You've reached the end of the free preview. To unlock the full story and help Mikyla save the kingdom, please complete the secure payment below.</p>
-    <a href="https://www.paypal.com/ncp/payment/ZAC7WNMVSB67E" target="_blank" class="btn-paypal">💳 Pay Securely with PayPal</a>
-    <button class="btn" onclick="confirmPayment()" style="background: #28a745; width: 100%;">✅ I Have Completed the Payment</button>
+    <a href="https://www.paypal.com/ncp/payment/ZAC7WNMVSB67E" target="_blank" class="btn-paypal">&#x1F4B3; Pay Securely with PayPal</a>
+    <button class="btn" onclick="confirmPayment()" style="background: #28a745; width: 100%;">&#x2705; I Have Completed the Payment</button>
     <p style="font-size: 0.8em; color: #999; margin-top: 15px;">Your progress will be saved on this device.</p>
   </div>
 </div>
 
 <div id="installBanner" class="install-banner">
-  <span> Install this app</span>
+  <span>&#x1F4F1; Install this app</span>
   <button onclick="installApp()">Install</button>
-  <button class="close-btn" onclick="dismissInstall()"></button>
+  <button class="close-btn" onclick="dismissInstall()">&#x2715;</button>
 </div>
 
 <div class="header">
@@ -97,12 +98,12 @@ select { padding: 8px; border-radius: 5px; border: 1px solid #ddd; margin: 5px; 
 
 <div class="controls-box">
   <div class="btn-row">
-    <button class="btn" onclick="playAudio()" id="playBtn">▶️ Play</button>
-    <button class="btn" onclick="pauseAudio()" id="pauseBtn" disabled>⏸️ Pause</button>
+    <button class="btn" onclick="playAudio()" id="playBtn">&#x25B6;&#xFE0F; Play</button>
+    <button class="btn" onclick="pauseAudio()" id="pauseBtn" disabled>&#x23F8;&#xFE0F; Pause</button>
   </div>
   <div class="btn-row">
-    <button class="btn" onclick="prevPage()" id="prevBtn" disabled>⏮️ Prev</button>
-    <button class="btn" onclick="nextPage()" id="nextBtn">Next ️</button>
+    <button class="btn" onclick="prevPage()" id="prevBtn" disabled>&#x23EE;&#xFE0F; Prev</button>
+    <button class="btn" onclick="nextPage()" id="nextBtn">Next &#x23ED;&#xFE0F;</button>
   </div>
   <div style="margin-top: 10px;">
     <select id="speedSelect" onchange="changeSpeed()">
@@ -111,21 +112,24 @@ select { padding: 8px; border-radius: 5px; border: 1px solid #ddd; margin: 5px; 
       <option value="1.1">Slightly Faster</option>
     </select>
   </div>
-  <button class="btn btn-download" onclick="showDownloadInstructions()">📲 Download to Home Screen</button>
+  <button class="btn btn-download" onclick="showDownloadInstructions()">
+    <span class="icon">&#x1F4E5;</span>
+    <span>Download to Home Screen</span>
+  </button>
   <div id="iosInstructions" class="ios-instructions">
-    <strong> To install on iPhone/iPad:</strong><br>
+    <strong>&#x1F4F1; To install on iPhone/iPad:</strong><br>
     1. Tap the Share button (box with arrow) at the bottom of Safari<br>
     2. Scroll down and tap "Add to Home Screen"<br>
     3. Tap "Add" to confirm
   </div>
-  <div id="status">📖 Tap Play to start reading aloud</div>
+  <div id="status">&#x1F4D6; Tap Play to start reading aloud</div>
 </div>
 
 <div class="book-container" id="bookContainer"></div>
 
 <div class="nav-buttons">
-  <button class="btn" onclick="prevPage()" id="btnPrev" disabled>← Previous</button>
-  <button class="btn" onclick="nextPage()" id="btnNext">Next →</button>
+  <button class="btn" onclick="prevPage()" id="btnPrev" disabled>&#x2190; Previous</button>
+  <button class="btn" onclick="nextPage()" id="btnNext">Next &#x2192;</button>
 </div>
 
 <div class="reset-link">
@@ -140,8 +144,8 @@ let isCreator = userEmail.toLowerCase() === CREATOR_EMAIL.toLowerCase();
 let deferredPrompt = null;
 
 const pages = [
-  { type: 'cover', emoji: '👸❄️', title: 'Mikyla And The Frostveil Kingdom', subtitle: 'A Magical Journey Awaits', content: 'An Epic Family Adventure' },
-  { type: 'chapter', title: 'Chapter 1: The Rune Door in Winter Oak', emoji: '🚪', text: `Snow burst from Chloe's paws as she sprang over a fallen branch and landed in a soft heap.
+  { type: 'cover', emoji: '&#x1F451;&#x2744;&#xFE0F;', title: 'Mikyla And The Frostveil Kingdom', subtitle: 'A Magical Journey Awaits', content: 'An Epic Family Adventure' },
+  { type: 'chapter', title: 'Chapter 1: The Rune Door in Winter Oak', emoji: '&#x1F6AA;', text: `Snow burst from Chloe's paws as she sprang over a fallen branch and landed in a soft heap.
 
 "Mikyla! Catch me!"
 
@@ -402,7 +406,7 @@ Chloe's tail began to wag.
 Together, they stepped into the Whispering Ice Maze.
 
 Behind them, the door vanished, leaving only a smooth wall of ice- and, trapped deep inside it, the faint echo of Pip calling her name.` },
-  { type: 'chapter', title: 'Chapter 2: Mikyla Chooses Trust Over Fear', emoji: '🧚', text: `Mikyla lunged toward Pip's faint voice, her boots skidding across the glassy floor as the maze folded around her.
+  { type: 'chapter', title: 'Chapter 2: Mikyla Chooses Trust Over Fear', emoji: '&#x1F9DA;', text: `Mikyla lunged toward Pip's faint voice, her boots skidding across the glassy floor as the maze folded around her.
 
 "Pip!" she called.
 
@@ -611,7 +615,7 @@ Mikyla followed Pip into the glittering passage. The cold sharpened around her, 
 At the end of the street, a doorway opened in the ice.
 
 Beyond it waited a maze of pale walls, whispering voices, and paths that had not existed a moment before.` },
-  { type: 'chapter', title: 'Chapter 3: Following Whispering Ice Maze Clues', emoji: '🧊', text: `"Don't let the walls decide for us," Mikyla said as the ice folded shut behind them. "We find the exit, then we find the Sunstone of Glimmerwood."
+  { type: 'chapter', title: 'Chapter 3: Following Whispering Ice Maze Clues', emoji: '&#x1F9CA;', text: `"Don't let the walls decide for us," Mikyla said as the ice folded shut behind them. "We find the exit, then we find the Sunstone of Glimmerwood."
 
 Chessie pressed against her leg, his sturdy harness creaking softly. Chloe darted ahead, her collar chiming as she chased a blue spark drifting through the translucent corridor. Pip fluttered beside Mikyla's shoulder, his tiny wings beating so fast they sounded like a hummingbird trapped in a teacup.
 
@@ -890,7 +894,7 @@ Mikyla faced the image of Glimmerwood. The way forward was no longer a guess. It
 She took the first step.
 
 Behind her, the rune-scribed clearing began to freeze.` },
-  { type: 'chapter', title: 'Chapter 4: Glimmerwood Sunstone Breaks the Frozen Seals', emoji: '☀️', text: `Mikyla took one more step before the freezing wall could seal her in. Cold snapped around her boots. The rune-scribed clearing behind her blurred beneath a skin of blue ice, and the silver bell's last chime trembled through the air. Chessie pushed against her leg, his sturdy harness creaking, while Chloe darted ahead with her nose low, chasing a ribbon of golden light between the trees.
+  { type: 'chapter', title: 'Chapter 4: Glimmerwood Sunstone Breaks the Frozen Seals', emoji: '&#x2600;&#xFE0F;', text: `Mikyla took one more step before the freezing wall could seal her in. Cold snapped around her boots. The rune-scribed clearing behind her blurred beneath a skin of blue ice, and the silver bell's last chime trembled through the air. Chessie pushed against her leg, his sturdy harness creaking, while Chloe darted ahead with her nose low, chasing a ribbon of golden light between the trees.
 
 "Stay close," Mikyla whispered.
 
@@ -1131,7 +1135,7 @@ Mikyla closed her fingers around the glowing stone. "We're coming, Queen Sylvia.
 At the spire's summit, the dark ice flared brighter.
 
 And somewhere within it, Morrigan laughed.` },
-  { type: 'chapter', title: 'Chapter 5: Warmth Frees Sylvia From Morrigan', emoji: '❄️👑', text: `The Sunstone burned hot in Mikyla's hands as Morrigan's laughter cracked across the summit.
+  { type: 'chapter', title: 'Chapter 5: Warmth Frees Sylvia From Morrigan', emoji: '&#x2744;&#xFE0F;&#x1F451;', text: `The Sunstone burned hot in Mikyla's hands as Morrigan's laughter cracked across the summit.
 
 Dark ice climbed the Crystal Spire walls like frozen vines. Shattered light spun through the chamber, blue and silver, flashing over the frozen figure of Queen Sylvia at its center. The last seals split with sharp, ringing pops, but the spell did not fall.
 
@@ -1390,7 +1394,7 @@ Below, the first golden shoots pushed through the snow.
 Morrigan knelt beside them. With careful fingers, she touched the soil. A ring of pale flowers opened around her hand, each one shining with a tiny sun at its heart.
 
 Queen Sylvia watched, tears bright in her eyes.` },
-  { type: 'chapter', title: 'Final Thoughts', emoji: '✨🌸', text: `By the time the last chill loosens its grip, the journey has taught more than magic- it has taught Mikyla how to listen with her whole heart. In this kingdom of frozen riddles and thawing hope, every step mattered, and every kindness became a key.
+  { type: 'chapter', title: 'Final Thoughts', emoji: '&#x2728;&#x1F338;', text: `By the time the last chill loosens its grip, the journey has taught more than magic- it has taught Mikyla how to listen with her whole heart. In this kingdom of frozen riddles and thawing hope, every step mattered, and every kindness became a key.
 
 When the wind calms, it feels as though warmth has been set back into the world like a promise waiting to be kept. And somewhere between one breath and the next, Mikyla And The Frostveil Kingdom leaves a bright thought behind: that even in the coldest places, trust can open doors.
 
@@ -1433,7 +1437,7 @@ function handleLogin() {
   isCreator = userEmail.toLowerCase() === CREATOR_EMAIL.toLowerCase();
   document.getElementById('loginModal').classList.add('hidden');
   if (isCreator) {
-    document.getElementById('status').textContent = '👑 Creator Access Granted: Full Book Unlocked';
+    document.getElementById('status').textContent = 'Creator Access Granted: Full Book Unlocked';
   }
 }
 
@@ -1441,7 +1445,7 @@ function confirmPayment() {
   hasPaid = true;
   localStorage.setItem('mikyla_has_paid', 'true');
   document.getElementById('paymentModal').classList.add('hidden');
-  document.getElementById('status').textContent = '✅ Payment Verified: Full Book Unlocked!';
+  document.getElementById('status').textContent = 'Payment Verified: Full Book Unlocked!';
 }
 
 function resetAccess() {
@@ -1483,8 +1487,8 @@ function updateDisplay() {
   document.getElementById('nextBtn').disabled = currentPage === totalPages - 1;
   document.getElementById('btnNext').disabled = currentPage === totalPages - 1;
   const statusEl = document.getElementById('status');
-  if (pages[currentPage].type === 'cover') statusEl.textContent = '📖 Cover page - Tap Next for Chapter 1';
-  else statusEl.textContent = '📖 Page ' + currentPage + ' of ' + (totalPages - 1);
+  if (pages[currentPage].type === 'cover') statusEl.textContent = 'Cover page - Tap Next for Chapter 1';
+  else statusEl.textContent = 'Page ' + currentPage + ' of ' + (totalPages - 1);
 }
 
 function clearHighlights() {
@@ -1543,7 +1547,7 @@ function speakCurrentPage(startIndex) {
       if (!isPaused) {
         isPlaying = false;
         clearHighlights();
-        document.getElementById('status').textContent = '✅ Finished page ' + currentPage;
+        document.getElementById('status').textContent = 'Finished page ' + currentPage;
         updatePlayButtons();
       }
       return;
@@ -1562,14 +1566,14 @@ function speakCurrentPage(startIndex) {
     };
     synth.speak(utterance);
   }
-  document.getElementById('status').textContent = '🔊 Reading page ' + currentPage + '...';
+  document.getElementById('status').textContent = 'Reading page ' + currentPage + '...';
   speakNext();
 }
 
 function playAudio() {
   if (!checkAccess()) return;
   if (pages[currentPage].type === 'cover') {
-    document.getElementById('status').textContent = '⚠️ Navigate to Chapter 1 for audio';
+    document.getElementById('status').textContent = 'Navigate to Chapter 1 for audio';
     return;
   }
   if (isPaused) {
@@ -1592,7 +1596,7 @@ function pauseAudio() {
     isPaused = true;
     isPlaying = false;
     pausedParagraphIndex = currentParagraphIndex;
-    document.getElementById('status').textContent = '⏸️ Paused - Tap Play to resume';
+    document.getElementById('status').textContent = 'Paused - Tap Play to resume';
     updatePlayButtons();
   }
 }
@@ -1602,26 +1606,25 @@ function updatePlayButtons() {
   document.getElementById('pauseBtn').disabled = !isPlaying;
 }
 
-// Download to Home Screen Functions
 function showDownloadInstructions() {
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const iosInstructions = document.getElementById('iosInstructions');
   
   if (isIOS) {
     iosInstructions.classList.add('show');
-    document.getElementById('status').textContent = '📱 Follow the instructions above to add to Home Screen';
+    document.getElementById('status').textContent = 'Follow the instructions above to add to Home Screen';
   } else if (deferredPrompt) {
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
-        document.getElementById('status').textContent = '✅ App installed to Home Screen!';
+        document.getElementById('status').textContent = 'App installed to Home Screen!';
       }
       deferredPrompt = null;
     });
   } else {
     iosInstructions.classList.add('show');
-    iosInstructions.innerHTML = '<strong>📱 To install:</strong><br>• <strong>Chrome (Android):</strong> Tap the menu (⋮) → "Add to Home Screen"<br>• <strong>Safari (iOS):</strong> Tap Share → "Add to Home Screen"<br>• <strong>Desktop:</strong> Look for the install icon in the address bar';
-    document.getElementById('status').textContent = '📱 Follow the instructions above';
+    iosInstructions.innerHTML = '<strong>To install:</strong><br><strong>Chrome (Android):</strong> Tap the menu (three dots) then "Add to Home Screen"<br><strong>Safari (iOS):</strong> Tap Share then "Add to Home Screen"<br><strong>Desktop:</strong> Look for the install icon in the address bar';
+    document.getElementById('status').textContent = 'Follow the instructions above';
   }
 }
 
@@ -1639,7 +1642,7 @@ function installApp() {
     deferredPrompt.userChoice.then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
         document.getElementById('installBanner').classList.remove('show');
-        document.getElementById('status').textContent = '✅ App installed!';
+        document.getElementById('status').textContent = 'App installed!';
       }
       deferredPrompt = null;
     });
@@ -1655,7 +1658,7 @@ function createSnowfall() {
   for (let i = 0; i < 30; i++) {
     const snowflake = document.createElement('div');
     snowflake.className = 'snowflake';
-    snowflake.textContent = '❄';
+    snowflake.textContent = '\u2744';
     snowflake.style.left = Math.random() * 100 + 'vw';
     snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
     snowflake.style.animationDelay = Math.random() * 5 + 's';
