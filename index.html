@@ -1,1 +1,1678 @@
-<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <meta name="theme-color" content="#1e3c72"> <meta name="apple-mobile-web-app-capable" content="yes"> <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"> <meta name="apple-mobile-web-app-title" content="Frostveil"> <title>Mikyla and the Frostveil Kingdom</title> <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTWlreWxhIGFuZCB0aGUgRnJvc3R2ZWlsIEtpbmdkb20iLCJzaG9ydF9uYW1lIjoiRnJvc3R2ZWlsIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzFlM2M3MiIsInRoZW1lX2NvbG9yIjoiIzFlM2M3MiIsInN0YXJ0X3VybCI6Ii4iLCJpY29ucyI6W3sic3JjIjoiaHR0cHM6Ly9pLmltZ3VyLmNvbS83WnBqRkxKLnBuZyIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9wbmcifV19"> <style> * { margin: 0; padding: 0; box-sizing: border-box; } body { font-family: Georgia, serif; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); min-height: 100vh; padding: 10px; } .snowflake { position: fixed; top: -10px; color: white; animation: fall linear infinite; z-index: 1; pointer-events: none; } @keyframes fall { to { transform: translateY(105vh); } } .header { text-align: center; color: white; margin-bottom: 15px; } .header h1 { font-size: 1.6em; background: linear-gradient(to right, #ffd700, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; } .controls-box { background: white; border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); } .btn-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; } .btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9em; flex: 1; min-width: 80px; } .btn:disabled { opacity: 0.5; cursor: not-allowed; } .btn-paypal { background: linear-gradient(135deg, #0070ba, #003087); font-weight: bold; font-size: 1.1em; padding: 12px 20px; text-decoration: none; display: block; text-align: center; margin-bottom: 15px; color: white; border-radius: 20px; } .btn-download { background: linear-gradient(135deg, #11998e, #38ef7d); font-weight: bold; font-size: 1em; padding: 12px 20px; margin-top: 10px; width: 100%; } select { padding: 8px; border-radius: 5px; border: 1px solid #ddd; margin: 5px; width: 100%; font-size: 0.85em; } #status { text-align: center; color: #666; font-size: 0.85em; margin-top: 10px; padding: 8px; background: #f0f0f0; border-radius: 5px; } .book-container { position: relative; width: 100%; max-width: 500px; height: 600px; margin: 0 auto 15px; perspective: 1500px; } .book-page { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #faf8f3, #f5f0e8); border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding: 20px; overflow-y: auto; transition: transform 0.6s; transform-origin: left center; transform-style: preserve-3d; } .book-page.flipped { transform: rotateY(-180deg); } .page-content { backface-visibility: hidden; height: 100%; display: flex; flex-direction: column; } .cover-page { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 30px 20px; } .cover-emoji { font-size: 70px; margin-bottom: 20px; animation: float 3s ease-in-out infinite; } @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } } .cover-page h2 { font-size: 1.7em; color: #ffd700; margin: 15px 0; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); } .cover-page .subtitle { font-size: 1.2em; font-style: italic; margin: 10px 0; color: #e0f0ff; } .cover-page .content { font-size: 1.1em; color: #ffd700; margin-top: 20px; } .page-num { text-align: right; color: #999; font-size: 0.8em; margin-top: auto; padding-top: 10px; } .chapter-title { font-size: 1.3em; text-align: center; margin-bottom: 10px; color: #667eea; } .illustration { font-size: 50px; text-align: center; margin: 10px 0; } .story-text { font-size: 0.95em; line-height: 1.7; color: #34495e; flex: 1; } .story-text p { margin-bottom: 10px; padding: 6px; border-radius: 6px; transition: all 0.3s; } .story-text p.active { background-color: #FFD700 !important; color: #1e3c72 !important; font-weight: bold; box-shadow: 0 0 12px rgba(255, 215, 0, 0.8); } .nav-buttons { display: flex; justify-content: space-between; max-width: 500px; margin: 0 auto; gap: 10px; } .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; } .modal-box { background: white; border-radius: 20px; padding: 30px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); animation: popIn 0.3s ease-out; } @keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } } .modal-box h2 { color: #1e3c72; margin-bottom: 15px; font-size: 1.5em; } .modal-box p { color: #555; margin-bottom: 20px; line-height: 1.5; } .modal-input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 1em; margin-bottom: 15px; text-align: center; } .modal-input:focus { border-color: #667eea; outline: none; } .lock-icon { font-size: 60px; margin-bottom: 15px; } .hidden { display: none !important; } .reset-link { text-align: center; margin-top: 20px; font-size: 0.8em; } .reset-link a { color: rgba(255,255,255,0.6); text-decoration: underline; cursor: pointer; } .install-banner { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; padding: 15px 25px; border-radius: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); display: none; align-items: center; gap: 15px; z-index: 1000; animation: slideUp 0.5s ease-out; } @keyframes slideUp { from { transform: translateX(-50%) translateY(100px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } } .install-banner.show { display: flex; } .install-banner button { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; } .install-banner button.close-btn { background: #ccc; } .ios-instructions { background: #fff3cd; border: 1px solid #ffc107; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 0.85em; color: #856404; display: none; } .ios-instructions.show { display: block; } </style> </head> <body> <div id="loginModal" class="modal-overlay"> <div class="modal-box"> <div style="font-size: 50px; margin-bottom: 15px;">✨</div> <h2>Welcome to Frostveil!</h2> <p>Please enter your email to begin your magical adventure.</p> <input type="email" id="emailInput" class="modal-input" placeholder="your@email.com"> <button class="btn" onclick="handleLogin()" style="width: 100%;">Enter the Kingdom</button> </div> </div> <div id="paymentModal" class="modal-overlay hidden"> <div class="modal-box"> <div class="lock-icon">🔒</div> <h2>Continue the Adventure!</h2> <p>You've reached the end of the free preview. To unlock the full story and help Mikyla save the kingdom, please complete the secure payment below.</p> <a href="https://www.paypal.com/ncp/payment/ZAC7WNMVSB67E" target="_blank" class="btn-paypal">💳 Pay Securely with PayPal</a> <button class="btn" onclick="confirmPayment()" style="background: #28a745; width: 100%;">✅ I Have Completed the Payment</button> <p style="font-size: 0.8em; color: #999; margin-top: 15px;">Your progress will be saved on this device.</p> </div> </div> <div id="installBanner" class="install-banner"> <span> Install this app</span> <button onclick="installApp()">Install</button> <button class="close-btn" onclick="dismissInstall()"></button> </div> <div class="header"> <h1>Mikyla and the Frostveil Kingdom</h1> <p style="color: #e0f0ff; font-style: italic;">A Magical Quest</p> </div> <div class="controls-box"> <div class="btn-row"> <button class="btn" onclick="playAudio()" id="playBtn">▶️ Play</button> <button class="btn" onclick="pauseAudio()" id="pauseBtn" disabled>⏸️ Pause</button> </div> <div class="btn-row"> <button class="btn" onclick="prevPage()" id="prevBtn" disabled>⏮️ Prev</button> <button class="btn" onclick="nextPage()" id="nextBtn">Next ️</button> </div> <div style="margin-top: 10px;"> <select id="speedSelect" onchange="changeSpeed()"> <option value="0.85">Slow & Clear</option> <option value="1" selected>Natural Pace</option> <option value="1.1">Slightly Faster</option> </select> </div> <button class="btn btn-download" onclick="showDownloadInstructions()">📲 Download to Home Screen</button> <div id="iosInstructions" class="ios-instructions"> <strong> To install on iPhone/iPad:</strong><br> 1. Tap the Share button (box with arrow) at the bottom of Safari<br> 2. Scroll down and tap "Add to Home Screen"<br> 3. Tap "Add" to confirm </div> <div id="status">📖 Tap Play to start reading aloud</div> </div> <div class="book-container" id="bookContainer"></div> <div class="nav-buttons"> <button class="btn" onclick="prevPage()" id="btnPrev" disabled>← Previous</button> <button class="btn" onclick="nextPage()" id="btnNext">Next →</button> </div> <div class="reset-link"> <a onclick="resetAccess()">[ Reset Access / Test Payment Flow ]</a> </div> <script> const CREATOR_EMAIL = "charltommie18@gmail.com"; let userEmail = localStorage.getItem('mikyla_user_email') || ""; let hasPaid = localStorage.getItem('mikyla_has_paid') === 'true'; let isCreator = userEmail.toLowerCase() === CREATOR_EMAIL.toLowerCase(); let deferredPrompt = null; const pages = [ { type: 'cover', emoji: '👸❄️', title: 'Mikyla And The Frostveil Kingdom', subtitle: 'A Magical Journey Awaits', content: 'An Epic Family Adventure' }, { type: 'chapter', title: 'Chapter 1: The Rune Door in Winter Oak', emoji: '🚪', text: `Snow burst from Chloe's paws as she sprang over a fallen branch and landed in a soft heap. "Mikyla! Catch me!" Mikyla laughed and lunged after her, boots sinking to her ankles. Frosty branches tapped together overhead, shaking loose silver flakes that glittered in the pale afternoon light. Chessie thundered past them, sturdy shoulders pushing through the snow, then turned in a wide circle as if guarding the whole forest. "Not so far!" Mikyla called. "Stay where I can see you!" Chloe wagged her tail and vanished behind the ancient oak. Mikyla hurried after her. The oak stood at the edge of a small clearing, its trunk so wide that three grown-ups holding hands might not have reached around it. Its bark was ridged like frozen waves. Chloe's nose poked from a hollow near the roots, followed by a muffled bark. "What did you find?" Mikyla knelt and brushed away the snow. Beneath the white blanket, the oak's roots curled around a narrow wooden door. It was not an ordinary door. Strange marks had been carved across it in curling lines and tiny diamond shapes. The runes glowed blue beneath the old wood, bright enough to paint Mikyla's gloves with light. Chessie gave a low warning growl. Chloe pawed at the threshold. "Easy," Mikyla whispered. She reached toward the nearest rune, then stopped. The wood felt warm even before her fingers touched it. A tiny click sounded inside the oak. The door opened by itself. Beyond it waited no dark hollow, but a whirl of white-blue light. Snow spun upward instead of falling. The forest vanished behind a shining veil, and somewhere inside the glow, bells chimed in a hurried, uneven rhythm. Mikyla grabbed Chloe's collar with one hand and Chessie's harness with the other. "We're staying together," she said. The light tugged. At first it felt like a strong wind pulling at her coat. Then her boots slid across the snow. Chloe yelped, claws scraping for grip. Chessie planted all four paws and leaned backward, muscles tight beneath his fur. "Mikyla!" a voice cried from inside the doorway. A small figure shot through the swirling light. The stranger had transparent wings, a pointed green cap, and a satchel bouncing against one hip. He spun once, smacked into the doorframe, and fluttered upright. "Don't step through!" he shouted. "The threshold is misbehaving!" "Who are you?" Mikyla called. "No time! I'm Pip, scout of Frostveil, and that door is- oh, frost feathers!" The pull doubled. Mikyla wrapped both arms around Chessie's harness. Chloe slipped free and tumbled toward the doorway. "Chloe!" The dog disappeared into the blue-white whirl. Chessie barked and leaped after her. Mikyla followed without thinking. Pip darted toward them, reaching for Mikyla's sleeve, but a ring of frost exploded between them. The world became snow, light, and spinning sound. Mikyla felt Chloe's warm fur brush her knee. Chessie's bark boomed somewhere close, then far away. Pip shouted something she could not understand. A cold hand seemed to grab her coat and twist. She reached for Pip. Their fingers touched. Then a crack of silver lightning split the air. Pip was flung one way. Mikyla, Chessie, and Chloe were dragged another. "Mikyla!" Pip cried. The door slammed shut. For one breath, there was only darkness. Mikyla landed on a smooth, glittering surface. Her palms stung. Chloe slid into her side, whining, while Chessie skidded past them and spun around with his teeth bared. Mikyla pushed herself up. The forest was gone. Towering crystal trees rose around her, their branches shining with frozen leaves. Beyond them stretched a city of curved bridges, blue rooftops, and tall windows glowing like captured stars. Snowflakes drifted through the air, but each one chimed softly when it touched the ground. Far above the city, a crystal spire pierced the violet sky. A black band of ice wound around its highest point. Mikyla stared. "Where are we?" Chloe sniffed a crystal tree and sneezed. Chessie moved in front of both dogs, watching the strange streets. A flutter of wings rushed past Mikyla's ear. Pip shot out from behind a pillar of ice, wobbling badly. One wing drooped, and his green cap had slipped over one eye. "There you are!" he cried. "I found you!" Mikyla ran toward him. "Are you hurt?" "Only my dignity. And perhaps my left wing. But that is less important than running." "Running from what?" Pip pointed toward the crystal spire. A thin black mark appeared in the snow between them. It curled into a symbol like a frozen eye. Another symbol flickered on a rooftop. Then another, farther down the street. The bells of Frostveil stopped. Every crystal window went dark. Pip's face lost its mischievous grin. "Morrigan knows the door opened." A deep groan rolled through the city. Ice crept across the bridge rails, spreading in branching lines. Mikyla tightened her grip on Chloe's collar. "Who is Morrigan?" "The Frost-Weaver witch," Pip said. "She trapped Queen Sylvia in a dark ice spell at the top of the Crystal Spire. Now she is sealing every road, every gate, every warm place in Frostveil." "Then take us to the queen." Pip blinked. "That is not how this works." "It can be." A crack split the bridge behind them. Frost climbed over the stones, swallowing the glowing patterns beneath their feet. Pip flapped hard. "The queen is sealed away. The spire cannot be opened. The city gates are frozen shut. And the only path left begins in the Whispering Ice Maze." Chloe tugged free and bounded toward a narrow archway glittering at the far end of the street. "Chloe!" Mikyla shouted. Chessie raced after her. Mikyla followed, boots slipping on the icy stones. Pip flew alongside her, glancing back every few seconds. "You must listen carefully," he said. "Frostveil is not a place that welcomes visitors. Especially visitors from outside." "Then why did the door bring us here?" "I told you, the threshold is misbehaving!" "Can you send us home?" Pip hesitated. That small pause frightened Mikyla more than the frozen city. "No," he admitted. "Not until the door remembers how to open." The archway shuddered. A curtain of frost dropped from its top, sealing the street behind them. Mikyla, Chessie, Chloe, and Pip were trapped in a narrow passage between crystal walls. At the far end stood a round doorway made of clear ice. Inside it, pale shapes moved like fish beneath a frozen pond. Pip landed on Mikyla's shoulder. "That is the maze entrance." "Where is the way through?" "Somewhere ahead." "That doesn't sound like a plan." "It was a better plan before the witch noticed us." The ice door began to whisper. Mikyla leaned closer. At first she heard only the scrape of wind. Then the sound formed words. Warmth fades. Trust breaks. The queen sleeps. Chloe whimpered. Chessie pressed against Mikyla's leg, his fur bristling. Mikyla looked from one dog to the other. Her fear felt cold and sharp, but their bodies were warm beside her. She placed one hand on Chessie's neck and the other on Chloe's back. "We stay together," she said again. Pip pointed at the door. "Do not answer the maze. It repeats what you fear." The whisper changed. Mikyla cannot protect you. Chloe pulled back. Chessie growled at the ice. Mikyla stepped forward. "It's lying." The door flashed. A black rune spread across its surface, shaped like a crooked spiderweb. Pip cried out. "Down!" The ice burst open. A wave of glittering frost swept through the passage. Mikyla grabbed Chloe, but the wind tore the dog from her arms. Chessie lunged and caught Chloe's harness between his teeth. Pip flew upward, spinning wildly as the storm seized his wings. "Mikyla!" he shouted. "The rune! Touch the center!" She saw it through the storm: a small blue spark at the heart of the black mark. Mikyla dropped to her knees and crawled across the ice. The surface burned through her gloves. Snow whipped her face. Chessie strained against the wind, holding Chloe fast, while Chloe barked and kicked. Pip vanished into the white swirl. "Pip!" No answer came. Mikyla reached the rune. For an instant, she saw a different place inside it: a golden forest beneath a summer sun, a little figure standing alone among frozen trees. Then the vision snapped shut. Mikyla pressed her palm to the spark. "I'm not leaving my friends!" Warm light burst from her hand. The storm folded inward with a thunderous crack. Frost shattered across the passage like glass. Chessie dropped to the floor, Chloe tumbling safely beneath him. The ice door swung wide. Beyond it stretched a maze of towering translucent walls. Blue paths twisted in impossible directions, and tiny voices whispered from every surface. Pip was gone. Mikyla scrambled to her feet. "Pip?" Only the maze answered. Pip is lost. Pip is afraid. Pip will not find you. Chloe pressed close to Mikyla's knees. Chessie stood at the entrance, staring into the shifting corridors. Mikyla wanted to run after Pip, but the paths were already sliding apart. One passage narrowed to a silver line. Another opened toward a distant glow, warm and gold. A single rune appeared on the floor beneath her boots. GLIMMERWOOD. Mikyla looked back at the frozen city. High above, the black ice around the Crystal Spire pulsed once, like a dark heartbeat. "We'll find Pip," she whispered. "Then we'll find Queen Sylvia." Chessie gave a firm bark. Chloe's tail began to wag. Together, they stepped into the Whispering Ice Maze. Behind them, the door vanished, leaving only a smooth wall of ice- and, trapped deep inside it, the faint echo of Pip calling her name.` }, { type: 'chapter', title: 'Chapter 2: Mikyla Chooses Trust Over Fear', emoji: '🧚', text: `Mikyla lunged toward Pip's faint voice, her boots skidding across the glassy floor as the maze folded around her. "Pip!" she called. The echo slipped away through the ice. Chessie's harness jingled behind her, and Chloe's claws clicked wildly as she chased a silver reflection that looked almost like a doorway. Mikyla grabbed Chloe's collar before the little dog could vanish around a shining wall. "Stay close!" Mikyla cried, pulling Chloe against her knees. Chessie planted himself between them and the nearest wall. His sturdy body trembled, but he lowered his head and gave a warning growl. The translucent ice answered with a hundred tiny growls of its own. Mikyla's fingers tightened in Chloe's soft fur. The cold seeped through her gloves. Somewhere beyond the maze, Frostveil waited beneath its glittering lanterns, and somewhere inside these shifting walls, Pip was calling her name. Then the maze cracked open. A sheet of ice peeled away like a curtain, and Mikyla stumbled into a lantern-lit plaza. She caught herself on a carved crystal post while Chessie bumped against her legs and Chloe tumbled into a mound of sparkling snow. "Pip!" Mikyla shouted. The scout fairy shot out of the opening after them, spinning head over heels. He struck a hanging lantern, bounced off it, and landed upside down in a basket of blue apples. "I meant to do that," he announced, though his wings were wobbling. Chloe sprang toward him. Pip squeaked and scrambled free. "No biting! No licking! No heroic dog greetings until I know whether the maze followed us!" Chessie barked once, sharp and deep. The plaza trembled. Lanterns swung from silver wires overhead, spilling green, gold, and violet light across stalls carved from snow. Tiny fairy shopkeepers ducked beneath awnings of icicle lace. Crystal bells chimed in the wind, and the air smelled of pine smoke, sugared berries, and something bright and warm that reminded Mikyla of sunlight on a winter window. The maze sealed behind them with a soft, terrible whisper. Mikyla turned toward the smooth wall. "We can't leave it like that. Pip was trapped in there." "I was not trapped," Pip said. "I was temporarily surrounded by an unreasonable number of walls." "You were calling my name." "I was calling everyone's name. It was a very serious emergency." Mikyla looked at him. Pip's blue cap was crooked, one boot was missing, and a thin crack ran across the glowing compass strapped to his chest. He looked frightened beneath all his frantic words. "What happened?" she asked. Pip's wings fluttered faster. "Morrigan happened." The name seemed to dim the lanterns. Chessie pressed against Mikyla's side. Chloe stopped sniffing the snow and stared at Pip, her ears lifted. Mikyla had heard the witch's name before, but now it seemed to crawl through the plaza like frost beneath a door. She remembered the rune-carved wooden door in the old oak, the way it had pulled them from the snowy forest, and the sudden glimpse of a kingdom made of ice and light. She had wanted to find a way home. She had wanted to keep her dogs safe. Now Pip was asking her to care about a queen she had never met. "Who is Morrigan?" Mikyla asked. Pip glanced toward the tallest tower rising beyond the market roofs. The Crystal Spire pierced the sky in seven shining points, but its highest windows were dark. Black veins of ice curled around the tower like frozen roots. "She is the Frost-Weaver," he whispered. "She cast a dark ice spell over Queen Sylvia. The queen is trapped at the top of the Crystal Spire, sealed inside a prison that grows colder every hour." A fairy behind a berry stall gasped. Someone dropped a basket. The berries rolled across the plaza, glowing like tiny red stars. Mikyla stared at the tower. "Can't someone break the spell?" "We tried." Pip hopped onto the edge of the basket. "Fairies with frost hammers. Fairies with fire feathers. Fairies who sing very loudly." "Did the singing help?" "It made the seals thicker." Chloe gave a small, uncertain whine. Pip pointed at the Crystal Spire. "Morrigan bound the prison with three layers of dark ice. The first twists paths until no one can reach the tower. The second seals the palace gates. The third guards the queen herself." Mikyla swallowed. "Then we go to the tower and break all three." Pip's eyes widened. "Absolutely not." "Why not?" "Because the first layer is the Whispering Ice Maze, and you just escaped it by accident." "I didn't escape. The maze pushed us out." "Exactly! It may push you somewhere worse next time." Mikyla looked down at Chessie. His brown eyes watched her carefully, waiting for a command. Chloe had tucked herself against Mikyla's boot, her tail no longer wagging. Fear pressed beneath Mikyla's ribs. It told her to grab both dogs and find the rune door. It told her that Frostveil's troubles belonged to Frostveil. If she stayed, something might happen to Chessie or Chloe. If she listened to Pip, she might lead them into danger on purpose. But Pip had crossed the maze to find them. Even frightened, he had come back. "What do you want us to do?" Mikyla asked. Pip opened his mouth, closed it, then pointed toward a stall piled with star-shaped pastries. "First, perhaps, eat something." "No." "Fair enough. Second, run." "Pip." He sagged. "All right. There is a way to save Queen Sylvia, but it requires three quests. The Whispering Ice Maze must be crossed. Then we must find the Sunstone of Glimmerwood and use its warmth to melt the palace seals. Only then can we reach the Crystal Spire." "And face Morrigan," Mikyla said. Pip nodded. A cold gust swept through the plaza. The lantern flames bent sideways, and a black snowflake drifted from the sky. It landed on the edge of the pastry stall. Frost raced across the wood, turning the star-shaped treats gray. The stallkeeper cried out and pulled the tray away. Mikyla watched the frost spread. "How long until the spell reaches everyone?" Pip's frantic expression lost its last bit of mischief. "Not long." The black snowflake melted into a dark drop that hissed against the ice. Mikyla's hands began to shake. Chessie noticed first. He nudged her palm with his nose. Chloe leaned against her shin, warm and soft despite the bitter air. "I don't know if I can do this," Mikyla whispered. Pip stared at her. "You crossed a magic door." "I didn't know what it was." "You walked into the maze." "I was trying to find you." "You pulled Chloe away from a mirror-wolf." "It was chasing her!" Pip folded his arms. "You keep doing brave things before you have time to be sensible." Mikyla almost laughed, but the sound caught in her throat. "I'm scared." The words hung between them, plain and heavy. Chessie sat beside her. His harness creaked as he leaned his sturdy shoulder against her leg. Chloe lifted one paw and placed it on Mikyla's boot. Mikyla looked at them. Chessie could guard a path, but he could not choose it for her. Chloe could chase wonder into every corner, but she trusted Mikyla to call her back. They were waiting for her- not because she wasn't afraid, but because she was the one who had to decide. She crouched and wrapped both arms around them. "I'm scared too," she murmured. "But I won't run without knowing where we're going." Pip's wings slowed. Mikyla stood. "You know Frostveil. We don't. You know the maze and the path to Glimmerwood. We'll trust your warnings, but you have to tell us the truth. No hiding the dangerous parts." Pip blinked. "Even the parts involving singing?" "Especially those." He placed one hand over his heart and bowed so quickly he nearly fell over. "Then I promise. No tricks. No missing details. No pretending I meant to land in an apple basket." Chloe wagged her tail. "Good," Mikyla said. "And we stay together." Pip's smile returned, small but real. "Together, then." A rumble rolled beneath the plaza. The Crystal Spire flashed with dark blue light. Far above, something moved inside the highest window- a shape trapped behind layers of black ice. Mikyla thought she saw a woman's face, pale and still, surrounded by silver hair. Queen Sylvia. The image vanished as quickly as it came. "That was her," Mikyla said. Pip nodded. "Queen Sylvia. She is still fighting the spell from inside." "How do you know?" "Because every night, one light appears in the tower." He pointed upward. "That is the queen reminding Frostveil she has not surrendered." Another light flickered behind the dark ice. Mikyla felt the fear inside her shift. It did not disappear, but it no longer filled the whole space. Beside it stood something steadier: the warmth of Chessie's shoulder, Chloe's trusting paw, and Pip's promise. "What's the first clue?" she asked. Pip reached beneath his crooked cap and pulled out a thin shard of blue crystal. Runes glimmered along its edge. "The maze speaks in whispers," he said. "It shows each traveler a different path. If we chase what we want to see, we get lost. If we listen for what the others need, the ice reveals the way." Mikyla glanced at the sealed wall behind them. "That's why it separated us." "It was testing whether you would trust one another." Chessie gave a low huff, as if he had known that all along. Pip tucked the shard away. "The next clue is hidden beyond the maze. I can guide you to it, but the path will change beneath our feet." Mikyla reached for Chessie's harness. Her fingers found the familiar strap and held tight. Chloe pressed close on her other side. "Then guide us," she said. Pip flew toward a narrow street between two towers of blue ice. Lanterns swung above it, scattering colored light over the snow. Behind them, the market slowly began to move again, though every fairy kept glancing at the Crystal Spire. Mikyla followed Pip into the glittering passage. The cold sharpened around her, and the distant bells faded into a hush. At the end of the street, a doorway opened in the ice. Beyond it waited a maze of pale walls, whispering voices, and paths that had not existed a moment before.` }, { type: 'chapter', title: 'Chapter 3: Following Whispering Ice Maze Clues', emoji: '🧊', text: `"Don't let the walls decide for us," Mikyla said as the ice folded shut behind them. "We find the exit, then we find the Sunstone of Glimmerwood." Chessie pressed against her leg, his sturdy harness creaking softly. Chloe darted ahead, her collar chiming as she chased a blue spark drifting through the translucent corridor. Pip fluttered beside Mikyla's shoulder, his tiny wings beating so fast they sounded like a hummingbird trapped in a teacup. "Excellent plan," Pip said. "Very brave. Very sensible. Possibly impossible." The maze gleamed in every direction. Its walls were clear as frozen waterfalls, yet shapes moved deep inside them- silver branches, sleeping stars, and pale shadows that vanished whenever Mikyla tried to focus. Cold seeped through her boots. Beneath it came a whisper, thin and many-voiced. Warmth is hidden where certainty breaks. Mikyla tightened her fingers around Chessie's harness. Queen Sylvia's single flickering light still shone in her memory, high above the dark Crystal Spire. They had promised to reach her. They had promised to melt Morrigan's spell. "We need a clue," Mikyla said. "Not another promise." A line of golden runes appeared beneath her feet. Pip squinted at them. "That says, 'The first path waits where the sun cannot shine.'" Chloe barked and pounced at the letters. The instant her paws touched the ice, the corridor split into three passages. Each one glowed with a different color: blue, violet, and warm amber. "The maze heard us," Pip whispered. "Which path leads out?" Mikyla asked. Pip pointed to the amber passage. "Warm colors usually mean friendly magic." Chessie growled. The amber corridor curved away, its walls filled with tiny pictures of sunflowers and glowing stones. Chloe bounded toward it, but Mikyla caught her collar before she crossed the threshold. "Wait." The pictures changed. Sunflowers drooped beneath black frost. The glowing stones cracked. At the far end, a dark shape lifted its head. Pip's wings shivered. "Friendly magic can still have teeth." The violet passage whispered Mikyla's name. Not loudly. Not like a call from a person. It sounded like her own voice spoken from far away. Mikyla stepped toward it. Chessie planted himself in front of her. "I know," she murmured. "It could be a trick." The whisper came again. Mikyla, this way. Pip is waiting. Pip froze in midair. "I am absolutely not waiting in there." Chloe tugged at Mikyla's coat, pulling toward the blue passage. Behind its walls, little paw prints glimmered in a row. "That one looks like it wants us to follow," Mikyla said. "Everything here wants us to follow," Pip replied. "That is the trouble with mazes. They are terribly confident." Mikyla crouched beside the paw prints. They were exactly Chloe's size, but each one faced backward, as if a dog had walked out of the passage while pretending to walk in. The walls whispered louder. Go back. Turn around. Choose nothing. The three corridors slid across one another with a grinding sound. Frost dust drifted from the ceiling. A seam opened beneath Chloe's paws. "Chloe!" Mikyla lunged. Chessie seized the back of Chloe's coat in his teeth and pulled her away as the ice dropped into a bottomless blue shaft. Chloe yelped, scrambling against Chessie's chest. The gap snapped shut, leaving only a dark line. Pip flew in frantic circles. "The maze changes when we hesitate! It feeds on doubt!" "Then we stop giving it doubt," Mikyla said, though her voice trembled. She looked at the three passages. The golden runes had vanished. The amber path now showed snow-covered trees. The violet path held a distant orange glow. The blue path was empty. "What are you hiding?" Mikyla asked the maze. The walls answered with a hundred whispers. A secret. A question. A door that opens only when no one knows the way. Mikyla felt the cold tighten around her ribs. If the maze stole their certainty, then every clue could become a trap. She glanced at Chessie. He watched the corridors, ears lifted, steady as a stone bridge. Chloe trembled, but her nose pointed toward the violet passage. "Chloe smells something," Mikyla said. Pip blinked. "Something warm?" "Maybe." "Maybe is a very dangerous word." "It's the only one we have." Mikyla took Chloe's leash in one hand and Chessie's harness handle in the other. "We move together. No one runs ahead. No one stays behind." Pip landed on Chessie's back. "And if the floor disappears?" "Then we pull one another back." Chessie gave a firm bark. Chloe wagged once, then pressed against Mikyla's knee. They entered the violet passage. The walls turned smoky and thick. Frost scratched against them from the inside, making a sound like fingernails on glass. Mikyla could smell pine resin and something sweeter, like warm bread, though there was no warmth anywhere. Chloe sniffed along the floor. Chessie paced on Mikyla's other side, his claws clicking against the ice. At the first bend, a riddle appeared. I have no mouth, but I answer when called. I have no feet, but I follow every step. What am I? "An echo," Pip said at once. The corridor shuddered. A second riddle flashed beneath it. I grow smaller when I am shared. What am I? "A secret," Mikyla said. The walls brightened, but the path ahead remained sealed. A third riddle appeared. I can warm a room without flame, guide a kingdom without a crown, and vanish when fear is fed. What am I? Pip's face fell. "That sounds like a trick." Mikyla thought of the frozen streets, the silent fairy windows, and the tiny light flickering inside the Crystal Spire. She thought of Morrigan's spell spreading over Queen Sylvia like a dark shell. "Hope," she said. The wall opened. A gust of freezing air struck them. Chloe's leash flew from Mikyla's hand. The playful dog slid across the floor toward a widening crack. "Chloe!" Mikyla dropped flat and reached. Her fingertips caught the collar. The ice pulled Chloe onward, dragging Mikyla with her. Chessie sprang forward, gripping the harness handle between his teeth. Pip seized Mikyla's scarf and pulled with all his strength. "Pull!" Mikyla cried. Chessie dug his paws into the ice. His harness straps strained. Pip squeaked. Mikyla wrapped one arm around a jutting ridge and hauled Chloe toward safety. The crack widened beneath them, revealing a whirl of white mist far below. Chloe's paws scraped uselessly. "I've got you," Mikyla whispered. "I've got you." With one final tug, she pulled Chloe free. The crack slammed shut behind them. For a moment, nobody moved. Chloe licked Mikyla's cheek, cold nose pressed against her skin. Chessie stood over them, breathing hard, his fur powdered with frost. Pip sank onto the floor. "I dislike this maze." Mikyla hugged Chloe close. "It wants us separated." "And it nearly got its wish," Pip said. The violet passage vanished. In its place stood a round chamber with walls so clear Mikyla could see the maze twisting beyond them. Corridors crossed like ribbons. Some led upward. Some curled back on themselves. Others ended at black patches where the ice had been stained by Morrigan's magic. At the center of the chamber floated a small silver bell. A thread of light connected it to a narrow doorway. Pip rose slowly. "That is our exit." The bell chimed without being touched. Mikyla heard Chessie bark from the left. She turned. Chessie stood beside the silver bell. Then she heard Chloe bark from the right. Chloe stood beside the doorway. Mikyla's stomach dropped. The maze had made copies of them. Two Chessies stared through the ice, both wearing sturdy harnesses. Two Chloes pawed at the floor, both collars chiming. Pip flew toward the nearest Chessie. "Which one is real?" Both dogs growled. The chamber began to spin. Mikyla shut her eyes. The whispers rushed around her. Choose. Choose. Choose. She listened beneath them. The real Chessie always breathed in two slow snuffles before a growl. The real Chloe always tapped one paw when she was excited. Mikyla opened her eyes. "Chessie, sit." The dog on the left sat immediately. The dog on the right lunged at the ice. "Chloe, touch." The Chloe beside the doorway lifted one paw and tapped twice. The other snapped at the air. "There!" Mikyla shouted. She ran toward the real dogs, but the floor tilted. Chessie slid away from her. Chloe's paws lost their grip. Mikyla threw herself forward and caught both leashes, one in each hand. "Stay with me!" Chessie braced himself. Chloe twisted around and grabbed the edge of Mikyla's coat in her teeth. Together they formed a living chain. Pip darted ahead and struck the silver bell with both hands. The chime rang through the maze. Every false image shattered. The chamber filled with glittering fragments. They fell without cutting anyone, melting into bright puddles around Mikyla's boots. The doorway opened, revealing a clearing beneath a ceiling of dark blue ice. Mikyla stepped through with Chessie and Chloe close beside her. Pip followed, panting. The clearing was still. No corridors shifted here. No whispers tugged at her thoughts. A circle of white stone lay buried in the floor, carved with runes. Mikyla knelt and brushed away the frost. The runes glowed gold. Beyond the frozen river, where the silver trees grow, follow the path that remembers the sun. Glimmerwood waits beneath the sleeping boughs. There rests the Sunstone, bright enough to break the seals. A picture formed above the stone: a forest of crystal trees, their branches heavy with snow. At its center shone a golden jewel. Around it curled bands of blue ice, each one marked with Morrigan's dark symbol. Pip stared at the image. "Glimmerwood." "We found the path," Mikyla said. "Yes," Pip answered, but his voice had lost its relief. "The Sunstone's trail is guarded by frozen seals. Morrigan placed them there herself." The golden picture flickered. One seal tightened around the glowing jewel. Mikyla rose, keeping one hand on Chessie's harness and the other on Chloe's collar. "Then we break them." Pip looked toward the maze entrance. Far away, the walls began to whisper again. Not words this time. A warning. Above the Crystal Spire, Queen Sylvia's light flickered twice, then dimmed. Mikyla faced the image of Glimmerwood. The way forward was no longer a guess. It was a narrow silver path leading beyond the maze, toward a forest that remembered sunlight. She took the first step. Behind her, the rune-scribed clearing began to freeze.` }, { type: 'chapter', title: 'Chapter 4: Glimmerwood Sunstone Breaks the Frozen Seals', emoji: '☀️', text: `Mikyla took one more step before the freezing wall could seal her in. Cold snapped around her boots. The rune-scribed clearing behind her blurred beneath a skin of blue ice, and the silver bell's last chime trembled through the air. Chessie pushed against her leg, his sturdy harness creaking, while Chloe darted ahead with her nose low, chasing a ribbon of golden light between the trees. "Stay close," Mikyla whispered. Pip zipped past her ear. "Close is excellent! Close is safe! Close is also much better than being swallowed by a maze again!" Mikyla glanced back. The doorway they had escaped through was gone. In its place stood a wall of ice, smooth as glass. For one terrible instant, she imagined the maze whispering from behind it, calling in Pip's voice. She tightened her fingers around the silver bell they had carried from the chamber. "We're not going back." Ahead, the forest opened. Glimmerwood spread beneath a sunless canopy, its branches woven so thickly overhead that no sky showed through. Every leaf was made of pale crystal. Frost coated the trunks in curling layers, and tiny blue flames flickered inside the bark. The air smelled of pine sap and snow. Somewhere deep among the trees, something dripped with a slow, hollow plink. Pip hovered beside a crooked sign half-buried in ice. Its letters shone faintly. "Glimmerwood," he read. "Where the sun sleeps beneath the roots. Where the warm-hearted may enter. Where the cold-hearted become decorative statues." Chloe gave a worried whuff. "That last part wasn't on the sign," Pip admitted. Mikyla stepped toward the grove. "Where is the Sunstone?" Pip pointed toward the darkest part of the forest. "At the center. Locked inside the frost-root, guarded by the grove itself. The Sunstone holds the pure warmth of the sun, but it doesn't belong to anyone who grabs it." "Then how do we bring it back?" "By proving you won't use its warmth only for yourself." Mikyla thought of Queen Sylvia trapped at the top of the Crystal Spire, sealed inside Morrigan's dark ice. She thought of the fairy streets frozen silent beneath the witch's spell. "We need it for everyone." The moment she said the words, the forest changed. Frost raced across the ground in silver veins. The crystal leaves above snapped shut, and the blue flames inside the trees went dark. A wall of ice rose between Mikyla and Chessie. "Chessie!" she cried. He lunged, claws scraping. The ice thickened around him, climbing his legs. Mikyla dropped to her knees and grabbed his harness. "Pull!" Chessie leaned forward with a deep growl. Mikyla pulled backward. For a moment, neither moved. Then Chloe sprang at the ice, barking sharply. Her collar flashed with a bright blue spark. A crack zigzagged across the wall. "Again!" Mikyla shouted. Chloe barked once more. Chessie pulled. Mikyla braced both feet against a root and tugged with all her strength. The ice split apart, showering them with glittering shards. Chessie stumbled free. Chloe bounced in a circle, tail whipping the frost from the air. Pip stared at her collar. "That was not ordinary barking." "She's always been good at making herself heard," Mikyla said, hugging Chloe's neck. A low groan rolled through the grove. The roots beneath them shifted. Three paths opened between the trees. At the end of each path stood a shallow stone bowl. In the first, a warm orange glow flickered. In the second, a pale blue light shimmered. The third was empty. Pip's wings quivered. "The sun-draining trials." The orange glow flared, and heat rushed toward Mikyla's face. It felt like summer sunlight on her cheeks. The blue bowl answered with a freezing wind that pulled at the warmth inside her chest. The empty bowl began to fill with darkness. Mikyla stepped toward the orange bowl. "Wait!" Pip cried. "The grove wants a choice. Take the warmth, and the other paths will freeze." Mikyla looked at the blue light. It was shrinking. Chessie's breath puffed white. Chloe pressed against her side, trembling. The orange glow brightened. It promised comfort. It promised a quick path to the Sunstone. Mikyla reached for it, then stopped. "What happens if we share it?" she asked. Pip blinked. "Share a trial?" "Warmth shouldn't have to belong to one path." She took off her scarf and wrapped one end around Chessie's harness. Chloe caught the other end gently in her teeth. Mikyla held the middle and stepped between the bowls. "Together," she said. The orange light surged. Heat poured into the scarf, racing along its threads. Chessie's harness glowed gold. Chloe's collar shone blue. The warmth crossed from dog to girl and back again, forming a bright loop. The blue bowl stopped shrinking. The empty bowl filled with soft golden light. The forest gave a sound like a long sigh. The three paths folded into one. Pip wiped his forehead. "I knew that would work." "You were hiding behind a tree," Mikyla said. "I was supervising from a safer angle." They followed the new path beneath the crystal canopy. The farther they went, the colder it became. Frost climbed Mikyla's boots, then her knees. Her fingers stiffened around the scarf. Chessie's steps grew slow, but he kept moving. Chloe sniffed every root, searching for a way through. At last they reached a clearing where an enormous tree stood with its branches curled inward like protecting arms. Its trunk was white as moonlight. In the center, behind a cage of twisting frost roots, glowed a small golden stone. The Sunstone. Mikyla's breath caught. Its light was gentle, but it reached through the dark forest and painted warm circles across the snow. She stepped forward. The roots slammed down. A ring of frost burst from the tree, stealing the golden light. The Sunstone dimmed. Mikyla felt the cold press against her thoughts, whispering in a voice as thin as cracking ice. Keep it. Hide it. Warm only yourself. She shook her head. "No." The whisper grew louder. Queen Sylvia cannot be saved. Pip will lose his wings. Your dogs will freeze. Take the stone and run. Chloe whimpered. Chessie growled at the tree, but his paws slipped on the ice. Mikyla looked at them. She could not pull the Sunstone free by force. The grove had already shown her that. She knelt in the snow and placed both hands against the frost root. It was hard and cold beneath her palms. "We came because Queen Sylvia is trapped," she said. "But we're not leaving anyone behind. Not Pip. Not Frostveil. Not even Morrigan, if there's still a warm place inside her." Pip went very still. The Sunstone brightened. A thin crack opened in the root. Mikyla pushed harder. "We'll carry your warmth to everyone who needs it." Chessie pressed his broad shoulder against her back. Chloe placed one paw on Mikyla's boot. Pip flew down and set both hands against the root. "On three," Mikyla said. "One," Pip began. "Two," barked Chloe. Pip blinked. "That was three." Chessie shoved. The frost cage exploded in a burst of white light. The Sunstone floated into Mikyla's hands. Warmth flooded through her- not burning, not fierce, but alive. It filled her fingers, her arms, and the hollow place fear had made beneath her ribs. The frost melted from Chessie's paws. Chloe leaped through the falling snow, barking as golden sparks danced around her. The grove awakened. Blue flames returned to the trees. Crystal leaves unfolded overhead, revealing a narrow strip of violet sky. Far away, bells began ringing across Frostveil. Pip laughed so loudly that he spun backward in the air. "The Sunstone! We have the Sunstone!" Mikyla held it close. "Then we go to the palace." They ran. The Sunstone's warmth opened a path through Glimmerwood, melting the frost before their feet. By the time they reached the palace steps, the frozen streets were glowing with reflected gold. Fairies peered from icy windows. Tiny hands reached toward the light. Mikyla climbed the steps with Chessie at her side and Chloe bounding ahead. The palace doors were sealed beneath thick black ice. Morrigan's spell crawled across them in twisting patterns, each line pulsing like a dark heartbeat. Pip pointed to three frozen seals. "The Sunstone must touch each one!" Mikyla lifted the relic to the first seal. The ice cracked with a sharp report. A wave of cold struck her chest and threw her backward. Chessie caught her against his harness. Chloe skidded across the steps, claws scraping. "I'm all right," Mikyla gasped. The first seal reformed, darker than before. Pip's face went pale. "It's fighting back." Mikyla rose. "Then we fight together." She placed one hand on Chessie's harness and the other near Chloe's collar. Pip hovered over her shoulder. "Ready?" she asked. Chessie gave a steady bark. Chloe barked twice. Pip swallowed. "Ready enough." Mikyla pressed the Sunstone against the seal again. Gold light burst across the palace doors. Chessie dug his paws into the steps. Chloe's collar flashed, sending bright sparks through the cracks. Pip added his small, fierce glow. The first seal shattered. The second split. The third groaned, then broke apart in a shower of black ice. The palace doors flew open. For one breath, warmth poured through Frostveil. Frost-covered flowers unfolded along the walls. Frozen fountains began to trickle. Somewhere in the city, a fairy cried out with joy. Then the Crystal Spire screamed. Mikyla looked up. At the top of the spire, where Queen Sylvia was trapped, a dark glow spread through the crystal. Morrigan's ice spell had not weakened. It had tightened, winding around the highest tower in thick black coils. A crack of violet lightning flashed inside the spire. Pip's wings drooped. "That's impossible." The Sunstone shuddered in Mikyla's hands. From high above came a faint voice, muffled by layers of ice. "Mikyla..." Queen Sylvia. Mikyla stepped through the open palace doors. The warmth of the Sunstone streamed ahead of her, while the Crystal Spire filled the sky with gathering darkness. Chessie growled. Chloe lifted her nose and barked toward the tower. Mikyla closed her fingers around the glowing stone. "We're coming, Queen Sylvia." At the spire's summit, the dark ice flared brighter. And somewhere within it, Morrigan laughed.` }, { type: 'chapter', title: 'Chapter 5: Warmth Frees Sylvia From Morrigan', emoji: '❄️👑', text: `The Sunstone burned hot in Mikyla's hands as Morrigan's laughter cracked across the summit. Dark ice climbed the Crystal Spire walls like frozen vines. Shattered light spun through the chamber, blue and silver, flashing over the frozen figure of Queen Sylvia at its center. The last seals split with sharp, ringing pops, but the spell did not fall. Instead, black frost poured from the ceiling and curled around Mikyla's boots. Chessie growled and planted himself between her and the ice. His sturdy harness creaked as he leaned forward. Chloe darted in a nervous circle, then bumped Mikyla's knee with her collar jingling. "Stay close," Mikyla whispered. Pip flew above them, his tiny wings beating wildly. "The seals are cracked! Cracked is good! But not broken, and broken is what we need!" A tall shape stepped out of the dark ice. Morrigan's silver hair floated around her face as if she stood underwater. Her cloak shimmered with threads of midnight blue, and frost gathered at her fingertips. She looked less like a monster than a storm wearing a crown. "You carried the warmth of Glimmerwood all this way," Morrigan said. "How sweet. How foolish." Mikyla tightened her grip on the Sunstone. Its heat pressed against her palms, reminding her of the maze, the whispering riddles, and the moment she had trusted Chessie and Chloe when every reflection told her they were strangers. "I came to free Queen Sylvia," she said. "And what will you do to me?" The question stopped Mikyla. Morrigan lifted one hand. Ice raced across the floor. Chessie barked and shoved Mikyla backward just as a jagged ridge burst upward where she had been standing. Chloe leaped over it, her paws skidding on the glassy surface. "Move!" Pip cried. Mikyla ran. The Sunstone cast a golden path beneath her feet, but the dark ice chased it, snapping shut behind her. She reached the frozen queen and pressed the relic against the spell. Warm light spread through the ice around Queen Sylvia's face. For one breath, the queen's eyes opened. "Mikyla," she whispered. Then a black crack flashed across the ice, and Queen Sylvia vanished beneath its surface again. Morrigan's laugh fell silent. "Do not touch what is mine." Mikyla turned. "Queen Sylvia doesn't belong to you." The witch's face twisted. With a sweep of her arm, a wave of frost slammed across the chamber. Chessie braced himself, claws scraping for grip. Mikyla grabbed his harness, while Chloe seized the edge of Mikyla's coat in her teeth. Together they held fast as the icy wind roared around them. The Sunstone slipped from Mikyla's hands. It skittered across the floor and stopped beside a shattered pillar. "No!" Mikyla cried. Morrigan lifted her palm. The Sunstone rose into the air, wrapped in black threads. "Warmth always fades," Morrigan said. "It leaves people cold. It leaves them alone. Ice is honest. Ice stays." Mikyla stared at her. The words sounded too heavy for a wicked laugh. They sounded like something Morrigan had carried for a very long time. Chloe pulled at Mikyla's coat. Chessie stood trembling but steady beside her. Mikyla remembered the maze's false voices. They had whispered that she was too small, that her dogs would leave her, that trust was a trick. Fear had made every lie sound true. She could fight Morrigan with the same fear. She could throw the Sunstone like a weapon and hope its heat destroyed the witch. But Queen Sylvia was still trapped between them. Mikyla stepped away from Chessie. "Mikyla!" Pip squeaked. She walked toward Morrigan with empty hands. The witch's eyes narrowed. "You have no shield." "I know." "You have no spell." "I know." "Then why are you coming closer?" Mikyla stopped beneath the spinning shards of light. "Because you're afraid." The chamber groaned. Morrigan's face hardened. "I am not afraid of a child." "Not of me." Mikyla glanced at the ice around Queen Sylvia. "You're afraid of losing the only thing that never left you." For a moment, the storm inside the spire faltered. A picture flickered in the dark ice. It showed a younger Morrigan in a small frozen valley, wrapped in a patched blue cloak. Beside her stood a little cottage with a glowing window. She held a bundle of tiny frost flowers against her chest. Morrigan reached toward the image. "Stop." Another picture appeared. The cottage window was dark. Snow covered the path. Morrigan stood alone, older now, holding one frost flower that had turned gray. "I said stop!" Ice spears shot from the floor. Chessie lunged. He caught Mikyla's coat and pulled her clear as the spears shattered behind her. Chloe sprang onto a fallen shard and barked fiercely at Morrigan. Pip zipped through the air, tugging at the black threads around the Sunstone. "Morrigan!" Mikyla called. "What happened?" "Nothing happened!" But the ice showed more. Morrigan had once cared for Frostveil's winter gardens. She had guarded the delicate frost flowers that bloomed only in cold moonlight. She had believed the kingdom would care for her in return. When a long storm came, the flowers froze, the gardens failed, and the fairies turned away from her grief. "She kept the winter gardens alive," Queen Sylvia's muffled voice said from inside the spell. "I should have gone to her." Morrigan's expression cracked. "You were Queen. You had celebrations, lights, warm halls. I had empty gardens." "I should have gone," Sylvia repeated. Mikyla looked from the queen to the witch. "You were lonely." Morrigan's fingers shook. "Loneliness is a door that freezes shut." "Then let us open it." Morrigan snarled and pulled the Sunstone close. Darkness swallowed its golden glow. "Warmth is what failed me!" "No," Mikyla said. "People failed to bring it." She turned and called to her dogs. "Chessie, Chloe, stay with me." Chessie pressed his broad shoulder against her leg. Chloe curled her tail around Mikyla's ankle. Their warmth was small, but it was real. Mikyla felt Chessie's rough fur beneath her hand and heard Chloe's soft, quick breathing. She faced Morrigan again. "You can keep fighting," Mikyla said. "You can freeze every window and seal every door. But it won't make you less alone." Morrigan's eyes shone like dark glass. Pip reached the Sunstone's threads and bit down. "A little help would be lovely!" Mikyla ran. She leaped onto the fallen pillar, then sprang toward the floating Sunstone. Morrigan flung a ribbon of frost at her. Chessie caught Mikyla's harness in his teeth and pulled, changing her path just enough for the ribbon to miss. Chloe bounded after them and knocked the Sunstone from the air with her nose. It dropped into Mikyla's hands. Heat rushed through her fingers. Morrigan raised both arms. The entire summit chamber shook. Dark ice rose around Queen Sylvia in a towering cage. Mikyla did not throw the Sunstone. She carried it to the cage and placed both hands against the ice. "Come with me," she whispered. Chessie barked once, deep and strong. Chloe yipped and pressed her nose beside Mikyla's hand. Pip hovered above them, his wings glowing with reflected gold. Mikyla thought of the maze. She thought of Glimmerwood, where the Sunstone had awakened only after warmth was shared instead of guarded. She had brought the relic here, but she could not make it shine alone. "Queen Sylvia," she called. "Morrigan, too. No more hiding." Queen Sylvia lifted her voice from within the ice. "I am here." Morrigan stared at the golden light spreading beneath Mikyla's hands. "I remember you," Sylvia said. "You brought spring frost to the palace gardens. You sang to every flower." "I was foolish," Morrigan whispered. "You were needed." The dark ice trembled. Mikyla felt the Sunstone's warmth move through her arms, into Chessie, into Chloe, and then outward toward the cage. Golden cracks opened through the black spell. Each one glowed brighter than the last. Morrigan stepped forward. Frost curled around her boots, begging her to hold on. Mikyla reached one hand toward her. Morrigan stared at it as if it were a strange and dangerous thing. "You'll burn me," she said. "Only if you keep holding the cold." Morrigan looked at Queen Sylvia. Then at the fading image of her younger self and the gray frost flower. Slowly, she placed her hand over Mikyla's. The cold was fierce. It raced up Mikyla's arm, numbing her fingers. Chessie growled, and Chloe whined, but Mikyla held on. Morrigan's hand shook. "I don't remember how to let go," she said. "You don't have to do it alone." Morrigan closed her eyes. The Sunstone blazed. Light burst through the summit, warm as morning sunlight on snow. The dark ice shattered in a thousand glittering pieces. Queen Sylvia stepped free, her silver gown flowing like moonlit water. She stumbled, and Mikyla caught her hand. Behind them, the Crystal Spire rang with a deep, beautiful note. Morrigan fell to her knees. The black frost vanished from her cloak. Beneath it, her old blue caretaker's dress appeared, faded and patched at the sleeves. In her hands lay a single living frost flower, white at its edges and gold at its center. Queen Sylvia approached her. For a moment, neither spoke. Then Sylvia knelt and held out her hand. "Will you help us grow again?" Morrigan looked toward the broken windows. Beyond them, Frostveil spread beneath the dawn. The frozen streets glittered, but tiny streams now ran between the stones. Far below, fairy lights flickered on one by one. "Not as a prisoner?" Morrigan asked. "As a gardener," Sylvia replied. "If you choose it." Morrigan touched the flower's golden center. "I don't know if I can make the gardens bloom." Mikyla smiled. "We can learn together." Pip landed on the Sunstone with a relieved puff. "Excellent! Wonderful! Very peaceful! Though perhaps next time we could save a kingdom without nearly being stabbed by ice?" Chloe licked his wing. Pip squealed and tumbled into Chessie's fur. Mikyla laughed, and the sound seemed to warm the whole summit. Queen Sylvia rose and lifted her arms. A soft silver light flowed from her palms through the Crystal Spire. It traveled down the tower and into the kingdom below. Bells began to ring in the streets. Frost fairies emerged from their homes, touching the melting seals and staring at the open sky. The kingdom had been saved, but its walls were cracked, its gardens frozen, and its people frightened of what came next. Queen Sylvia looked out over Frostveil. "We cannot rebuild the old kingdom exactly as it was." Morrigan stood beside her, still holding the living flower. "Then we build one with doors that open." Mikyla thought of the ancient rune-carved wooden door in the old oak, and of how it had carried her into a world she never knew existed. "Warmth needs somewhere to enter," she said. Chessie leaned against her knee. Chloe wagged so hard that her collar jingled. Below, the first golden shoots pushed through the snow. Morrigan knelt beside them. With careful fingers, she touched the soil. A ring of pale flowers opened around her hand, each one shining with a tiny sun at its heart. Queen Sylvia watched, tears bright in her eyes.` }, { type: 'chapter', title: 'Final Thoughts', emoji: '✨🌸', text: `By the time the last chill loosens its grip, the journey has taught more than magic- it has taught Mikyla how to listen with her whole heart. In this kingdom of frozen riddles and thawing hope, every step mattered, and every kindness became a key. When the wind calms, it feels as though warmth has been set back into the world like a promise waiting to be kept. And somewhere between one breath and the next, Mikyla And The Frostveil Kingdom leaves a bright thought behind: that even in the coldest places, trust can open doors. Mikyla held the Sunstone close as the morning spread across the Crystal Spire. Its warmth no longer felt like a weapon. It felt like a promise shared between many hands. And in Frostveil, for the first time in a very long winter, the doors stayed open. ~ The End ~` } ]; let currentPage = 0; const totalPages = pages.length; let isPlaying = false; let isPaused = false; let synth = window.speechSynthesis; let currentSpeed = 1; let currentParagraphIndex = 0; let pausedParagraphIndex = 0; function checkAccess() { if (!userEmail) { document.getElementById('loginModal').classList.remove('hidden'); return false; } if (!isCreator && !hasPaid && currentPage >= 2) { document.getElementById('paymentModal').classList.remove('hidden'); return false; } return true; } function handleLogin() { const input = document.getElementById('emailInput').value.trim(); if (!input || !input.includes('@')) { alert("Please enter a valid email address."); return; } userEmail = input; localStorage.setItem('mikyla_user_email', userEmail); isCreator = userEmail.toLowerCase() === CREATOR_EMAIL.toLowerCase(); document.getElementById('loginModal').classList.add('hidden'); if (isCreator) { document.getElementById('status').textContent = '👑 Creator Access Granted: Full Book Unlocked'; } } function confirmPayment() { hasPaid = true; localStorage.setItem('mikyla_has_paid', 'true'); document.getElementById('paymentModal').classList.add('hidden'); document.getElementById('status').textContent = '✅ Payment Verified: Full Book Unlocked!'; } function resetAccess() { if (confirm("This will clear your login and payment status to test the flow. Are you sure?")) { localStorage.removeItem('mikyla_user_email'); localStorage.removeItem('mikyla_has_paid'); location.reload(); } } function renderPages() { const container = document.getElementById('bookContainer'); container.innerHTML = ''; pages.forEach((page, index) => { const pageDiv = document.createElement('div'); pageDiv.className = 'book-page'; pageDiv.style.zIndex = totalPages - index; if (page.type === 'cover') { pageDiv.innerHTML = '<div class="page-content cover-page"><div class="cover-emoji">' + page.emoji + '</div><h2>' + page.title + '</h2><p class="subtitle">' + page.subtitle + '</p><p class="content">' + page.content + '</p><div class="page-num">' + (index === 0 ? 'Cover' : 'Back') + '</div></div>'; } else { const paragraphs = page.text.split('\n\n'); let html = '<div class="page-content"><div class="illustration">' + page.emoji + '</div><h2 class="chapter-title">' + page.title + '</h2><div class="story-text" id="story-' + index + '">'; paragraphs.forEach((p, i) => { html += '<p id="p-' + index + '-' + i + '">' + p + '</p>'; }); html += '</div><div class="page-num">Page ' + index + '</div></div>'; pageDiv.innerHTML = html; } container.appendChild(pageDiv); }); updateDisplay(); } function updateDisplay() { const pageElements = document.querySelectorAll('.book-page'); pageElements.forEach((page, index) => page.classList.toggle('flipped', index < currentPage)); document.getElementById('prevBtn').disabled = currentPage === 0; document.getElementById('btnPrev').disabled = currentPage === 0; document.getElementById('nextBtn').disabled = currentPage === totalPages - 1; document.getElementById('btnNext').disabled = currentPage === totalPages - 1; const statusEl = document.getElementById('status'); if (pages[currentPage].type === 'cover') statusEl.textContent = '📖 Cover page - Tap Next for Chapter 1'; else statusEl.textContent = '📖 Page ' + currentPage + ' of ' + (totalPages - 1); } function clearHighlights() { document.querySelectorAll('.story-text p.active').forEach(el => el.classList.remove('active')); } function highlightParagraph(index) { clearHighlights(); const para = document.getElementById('p-' + currentPage + '-' + index); if (para) { para.classList.add('active'); para.scrollIntoView({ behavior: 'smooth', block: 'center' }); } } function nextPage() { if (currentPage === 1 && !isCreator && !hasPaid) { document.getElementById('paymentModal').classList.remove('hidden'); return; } if (currentPage < totalPages - 1) { currentPage++; currentParagraphIndex = 0; pausedParagraphIndex = 0; clearHighlights(); updateDisplay(); if (isPlaying && !isPaused) setTimeout(() => speakCurrentPage(0), 800); } } function prevPage() { if (currentPage > 0) { currentPage--; currentParagraphIndex = 0; pausedParagraphIndex = 0; clearHighlights(); updateDisplay(); if (isPlaying && !isPaused) setTimeout(() => speakCurrentPage(0), 800); } } function changeSpeed() { currentSpeed = parseFloat(document.getElementById('speedSelect').value); } function speakCurrentPage(startIndex) { if (pages[currentPage].type === 'cover') return; synth.cancel(); clearHighlights(); const page = pages[currentPage]; const paragraphs = page.text.split('\n\n'); currentParagraphIndex = startIndex; function speakNext() { if (currentParagraphIndex >= paragraphs.length || isPaused) { if (!isPaused) { isPlaying = false; clearHighlights(); document.getElementById('status').textContent = '✅ Finished page ' + currentPage; updatePlayButtons(); } return; } highlightParagraph(currentParagraphIndex); const text = paragraphs[currentParagraphIndex]; const utterance = new SpeechSynthesisUtterance(text); utterance.rate = currentSpeed; utterance.pitch = 1.0; utterance.volume = 1.0; utterance.onend = function() { if (!isPaused) { currentParagraphIndex++; setTimeout(speakNext, 400); } }; synth.speak(utterance); } document.getElementById('status').textContent = '🔊 Reading page ' + currentPage + '...'; speakNext(); } function playAudio() { if (!checkAccess()) return; if (pages[currentPage].type === 'cover') { document.getElementById('status').textContent = '⚠️ Navigate to Chapter 1 for audio'; return; } if (isPaused) { isPaused = false; isPlaying = true; updatePlayButtons(); speakCurrentPage(pausedParagraphIndex); } else if (!isPlaying) { isPlaying = true; isPaused = false; pausedParagraphIndex = 0; updatePlayButtons(); speakCurrentPage(0); } } function pauseAudio() { if (isPlaying) { synth.cancel(); isPaused = true; isPlaying = false; pausedParagraphIndex = currentParagraphIndex; document.getElementById('status').textContent = '⏸️ Paused - Tap Play to resume'; updatePlayButtons(); } } function updatePlayButtons() { document.getElementById('playBtn').disabled = isPlaying; document.getElementById('pauseBtn').disabled = !isPlaying; } // Download to Home Screen Functions function showDownloadInstructions() { const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream; const iosInstructions = document.getElementById('iosInstructions'); if (isIOS) { iosInstructions.classList.add('show'); document.getElementById('status').textContent = '📱 Follow the instructions above to add to Home Screen'; } else if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then((choiceResult) => { if (choiceResult.outcome === 'accepted') { document.getElementById('status').textContent = '✅ App installed to Home Screen!'; } deferredPrompt = null; }); } else { iosInstructions.classList.add('show'); iosInstructions.innerHTML = '<strong>📱 To install:</strong><br>• <strong>Chrome (Android):</strong> Tap the menu (⋮) → "Add to Home Screen"<br>• <strong>Safari (iOS):</strong> Tap Share → "Add to Home Screen"<br>• <strong>Desktop:</strong> Look for the install icon in the address bar'; document.getElementById('status').textContent = '📱 Follow the instructions above'; } } window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; setTimeout(() => { document.getElementById('installBanner').classList.add('show'); }, 3000); }); function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then((choiceResult) => { if (choiceResult.outcome === 'accepted') { document.getElementById('installBanner').classList.remove('show'); document.getElementById('status').textContent = '✅ App installed!'; } deferredPrompt = null; }); } } function dismissInstall() { document.getElementById('installBanner').classList.remove('show'); localStorage.setItem('installBannerDismissed', 'true'); } function createSnowfall() { for (let i = 0; i < 30; i++) { const snowflake = document.createElement('div'); snowflake.className = 'snowflake'; snowflake.textContent = '❄'; snowflake.style.left = Math.random() * 100 + 'vw'; snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's'; snowflake.style.animationDelay = Math.random() * 5 + 's'; snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px'; document.body.appendChild(snowflake); } } window.onload = function() { if (localStorage.getItem('installBannerDismissed') !== 'true') { // Banner will show via event listener } renderPages(); createSnowfall(); updatePlayButtons(); checkAccess(); }; </script> </body> </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#1e3c72">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Frostveil">
+<title>Mikyla and the Frostveil Kingdom</title>
+<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTWlreWxhIGFuZCB0aGUgRnJvc3R2ZWlsIEtpbmdkb20iLCJzaG9ydF9uYW1lIjoiRnJvc3R2ZWlsIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzFlM2M3MiIsInRoZW1lX2NvbG9yIjoiIzFlM2M3MiIsInN0YXJ0X3VybCI6Ii4iLCJpY29ucyI6W3sic3JjIjoiaHR0cHM6Ly9pLmltZ3VyLmNvbS83WnBqRkxKLnBuZyIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9wbmcifV19">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: Georgia, serif; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); min-height: 100vh; padding: 10px; }
+.snowflake { position: fixed; top: -10px; color: white; animation: fall linear infinite; z-index: 1; pointer-events: none; }
+@keyframes fall { to { transform: translateY(105vh); } }
+.header { text-align: center; color: white; margin-bottom: 15px; }
+.header h1 { font-size: 1.6em; background: linear-gradient(to right, #ffd700, #fff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.controls-box { background: white; border-radius: 15px; padding: 15px; margin-bottom: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.3); }
+.btn-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+.btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9em; flex: 1; min-width: 80px; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-paypal { background: linear-gradient(135deg, #0070ba, #003087); font-weight: bold; font-size: 1.1em; padding: 12px 20px; text-decoration: none; display: block; text-align: center; margin-bottom: 15px; color: white; border-radius: 20px; }
+.btn-download { background: linear-gradient(135deg, #11998e, #38ef7d); font-weight: bold; font-size: 1em; padding: 12px 20px; margin-top: 10px; width: 100%; }
+select { padding: 8px; border-radius: 5px; border: 1px solid #ddd; margin: 5px; width: 100%; font-size: 0.85em; }
+#status { text-align: center; color: #666; font-size: 0.85em; margin-top: 10px; padding: 8px; background: #f0f0f0; border-radius: 5px; }
+.book-container { position: relative; width: 100%; max-width: 500px; height: 600px; margin: 0 auto 15px; perspective: 1500px; }
+.book-page { position: absolute; width: 100%; height: 100%; background: linear-gradient(135deg, #faf8f3, #f5f0e8); border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); padding: 20px; overflow-y: auto; transition: transform 0.6s; transform-origin: left center; transform-style: preserve-3d; }
+.book-page.flipped { transform: rotateY(-180deg); }
+.page-content { backface-visibility: hidden; height: 100%; display: flex; flex-direction: column; }
+.cover-page { background: linear-gradient(135deg, #1e3c72, #2a5298); color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 30px 20px; }
+.cover-emoji { font-size: 70px; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+.cover-page h2 { font-size: 1.7em; color: #ffd700; margin: 15px 0; text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+.cover-page .subtitle { font-size: 1.2em; font-style: italic; margin: 10px 0; color: #e0f0ff; }
+.cover-page .content { font-size: 1.1em; color: #ffd700; margin-top: 20px; }
+.page-num { text-align: right; color: #999; font-size: 0.8em; margin-top: auto; padding-top: 10px; }
+.chapter-title { font-size: 1.3em; text-align: center; margin-bottom: 10px; color: #667eea; }
+.illustration { font-size: 50px; text-align: center; margin: 10px 0; }
+.story-text { font-size: 0.95em; line-height: 1.7; color: #34495e; flex: 1; }
+.story-text p { margin-bottom: 10px; padding: 6px; border-radius: 6px; transition: all 0.3s; }
+.story-text p.active { background-color: #FFD700 !important; color: #1e3c72 !important; font-weight: bold; box-shadow: 0 0 12px rgba(255, 215, 0, 0.8); }
+.nav-buttons { display: flex; justify-content: space-between; max-width: 500px; margin: 0 auto; gap: 10px; }
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; align-items: center; justify-content: center; z-index: 9999; padding: 20px; }
+.modal-box { background: white; border-radius: 20px; padding: 30px; max-width: 400px; width: 100%; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.5); animation: popIn 0.3s ease-out; }
+@keyframes popIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-box h2 { color: #1e3c72; margin-bottom: 15px; font-size: 1.5em; }
+.modal-box p { color: #555; margin-bottom: 20px; line-height: 1.5; }
+.modal-input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 10px; font-size: 1em; margin-bottom: 15px; text-align: center; }
+.modal-input:focus { border-color: #667eea; outline: none; }
+.lock-icon { font-size: 60px; margin-bottom: 15px; }
+.hidden { display: none !important; }
+.reset-link { text-align: center; margin-top: 20px; font-size: 0.8em; }
+.reset-link a { color: rgba(255,255,255,0.6); text-decoration: underline; cursor: pointer; }
+.install-banner { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: white; padding: 15px 25px; border-radius: 50px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); display: none; align-items: center; gap: 15px; z-index: 1000; animation: slideUp 0.5s ease-out; }
+@keyframes slideUp { from { transform: translateX(-50%) translateY(100px); opacity: 0; } to { transform: translateX(-50%) translateY(0); opacity: 1; } }
+.install-banner.show { display: flex; }
+.install-banner button { background: linear-gradient(135deg, #11998e, #38ef7d); color: white; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-weight: bold; }
+.install-banner button.close-btn { background: #ccc; }
+.ios-instructions { background: #fff3cd; border: 1px solid #ffc107; border-radius: 10px; padding: 12px; margin-top: 10px; font-size: 0.85em; color: #856404; display: none; }
+.ios-instructions.show { display: block; }
+</style>
+</head>
+<body>
+
+<div id="loginModal" class="modal-overlay">
+  <div class="modal-box">
+    <div style="font-size: 50px; margin-bottom: 15px;">✨</div>
+    <h2>Welcome to Frostveil!</h2>
+    <p>Please enter your email to begin your magical adventure.</p>
+    <input type="email" id="emailInput" class="modal-input" placeholder="your@email.com">
+    <button class="btn" onclick="handleLogin()" style="width: 100%;">Enter the Kingdom</button>
+  </div>
+</div>
+
+<div id="paymentModal" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="lock-icon">🔒</div>
+    <h2>Continue the Adventure!</h2>
+    <p>You've reached the end of the free preview. To unlock the full story and help Mikyla save the kingdom, please complete the secure payment below.</p>
+    <a href="https://www.paypal.com/ncp/payment/ZAC7WNMVSB67E" target="_blank" class="btn-paypal">💳 Pay Securely with PayPal</a>
+    <button class="btn" onclick="confirmPayment()" style="background: #28a745; width: 100%;">✅ I Have Completed the Payment</button>
+    <p style="font-size: 0.8em; color: #999; margin-top: 15px;">Your progress will be saved on this device.</p>
+  </div>
+</div>
+
+<div id="installBanner" class="install-banner">
+  <span> Install this app</span>
+  <button onclick="installApp()">Install</button>
+  <button class="close-btn" onclick="dismissInstall()"></button>
+</div>
+
+<div class="header">
+  <h1>Mikyla and the Frostveil Kingdom</h1>
+  <p style="color: #e0f0ff; font-style: italic;">A Magical Quest</p>
+</div>
+
+<div class="controls-box">
+  <div class="btn-row">
+    <button class="btn" onclick="playAudio()" id="playBtn">▶️ Play</button>
+    <button class="btn" onclick="pauseAudio()" id="pauseBtn" disabled>⏸️ Pause</button>
+  </div>
+  <div class="btn-row">
+    <button class="btn" onclick="prevPage()" id="prevBtn" disabled>⏮️ Prev</button>
+    <button class="btn" onclick="nextPage()" id="nextBtn">Next ️</button>
+  </div>
+  <div style="margin-top: 10px;">
+    <select id="speedSelect" onchange="changeSpeed()">
+      <option value="0.85">Slow & Clear</option>
+      <option value="1" selected>Natural Pace</option>
+      <option value="1.1">Slightly Faster</option>
+    </select>
+  </div>
+  <button class="btn btn-download" onclick="showDownloadInstructions()">📲 Download to Home Screen</button>
+  <div id="iosInstructions" class="ios-instructions">
+    <strong> To install on iPhone/iPad:</strong><br>
+    1. Tap the Share button (box with arrow) at the bottom of Safari<br>
+    2. Scroll down and tap "Add to Home Screen"<br>
+    3. Tap "Add" to confirm
+  </div>
+  <div id="status">📖 Tap Play to start reading aloud</div>
+</div>
+
+<div class="book-container" id="bookContainer"></div>
+
+<div class="nav-buttons">
+  <button class="btn" onclick="prevPage()" id="btnPrev" disabled>← Previous</button>
+  <button class="btn" onclick="nextPage()" id="btnNext">Next →</button>
+</div>
+
+<div class="reset-link">
+  <a onclick="resetAccess()">[ Reset Access / Test Payment Flow ]</a>
+</div>
+
+<script>
+const CREATOR_EMAIL = "charltommie18@gmail.com";
+let userEmail = localStorage.getItem('mikyla_user_email') || "";
+let hasPaid = localStorage.getItem('mikyla_has_paid') === 'true';
+let isCreator = userEmail.toLowerCase() === CREATOR_EMAIL.toLowerCase();
+let deferredPrompt = null;
+
+const pages = [
+  { type: 'cover', emoji: '👸❄️', title: 'Mikyla And The Frostveil Kingdom', subtitle: 'A Magical Journey Awaits', content: 'An Epic Family Adventure' },
+  { type: 'chapter', title: 'Chapter 1: The Rune Door in Winter Oak', emoji: '🚪', text: `Snow burst from Chloe's paws as she sprang over a fallen branch and landed in a soft heap.
+
+"Mikyla! Catch me!"
+
+Mikyla laughed and lunged after her, boots sinking to her ankles. Frosty branches tapped together overhead, shaking loose silver flakes that glittered in the pale afternoon light. Chessie thundered past them, sturdy shoulders pushing through the snow, then turned in a wide circle as if guarding the whole forest.
+
+"Not so far!" Mikyla called. "Stay where I can see you!"
+
+Chloe wagged her tail and vanished behind the ancient oak.
+
+Mikyla hurried after her. The oak stood at the edge of a small clearing, its trunk so wide that three grown-ups holding hands might not have reached around it. Its bark was ridged like frozen waves. Chloe's nose poked from a hollow near the roots, followed by a muffled bark.
+
+"What did you find?"
+
+Mikyla knelt and brushed away the snow. Beneath the white blanket, the oak's roots curled around a narrow wooden door.
+
+It was not an ordinary door. Strange marks had been carved across it in curling lines and tiny diamond shapes. The runes glowed blue beneath the old wood, bright enough to paint Mikyla's gloves with light.
+
+Chessie gave a low warning growl.
+
+Chloe pawed at the threshold.
+
+"Easy," Mikyla whispered. She reached toward the nearest rune, then stopped. The wood felt warm even before her fingers touched it.
+
+A tiny click sounded inside the oak.
+
+The door opened by itself.
+
+Beyond it waited no dark hollow, but a whirl of white-blue light. Snow spun upward instead of falling. The forest vanished behind a shining veil, and somewhere inside the glow, bells chimed in a hurried, uneven rhythm.
+
+Mikyla grabbed Chloe's collar with one hand and Chessie's harness with the other.
+
+"We're staying together," she said.
+
+The light tugged.
+
+At first it felt like a strong wind pulling at her coat. Then her boots slid across the snow. Chloe yelped, claws scraping for grip. Chessie planted all four paws and leaned backward, muscles tight beneath his fur.
+
+"Mikyla!" a voice cried from inside the doorway.
+
+A small figure shot through the swirling light. The stranger had transparent wings, a pointed green cap, and a satchel bouncing against one hip. He spun once, smacked into the doorframe, and fluttered upright.
+
+"Don't step through!" he shouted. "The threshold is misbehaving!"
+
+"Who are you?" Mikyla called.
+
+"No time! I'm Pip, scout of Frostveil, and that door is- oh, frost feathers!"
+
+The pull doubled.
+
+Mikyla wrapped both arms around Chessie's harness. Chloe slipped free and tumbled toward the doorway.
+
+"Chloe!"
+
+The dog disappeared into the blue-white whirl.
+
+Chessie barked and leaped after her. Mikyla followed without thinking. Pip darted toward them, reaching for Mikyla's sleeve, but a ring of frost exploded between them.
+
+The world became snow, light, and spinning sound.
+
+Mikyla felt Chloe's warm fur brush her knee. Chessie's bark boomed somewhere close, then far away. Pip shouted something she could not understand. A cold hand seemed to grab her coat and twist.
+
+She reached for Pip.
+
+Their fingers touched.
+
+Then a crack of silver lightning split the air.
+
+Pip was flung one way. Mikyla, Chessie, and Chloe were dragged another.
+
+"Mikyla!" Pip cried.
+
+The door slammed shut.
+
+For one breath, there was only darkness.
+
+Mikyla landed on a smooth, glittering surface. Her palms stung. Chloe slid into her side, whining, while Chessie skidded past them and spun around with his teeth bared.
+
+Mikyla pushed herself up.
+
+The forest was gone.
+
+Towering crystal trees rose around her, their branches shining with frozen leaves. Beyond them stretched a city of curved bridges, blue rooftops, and tall windows glowing like captured stars. Snowflakes drifted through the air, but each one chimed softly when it touched the ground.
+
+Far above the city, a crystal spire pierced the violet sky.
+
+A black band of ice wound around its highest point.
+
+Mikyla stared. "Where are we?"
+
+Chloe sniffed a crystal tree and sneezed. Chessie moved in front of both dogs, watching the strange streets.
+
+A flutter of wings rushed past Mikyla's ear.
+
+Pip shot out from behind a pillar of ice, wobbling badly. One wing drooped, and his green cap had slipped over one eye.
+
+"There you are!" he cried. "I found you!"
+
+Mikyla ran toward him. "Are you hurt?"
+
+"Only my dignity. And perhaps my left wing. But that is less important than running."
+
+"Running from what?"
+
+Pip pointed toward the crystal spire.
+
+A thin black mark appeared in the snow between them. It curled into a symbol like a frozen eye. Another symbol flickered on a rooftop. Then another, farther down the street.
+
+The bells of Frostveil stopped.
+
+Every crystal window went dark.
+
+Pip's face lost its mischievous grin. "Morrigan knows the door opened."
+
+A deep groan rolled through the city. Ice crept across the bridge rails, spreading in branching lines.
+
+Mikyla tightened her grip on Chloe's collar. "Who is Morrigan?"
+
+"The Frost-Weaver witch," Pip said. "She trapped Queen Sylvia in a dark ice spell at the top of the Crystal Spire. Now she is sealing every road, every gate, every warm place in Frostveil."
+
+"Then take us to the queen."
+
+Pip blinked. "That is not how this works."
+
+"It can be."
+
+A crack split the bridge behind them. Frost climbed over the stones, swallowing the glowing patterns beneath their feet.
+
+Pip flapped hard. "The queen is sealed away. The spire cannot be opened. The city gates are frozen shut. And the only path left begins in the Whispering Ice Maze."
+
+Chloe tugged free and bounded toward a narrow archway glittering at the far end of the street.
+
+"Chloe!" Mikyla shouted.
+
+Chessie raced after her.
+
+Mikyla followed, boots slipping on the icy stones. Pip flew alongside her, glancing back every few seconds.
+
+"You must listen carefully," he said. "Frostveil is not a place that welcomes visitors. Especially visitors from outside."
+
+"Then why did the door bring us here?"
+
+"I told you, the threshold is misbehaving!"
+
+"Can you send us home?"
+
+Pip hesitated.
+
+That small pause frightened Mikyla more than the frozen city.
+
+"No," he admitted. "Not until the door remembers how to open."
+
+The archway shuddered. A curtain of frost dropped from its top, sealing the street behind them. Mikyla, Chessie, Chloe, and Pip were trapped in a narrow passage between crystal walls.
+
+At the far end stood a round doorway made of clear ice. Inside it, pale shapes moved like fish beneath a frozen pond.
+
+Pip landed on Mikyla's shoulder. "That is the maze entrance."
+
+"Where is the way through?"
+
+"Somewhere ahead."
+
+"That doesn't sound like a plan."
+
+"It was a better plan before the witch noticed us."
+
+The ice door began to whisper.
+
+Mikyla leaned closer. At first she heard only the scrape of wind. Then the sound formed words.
+
+Warmth fades.
+
+Trust breaks.
+
+The queen sleeps.
+
+Chloe whimpered. Chessie pressed against Mikyla's leg, his fur bristling.
+
+Mikyla looked from one dog to the other. Her fear felt cold and sharp, but their bodies were warm beside her. She placed one hand on Chessie's neck and the other on Chloe's back.
+
+"We stay together," she said again.
+
+Pip pointed at the door. "Do not answer the maze. It repeats what you fear."
+
+The whisper changed.
+
+Mikyla cannot protect you.
+
+Chloe pulled back.
+
+Chessie growled at the ice.
+
+Mikyla stepped forward. "It's lying."
+
+The door flashed. A black rune spread across its surface, shaped like a crooked spiderweb.
+
+Pip cried out. "Down!"
+
+The ice burst open.
+
+A wave of glittering frost swept through the passage. Mikyla grabbed Chloe, but the wind tore the dog from her arms. Chessie lunged and caught Chloe's harness between his teeth. Pip flew upward, spinning wildly as the storm seized his wings.
+
+"Mikyla!" he shouted. "The rune! Touch the center!"
+
+She saw it through the storm: a small blue spark at the heart of the black mark.
+
+Mikyla dropped to her knees and crawled across the ice. The surface burned through her gloves. Snow whipped her face. Chessie strained against the wind, holding Chloe fast, while Chloe barked and kicked.
+
+Pip vanished into the white swirl.
+
+"Pip!"
+
+No answer came.
+
+Mikyla reached the rune.
+
+For an instant, she saw a different place inside it: a golden forest beneath a summer sun, a little figure standing alone among frozen trees. Then the vision snapped shut.
+
+Mikyla pressed her palm to the spark.
+
+"I'm not leaving my friends!"
+
+Warm light burst from her hand.
+
+The storm folded inward with a thunderous crack. Frost shattered across the passage like glass. Chessie dropped to the floor, Chloe tumbling safely beneath him.
+
+The ice door swung wide.
+
+Beyond it stretched a maze of towering translucent walls. Blue paths twisted in impossible directions, and tiny voices whispered from every surface.
+
+Pip was gone.
+
+Mikyla scrambled to her feet. "Pip?"
+
+Only the maze answered.
+
+Pip is lost.
+
+Pip is afraid.
+
+Pip will not find you.
+
+Chloe pressed close to Mikyla's knees. Chessie stood at the entrance, staring into the shifting corridors.
+
+Mikyla wanted to run after Pip, but the paths were already sliding apart. One passage narrowed to a silver line. Another opened toward a distant glow, warm and gold.
+
+A single rune appeared on the floor beneath her boots.
+
+GLIMMERWOOD.
+
+Mikyla looked back at the frozen city. High above, the black ice around the Crystal Spire pulsed once, like a dark heartbeat.
+
+"We'll find Pip," she whispered. "Then we'll find Queen Sylvia."
+
+Chessie gave a firm bark.
+
+Chloe's tail began to wag.
+
+Together, they stepped into the Whispering Ice Maze.
+
+Behind them, the door vanished, leaving only a smooth wall of ice- and, trapped deep inside it, the faint echo of Pip calling her name.` },
+  { type: 'chapter', title: 'Chapter 2: Mikyla Chooses Trust Over Fear', emoji: '🧚', text: `Mikyla lunged toward Pip's faint voice, her boots skidding across the glassy floor as the maze folded around her.
+
+"Pip!" she called.
+
+The echo slipped away through the ice. Chessie's harness jingled behind her, and Chloe's claws clicked wildly as she chased a silver reflection that looked almost like a doorway. Mikyla grabbed Chloe's collar before the little dog could vanish around a shining wall.
+
+"Stay close!" Mikyla cried, pulling Chloe against her knees.
+
+Chessie planted himself between them and the nearest wall. His sturdy body trembled, but he lowered his head and gave a warning growl. The translucent ice answered with a hundred tiny growls of its own.
+
+Mikyla's fingers tightened in Chloe's soft fur. The cold seeped through her gloves. Somewhere beyond the maze, Frostveil waited beneath its glittering lanterns, and somewhere inside these shifting walls, Pip was calling her name.
+
+Then the maze cracked open.
+
+A sheet of ice peeled away like a curtain, and Mikyla stumbled into a lantern-lit plaza. She caught herself on a carved crystal post while Chessie bumped against her legs and Chloe tumbled into a mound of sparkling snow.
+
+"Pip!" Mikyla shouted.
+
+The scout fairy shot out of the opening after them, spinning head over heels. He struck a hanging lantern, bounced off it, and landed upside down in a basket of blue apples.
+
+"I meant to do that," he announced, though his wings were wobbling.
+
+Chloe sprang toward him.
+
+Pip squeaked and scrambled free. "No biting! No licking! No heroic dog greetings until I know whether the maze followed us!"
+
+Chessie barked once, sharp and deep.
+
+The plaza trembled. Lanterns swung from silver wires overhead, spilling green, gold, and violet light across stalls carved from snow. Tiny fairy shopkeepers ducked beneath awnings of icicle lace. Crystal bells chimed in the wind, and the air smelled of pine smoke, sugared berries, and something bright and warm that reminded Mikyla of sunlight on a winter window.
+
+The maze sealed behind them with a soft, terrible whisper.
+
+Mikyla turned toward the smooth wall. "We can't leave it like that. Pip was trapped in there."
+
+"I was not trapped," Pip said. "I was temporarily surrounded by an unreasonable number of walls."
+
+"You were calling my name."
+
+"I was calling everyone's name. It was a very serious emergency."
+
+Mikyla looked at him. Pip's blue cap was crooked, one boot was missing, and a thin crack ran across the glowing compass strapped to his chest. He looked frightened beneath all his frantic words.
+
+"What happened?" she asked.
+
+Pip's wings fluttered faster. "Morrigan happened."
+
+The name seemed to dim the lanterns.
+
+Chessie pressed against Mikyla's side. Chloe stopped sniffing the snow and stared at Pip, her ears lifted.
+
+Mikyla had heard the witch's name before, but now it seemed to crawl through the plaza like frost beneath a door. She remembered the rune-carved wooden door in the old oak, the way it had pulled them from the snowy forest, and the sudden glimpse of a kingdom made of ice and light. She had wanted to find a way home. She had wanted to keep her dogs safe.
+
+Now Pip was asking her to care about a queen she had never met.
+
+"Who is Morrigan?" Mikyla asked.
+
+Pip glanced toward the tallest tower rising beyond the market roofs. The Crystal Spire pierced the sky in seven shining points, but its highest windows were dark. Black veins of ice curled around the tower like frozen roots.
+
+"She is the Frost-Weaver," he whispered. "She cast a dark ice spell over Queen Sylvia. The queen is trapped at the top of the Crystal Spire, sealed inside a prison that grows colder every hour."
+
+A fairy behind a berry stall gasped. Someone dropped a basket. The berries rolled across the plaza, glowing like tiny red stars.
+
+Mikyla stared at the tower. "Can't someone break the spell?"
+
+"We tried." Pip hopped onto the edge of the basket. "Fairies with frost hammers. Fairies with fire feathers. Fairies who sing very loudly."
+
+"Did the singing help?"
+
+"It made the seals thicker."
+
+Chloe gave a small, uncertain whine.
+
+Pip pointed at the Crystal Spire. "Morrigan bound the prison with three layers of dark ice. The first twists paths until no one can reach the tower. The second seals the palace gates. The third guards the queen herself."
+
+Mikyla swallowed. "Then we go to the tower and break all three."
+
+Pip's eyes widened. "Absolutely not."
+
+"Why not?"
+
+"Because the first layer is the Whispering Ice Maze, and you just escaped it by accident."
+
+"I didn't escape. The maze pushed us out."
+
+"Exactly! It may push you somewhere worse next time."
+
+Mikyla looked down at Chessie. His brown eyes watched her carefully, waiting for a command. Chloe had tucked herself against Mikyla's boot, her tail no longer wagging.
+
+Fear pressed beneath Mikyla's ribs. It told her to grab both dogs and find the rune door. It told her that Frostveil's troubles belonged to Frostveil. If she stayed, something might happen to Chessie or Chloe. If she listened to Pip, she might lead them into danger on purpose.
+
+But Pip had crossed the maze to find them. Even frightened, he had come back.
+
+"What do you want us to do?" Mikyla asked.
+
+Pip opened his mouth, closed it, then pointed toward a stall piled with star-shaped pastries. "First, perhaps, eat something."
+
+"No."
+
+"Fair enough. Second, run."
+
+"Pip."
+
+He sagged. "All right. There is a way to save Queen Sylvia, but it requires three quests. The Whispering Ice Maze must be crossed. Then we must find the Sunstone of Glimmerwood and use its warmth to melt the palace seals. Only then can we reach the Crystal Spire."
+
+"And face Morrigan," Mikyla said.
+
+Pip nodded.
+
+A cold gust swept through the plaza. The lantern flames bent sideways, and a black snowflake drifted from the sky. It landed on the edge of the pastry stall. Frost raced across the wood, turning the star-shaped treats gray.
+
+The stallkeeper cried out and pulled the tray away.
+
+Mikyla watched the frost spread. "How long until the spell reaches everyone?"
+
+Pip's frantic expression lost its last bit of mischief. "Not long."
+
+The black snowflake melted into a dark drop that hissed against the ice.
+
+Mikyla's hands began to shake. Chessie noticed first. He nudged her palm with his nose. Chloe leaned against her shin, warm and soft despite the bitter air.
+
+"I don't know if I can do this," Mikyla whispered.
+
+Pip stared at her. "You crossed a magic door."
+
+"I didn't know what it was."
+
+"You walked into the maze."
+
+"I was trying to find you."
+
+"You pulled Chloe away from a mirror-wolf."
+
+"It was chasing her!"
+
+Pip folded his arms. "You keep doing brave things before you have time to be sensible."
+
+Mikyla almost laughed, but the sound caught in her throat. "I'm scared."
+
+The words hung between them, plain and heavy.
+
+Chessie sat beside her. His harness creaked as he leaned his sturdy shoulder against her leg. Chloe lifted one paw and placed it on Mikyla's boot.
+
+Mikyla looked at them. Chessie could guard a path, but he could not choose it for her. Chloe could chase wonder into every corner, but she trusted Mikyla to call her back. They were waiting for her- not because she wasn't afraid, but because she was the one who had to decide.
+
+She crouched and wrapped both arms around them.
+
+"I'm scared too," she murmured. "But I won't run without knowing where we're going."
+
+Pip's wings slowed.
+
+Mikyla stood. "You know Frostveil. We don't. You know the maze and the path to Glimmerwood. We'll trust your warnings, but you have to tell us the truth. No hiding the dangerous parts."
+
+Pip blinked. "Even the parts involving singing?"
+
+"Especially those."
+
+He placed one hand over his heart and bowed so quickly he nearly fell over. "Then I promise. No tricks. No missing details. No pretending I meant to land in an apple basket."
+
+Chloe wagged her tail.
+
+"Good," Mikyla said. "And we stay together."
+
+Pip's smile returned, small but real. "Together, then."
+
+A rumble rolled beneath the plaza. The Crystal Spire flashed with dark blue light.
+
+Far above, something moved inside the highest window- a shape trapped behind layers of black ice.
+
+Mikyla thought she saw a woman's face, pale and still, surrounded by silver hair. Queen Sylvia.
+
+The image vanished as quickly as it came.
+
+"That was her," Mikyla said.
+
+Pip nodded. "Queen Sylvia. She is still fighting the spell from inside."
+
+"How do you know?"
+
+"Because every night, one light appears in the tower." He pointed upward. "That is the queen reminding Frostveil she has not surrendered."
+
+Another light flickered behind the dark ice.
+
+Mikyla felt the fear inside her shift. It did not disappear, but it no longer filled the whole space. Beside it stood something steadier: the warmth of Chessie's shoulder, Chloe's trusting paw, and Pip's promise.
+
+"What's the first clue?" she asked.
+
+Pip reached beneath his crooked cap and pulled out a thin shard of blue crystal. Runes glimmered along its edge.
+
+"The maze speaks in whispers," he said. "It shows each traveler a different path. If we chase what we want to see, we get lost. If we listen for what the others need, the ice reveals the way."
+
+Mikyla glanced at the sealed wall behind them. "That's why it separated us."
+
+"It was testing whether you would trust one another."
+
+Chessie gave a low huff, as if he had known that all along.
+
+Pip tucked the shard away. "The next clue is hidden beyond the maze. I can guide you to it, but the path will change beneath our feet."
+
+Mikyla reached for Chessie's harness. Her fingers found the familiar strap and held tight. Chloe pressed close on her other side.
+
+"Then guide us," she said.
+
+Pip flew toward a narrow street between two towers of blue ice. Lanterns swung above it, scattering colored light over the snow. Behind them, the market slowly began to move again, though every fairy kept glancing at the Crystal Spire.
+
+Mikyla followed Pip into the glittering passage. The cold sharpened around her, and the distant bells faded into a hush.
+
+At the end of the street, a doorway opened in the ice.
+
+Beyond it waited a maze of pale walls, whispering voices, and paths that had not existed a moment before.` },
+  { type: 'chapter', title: 'Chapter 3: Following Whispering Ice Maze Clues', emoji: '🧊', text: `"Don't let the walls decide for us," Mikyla said as the ice folded shut behind them. "We find the exit, then we find the Sunstone of Glimmerwood."
+
+Chessie pressed against her leg, his sturdy harness creaking softly. Chloe darted ahead, her collar chiming as she chased a blue spark drifting through the translucent corridor. Pip fluttered beside Mikyla's shoulder, his tiny wings beating so fast they sounded like a hummingbird trapped in a teacup.
+
+"Excellent plan," Pip said. "Very brave. Very sensible. Possibly impossible."
+
+The maze gleamed in every direction. Its walls were clear as frozen waterfalls, yet shapes moved deep inside them- silver branches, sleeping stars, and pale shadows that vanished whenever Mikyla tried to focus. Cold seeped through her boots. Beneath it came a whisper, thin and many-voiced.
+
+Warmth is hidden where certainty breaks.
+
+Mikyla tightened her fingers around Chessie's harness. Queen Sylvia's single flickering light still shone in her memory, high above the dark Crystal Spire. They had promised to reach her. They had promised to melt Morrigan's spell.
+
+"We need a clue," Mikyla said. "Not another promise."
+
+A line of golden runes appeared beneath her feet.
+
+Pip squinted at them. "That says, 'The first path waits where the sun cannot shine.'"
+
+Chloe barked and pounced at the letters. The instant her paws touched the ice, the corridor split into three passages. Each one glowed with a different color: blue, violet, and warm amber.
+
+"The maze heard us," Pip whispered.
+
+"Which path leads out?" Mikyla asked.
+
+Pip pointed to the amber passage. "Warm colors usually mean friendly magic."
+
+Chessie growled.
+
+The amber corridor curved away, its walls filled with tiny pictures of sunflowers and glowing stones. Chloe bounded toward it, but Mikyla caught her collar before she crossed the threshold.
+
+"Wait."
+
+The pictures changed. Sunflowers drooped beneath black frost. The glowing stones cracked. At the far end, a dark shape lifted its head.
+
+Pip's wings shivered. "Friendly magic can still have teeth."
+
+The violet passage whispered Mikyla's name.
+
+Not loudly. Not like a call from a person. It sounded like her own voice spoken from far away.
+
+Mikyla stepped toward it.
+
+Chessie planted himself in front of her.
+
+"I know," she murmured. "It could be a trick."
+
+The whisper came again.
+
+Mikyla, this way. Pip is waiting.
+
+Pip froze in midair. "I am absolutely not waiting in there."
+
+Chloe tugged at Mikyla's coat, pulling toward the blue passage. Behind its walls, little paw prints glimmered in a row.
+
+"That one looks like it wants us to follow," Mikyla said.
+
+"Everything here wants us to follow," Pip replied. "That is the trouble with mazes. They are terribly confident."
+
+Mikyla crouched beside the paw prints. They were exactly Chloe's size, but each one faced backward, as if a dog had walked out of the passage while pretending to walk in.
+
+The walls whispered louder.
+
+Go back.
+
+Turn around.
+
+Choose nothing.
+
+The three corridors slid across one another with a grinding sound. Frost dust drifted from the ceiling. A seam opened beneath Chloe's paws.
+
+"Chloe!" Mikyla lunged.
+
+Chessie seized the back of Chloe's coat in his teeth and pulled her away as the ice dropped into a bottomless blue shaft. Chloe yelped, scrambling against Chessie's chest. The gap snapped shut, leaving only a dark line.
+
+Pip flew in frantic circles. "The maze changes when we hesitate! It feeds on doubt!"
+
+"Then we stop giving it doubt," Mikyla said, though her voice trembled.
+
+She looked at the three passages. The golden runes had vanished. The amber path now showed snow-covered trees. The violet path held a distant orange glow. The blue path was empty.
+
+"What are you hiding?" Mikyla asked the maze.
+
+The walls answered with a hundred whispers.
+
+A secret.
+
+A question.
+
+A door that opens only when no one knows the way.
+
+Mikyla felt the cold tighten around her ribs. If the maze stole their certainty, then every clue could become a trap. She glanced at Chessie. He watched the corridors, ears lifted, steady as a stone bridge. Chloe trembled, but her nose pointed toward the violet passage.
+
+"Chloe smells something," Mikyla said.
+
+Pip blinked. "Something warm?"
+
+"Maybe."
+
+"Maybe is a very dangerous word."
+
+"It's the only one we have."
+
+Mikyla took Chloe's leash in one hand and Chessie's harness handle in the other.
+
+"We move together. No one runs ahead. No one stays behind."
+
+Pip landed on Chessie's back. "And if the floor disappears?"
+
+"Then we pull one another back."
+
+Chessie gave a firm bark.
+
+Chloe wagged once, then pressed against Mikyla's knee.
+
+They entered the violet passage.
+
+The walls turned smoky and thick. Frost scratched against them from the inside, making a sound like fingernails on glass. Mikyla could smell pine resin and something sweeter, like warm bread, though there was no warmth anywhere. Chloe sniffed along the floor. Chessie paced on Mikyla's other side, his claws clicking against the ice.
+
+At the first bend, a riddle appeared.
+
+I have no mouth, but I answer when called. I have no feet, but I follow every step. What am I?
+
+"An echo," Pip said at once.
+
+The corridor shuddered.
+
+A second riddle flashed beneath it.
+
+I grow smaller when I am shared. What am I?
+
+"A secret," Mikyla said.
+
+The walls brightened, but the path ahead remained sealed.
+
+A third riddle appeared.
+
+I can warm a room without flame, guide a kingdom without a crown, and vanish when fear is fed. What am I?
+
+Pip's face fell. "That sounds like a trick."
+
+Mikyla thought of the frozen streets, the silent fairy windows, and the tiny light flickering inside the Crystal Spire. She thought of Morrigan's spell spreading over Queen Sylvia like a dark shell.
+
+"Hope," she said.
+
+The wall opened.
+
+A gust of freezing air struck them. Chloe's leash flew from Mikyla's hand. The playful dog slid across the floor toward a widening crack.
+
+"Chloe!"
+
+Mikyla dropped flat and reached. Her fingertips caught the collar. The ice pulled Chloe onward, dragging Mikyla with her. Chessie sprang forward, gripping the harness handle between his teeth. Pip seized Mikyla's scarf and pulled with all his strength.
+
+"Pull!" Mikyla cried.
+
+Chessie dug his paws into the ice. His harness straps strained. Pip squeaked.
+
+Mikyla wrapped one arm around a jutting ridge and hauled Chloe toward safety. The crack widened beneath them, revealing a whirl of white mist far below.
+
+Chloe's paws scraped uselessly.
+
+"I've got you," Mikyla whispered. "I've got you."
+
+With one final tug, she pulled Chloe free. The crack slammed shut behind them.
+
+For a moment, nobody moved.
+
+Chloe licked Mikyla's cheek, cold nose pressed against her skin. Chessie stood over them, breathing hard, his fur powdered with frost.
+
+Pip sank onto the floor. "I dislike this maze."
+
+Mikyla hugged Chloe close. "It wants us separated."
+
+"And it nearly got its wish," Pip said.
+
+The violet passage vanished.
+
+In its place stood a round chamber with walls so clear Mikyla could see the maze twisting beyond them. Corridors crossed like ribbons. Some led upward. Some curled back on themselves. Others ended at black patches where the ice had been stained by Morrigan's magic.
+
+At the center of the chamber floated a small silver bell.
+
+A thread of light connected it to a narrow doorway.
+
+Pip rose slowly. "That is our exit."
+
+The bell chimed without being touched.
+
+Mikyla heard Chessie bark from the left.
+
+She turned. Chessie stood beside the silver bell.
+
+Then she heard Chloe bark from the right.
+
+Chloe stood beside the doorway.
+
+Mikyla's stomach dropped. The maze had made copies of them. Two Chessies stared through the ice, both wearing sturdy harnesses. Two Chloes pawed at the floor, both collars chiming.
+
+Pip flew toward the nearest Chessie. "Which one is real?"
+
+Both dogs growled.
+
+The chamber began to spin.
+
+Mikyla shut her eyes. The whispers rushed around her.
+
+Choose.
+
+Choose.
+
+Choose.
+
+She listened beneath them.
+
+The real Chessie always breathed in two slow snuffles before a growl. The real Chloe always tapped one paw when she was excited.
+
+Mikyla opened her eyes.
+
+"Chessie, sit."
+
+The dog on the left sat immediately.
+
+The dog on the right lunged at the ice.
+
+"Chloe, touch."
+
+The Chloe beside the doorway lifted one paw and tapped twice.
+
+The other snapped at the air.
+
+"There!" Mikyla shouted.
+
+She ran toward the real dogs, but the floor tilted. Chessie slid away from her. Chloe's paws lost their grip. Mikyla threw herself forward and caught both leashes, one in each hand.
+
+"Stay with me!"
+
+Chessie braced himself. Chloe twisted around and grabbed the edge of Mikyla's coat in her teeth. Together they formed a living chain. Pip darted ahead and struck the silver bell with both hands.
+
+The chime rang through the maze.
+
+Every false image shattered.
+
+The chamber filled with glittering fragments. They fell without cutting anyone, melting into bright puddles around Mikyla's boots. The doorway opened, revealing a clearing beneath a ceiling of dark blue ice.
+
+Mikyla stepped through with Chessie and Chloe close beside her. Pip followed, panting.
+
+The clearing was still. No corridors shifted here. No whispers tugged at her thoughts. A circle of white stone lay buried in the floor, carved with runes.
+
+Mikyla knelt and brushed away the frost.
+
+The runes glowed gold.
+
+Beyond the frozen river, where the silver trees grow, follow the path that remembers the sun. Glimmerwood waits beneath the sleeping boughs. There rests the Sunstone, bright enough to break the seals.
+
+A picture formed above the stone: a forest of crystal trees, their branches heavy with snow. At its center shone a golden jewel. Around it curled bands of blue ice, each one marked with Morrigan's dark symbol.
+
+Pip stared at the image. "Glimmerwood."
+
+"We found the path," Mikyla said.
+
+"Yes," Pip answered, but his voice had lost its relief. "The Sunstone's trail is guarded by frozen seals. Morrigan placed them there herself."
+
+The golden picture flickered. One seal tightened around the glowing jewel.
+
+Mikyla rose, keeping one hand on Chessie's harness and the other on Chloe's collar.
+
+"Then we break them."
+
+Pip looked toward the maze entrance. Far away, the walls began to whisper again.
+
+Not words this time.
+
+A warning.
+
+Above the Crystal Spire, Queen Sylvia's light flickered twice, then dimmed.
+
+Mikyla faced the image of Glimmerwood. The way forward was no longer a guess. It was a narrow silver path leading beyond the maze, toward a forest that remembered sunlight.
+
+She took the first step.
+
+Behind her, the rune-scribed clearing began to freeze.` },
+  { type: 'chapter', title: 'Chapter 4: Glimmerwood Sunstone Breaks the Frozen Seals', emoji: '☀️', text: `Mikyla took one more step before the freezing wall could seal her in. Cold snapped around her boots. The rune-scribed clearing behind her blurred beneath a skin of blue ice, and the silver bell's last chime trembled through the air. Chessie pushed against her leg, his sturdy harness creaking, while Chloe darted ahead with her nose low, chasing a ribbon of golden light between the trees.
+
+"Stay close," Mikyla whispered.
+
+Pip zipped past her ear. "Close is excellent! Close is safe! Close is also much better than being swallowed by a maze again!"
+
+Mikyla glanced back. The doorway they had escaped through was gone. In its place stood a wall of ice, smooth as glass. For one terrible instant, she imagined the maze whispering from behind it, calling in Pip's voice.
+
+She tightened her fingers around the silver bell they had carried from the chamber.
+
+"We're not going back."
+
+Ahead, the forest opened.
+
+Glimmerwood spread beneath a sunless canopy, its branches woven so thickly overhead that no sky showed through. Every leaf was made of pale crystal. Frost coated the trunks in curling layers, and tiny blue flames flickered inside the bark. The air smelled of pine sap and snow. Somewhere deep among the trees, something dripped with a slow, hollow plink.
+
+Pip hovered beside a crooked sign half-buried in ice. Its letters shone faintly.
+
+"Glimmerwood," he read. "Where the sun sleeps beneath the roots. Where the warm-hearted may enter. Where the cold-hearted become decorative statues."
+
+Chloe gave a worried whuff.
+
+"That last part wasn't on the sign," Pip admitted.
+
+Mikyla stepped toward the grove. "Where is the Sunstone?"
+
+Pip pointed toward the darkest part of the forest. "At the center. Locked inside the frost-root, guarded by the grove itself. The Sunstone holds the pure warmth of the sun, but it doesn't belong to anyone who grabs it."
+
+"Then how do we bring it back?"
+
+"By proving you won't use its warmth only for yourself."
+
+Mikyla thought of Queen Sylvia trapped at the top of the Crystal Spire, sealed inside Morrigan's dark ice. She thought of the fairy streets frozen silent beneath the witch's spell. "We need it for everyone."
+
+The moment she said the words, the forest changed.
+
+Frost raced across the ground in silver veins. The crystal leaves above snapped shut, and the blue flames inside the trees went dark. A wall of ice rose between Mikyla and Chessie.
+
+"Chessie!" she cried.
+
+He lunged, claws scraping. The ice thickened around him, climbing his legs.
+
+Mikyla dropped to her knees and grabbed his harness. "Pull!"
+
+Chessie leaned forward with a deep growl. Mikyla pulled backward. For a moment, neither moved. Then Chloe sprang at the ice, barking sharply. Her collar flashed with a bright blue spark.
+
+A crack zigzagged across the wall.
+
+"Again!" Mikyla shouted.
+
+Chloe barked once more. Chessie pulled. Mikyla braced both feet against a root and tugged with all her strength. The ice split apart, showering them with glittering shards.
+
+Chessie stumbled free. Chloe bounced in a circle, tail whipping the frost from the air.
+
+Pip stared at her collar. "That was not ordinary barking."
+
+"She's always been good at making herself heard," Mikyla said, hugging Chloe's neck.
+
+A low groan rolled through the grove. The roots beneath them shifted.
+
+Three paths opened between the trees. At the end of each path stood a shallow stone bowl. In the first, a warm orange glow flickered. In the second, a pale blue light shimmered. The third was empty.
+
+Pip's wings quivered. "The sun-draining trials."
+
+The orange glow flared, and heat rushed toward Mikyla's face. It felt like summer sunlight on her cheeks. The blue bowl answered with a freezing wind that pulled at the warmth inside her chest. The empty bowl began to fill with darkness.
+
+Mikyla stepped toward the orange bowl.
+
+"Wait!" Pip cried. "The grove wants a choice. Take the warmth, and the other paths will freeze."
+
+Mikyla looked at the blue light. It was shrinking. Chessie's breath puffed white. Chloe pressed against her side, trembling.
+
+The orange glow brightened. It promised comfort. It promised a quick path to the Sunstone.
+
+Mikyla reached for it, then stopped.
+
+"What happens if we share it?" she asked.
+
+Pip blinked. "Share a trial?"
+
+"Warmth shouldn't have to belong to one path."
+
+She took off her scarf and wrapped one end around Chessie's harness. Chloe caught the other end gently in her teeth. Mikyla held the middle and stepped between the bowls.
+
+"Together," she said.
+
+The orange light surged. Heat poured into the scarf, racing along its threads. Chessie's harness glowed gold. Chloe's collar shone blue. The warmth crossed from dog to girl and back again, forming a bright loop.
+
+The blue bowl stopped shrinking.
+
+The empty bowl filled with soft golden light.
+
+The forest gave a sound like a long sigh.
+
+The three paths folded into one.
+
+Pip wiped his forehead. "I knew that would work."
+
+"You were hiding behind a tree," Mikyla said.
+
+"I was supervising from a safer angle."
+
+They followed the new path beneath the crystal canopy. The farther they went, the colder it became. Frost climbed Mikyla's boots, then her knees. Her fingers stiffened around the scarf. Chessie's steps grew slow, but he kept moving. Chloe sniffed every root, searching for a way through.
+
+At last they reached a clearing where an enormous tree stood with its branches curled inward like protecting arms. Its trunk was white as moonlight. In the center, behind a cage of twisting frost roots, glowed a small golden stone.
+
+The Sunstone.
+
+Mikyla's breath caught. Its light was gentle, but it reached through the dark forest and painted warm circles across the snow.
+
+She stepped forward.
+
+The roots slammed down.
+
+A ring of frost burst from the tree, stealing the golden light. The Sunstone dimmed. Mikyla felt the cold press against her thoughts, whispering in a voice as thin as cracking ice.
+
+Keep it. Hide it. Warm only yourself.
+
+She shook her head. "No."
+
+The whisper grew louder.
+
+Queen Sylvia cannot be saved. Pip will lose his wings. Your dogs will freeze. Take the stone and run.
+
+Chloe whimpered. Chessie growled at the tree, but his paws slipped on the ice.
+
+Mikyla looked at them. She could not pull the Sunstone free by force. The grove had already shown her that.
+
+She knelt in the snow and placed both hands against the frost root. It was hard and cold beneath her palms.
+
+"We came because Queen Sylvia is trapped," she said. "But we're not leaving anyone behind. Not Pip. Not Frostveil. Not even Morrigan, if there's still a warm place inside her."
+
+Pip went very still.
+
+The Sunstone brightened.
+
+A thin crack opened in the root.
+
+Mikyla pushed harder. "We'll carry your warmth to everyone who needs it."
+
+Chessie pressed his broad shoulder against her back. Chloe placed one paw on Mikyla's boot. Pip flew down and set both hands against the root.
+
+"On three," Mikyla said.
+
+"One," Pip began.
+
+"Two," barked Chloe.
+
+Pip blinked. "That was three."
+
+Chessie shoved.
+
+The frost cage exploded in a burst of white light.
+
+The Sunstone floated into Mikyla's hands.
+
+Warmth flooded through her- not burning, not fierce, but alive. It filled her fingers, her arms, and the hollow place fear had made beneath her ribs. The frost melted from Chessie's paws. Chloe leaped through the falling snow, barking as golden sparks danced around her.
+
+The grove awakened.
+
+Blue flames returned to the trees. Crystal leaves unfolded overhead, revealing a narrow strip of violet sky. Far away, bells began ringing across Frostveil.
+
+Pip laughed so loudly that he spun backward in the air. "The Sunstone! We have the Sunstone!"
+
+Mikyla held it close. "Then we go to the palace."
+
+They ran.
+
+The Sunstone's warmth opened a path through Glimmerwood, melting the frost before their feet. By the time they reached the palace steps, the frozen streets were glowing with reflected gold. Fairies peered from icy windows. Tiny hands reached toward the light.
+
+Mikyla climbed the steps with Chessie at her side and Chloe bounding ahead. The palace doors were sealed beneath thick black ice. Morrigan's spell crawled across them in twisting patterns, each line pulsing like a dark heartbeat.
+
+Pip pointed to three frozen seals. "The Sunstone must touch each one!"
+
+Mikyla lifted the relic to the first seal.
+
+The ice cracked with a sharp report.
+
+A wave of cold struck her chest and threw her backward. Chessie caught her against his harness. Chloe skidded across the steps, claws scraping.
+
+"I'm all right," Mikyla gasped.
+
+The first seal reformed, darker than before.
+
+Pip's face went pale. "It's fighting back."
+
+Mikyla rose. "Then we fight together."
+
+She placed one hand on Chessie's harness and the other near Chloe's collar. Pip hovered over her shoulder.
+
+"Ready?" she asked.
+
+Chessie gave a steady bark.
+
+Chloe barked twice.
+
+Pip swallowed. "Ready enough."
+
+Mikyla pressed the Sunstone against the seal again.
+
+Gold light burst across the palace doors. Chessie dug his paws into the steps. Chloe's collar flashed, sending bright sparks through the cracks. Pip added his small, fierce glow.
+
+The first seal shattered.
+
+The second split.
+
+The third groaned, then broke apart in a shower of black ice.
+
+The palace doors flew open.
+
+For one breath, warmth poured through Frostveil. Frost-covered flowers unfolded along the walls. Frozen fountains began to trickle. Somewhere in the city, a fairy cried out with joy.
+
+Then the Crystal Spire screamed.
+
+Mikyla looked up.
+
+At the top of the spire, where Queen Sylvia was trapped, a dark glow spread through the crystal. Morrigan's ice spell had not weakened. It had tightened, winding around the highest tower in thick black coils.
+
+A crack of violet lightning flashed inside the spire.
+
+Pip's wings drooped. "That's impossible."
+
+The Sunstone shuddered in Mikyla's hands.
+
+From high above came a faint voice, muffled by layers of ice.
+
+"Mikyla..."
+
+Queen Sylvia.
+
+Mikyla stepped through the open palace doors. The warmth of the Sunstone streamed ahead of her, while the Crystal Spire filled the sky with gathering darkness.
+
+Chessie growled.
+
+Chloe lifted her nose and barked toward the tower.
+
+Mikyla closed her fingers around the glowing stone. "We're coming, Queen Sylvia."
+
+At the spire's summit, the dark ice flared brighter.
+
+And somewhere within it, Morrigan laughed.` },
+  { type: 'chapter', title: 'Chapter 5: Warmth Frees Sylvia From Morrigan', emoji: '❄️👑', text: `The Sunstone burned hot in Mikyla's hands as Morrigan's laughter cracked across the summit.
+
+Dark ice climbed the Crystal Spire walls like frozen vines. Shattered light spun through the chamber, blue and silver, flashing over the frozen figure of Queen Sylvia at its center. The last seals split with sharp, ringing pops, but the spell did not fall.
+
+Instead, black frost poured from the ceiling and curled around Mikyla's boots.
+
+Chessie growled and planted himself between her and the ice. His sturdy harness creaked as he leaned forward. Chloe darted in a nervous circle, then bumped Mikyla's knee with her collar jingling.
+
+"Stay close," Mikyla whispered.
+
+Pip flew above them, his tiny wings beating wildly. "The seals are cracked! Cracked is good! But not broken, and broken is what we need!"
+
+A tall shape stepped out of the dark ice.
+
+Morrigan's silver hair floated around her face as if she stood underwater. Her cloak shimmered with threads of midnight blue, and frost gathered at her fingertips. She looked less like a monster than a storm wearing a crown.
+
+"You carried the warmth of Glimmerwood all this way," Morrigan said. "How sweet. How foolish."
+
+Mikyla tightened her grip on the Sunstone. Its heat pressed against her palms, reminding her of the maze, the whispering riddles, and the moment she had trusted Chessie and Chloe when every reflection told her they were strangers.
+
+"I came to free Queen Sylvia," she said.
+
+"And what will you do to me?"
+
+The question stopped Mikyla.
+
+Morrigan lifted one hand. Ice raced across the floor. Chessie barked and shoved Mikyla backward just as a jagged ridge burst upward where she had been standing.
+
+Chloe leaped over it, her paws skidding on the glassy surface.
+
+"Move!" Pip cried.
+
+Mikyla ran. The Sunstone cast a golden path beneath her feet, but the dark ice chased it, snapping shut behind her. She reached the frozen queen and pressed the relic against the spell.
+
+Warm light spread through the ice around Queen Sylvia's face.
+
+For one breath, the queen's eyes opened.
+
+"Mikyla," she whispered.
+
+Then a black crack flashed across the ice, and Queen Sylvia vanished beneath its surface again.
+
+Morrigan's laugh fell silent.
+
+"Do not touch what is mine."
+
+Mikyla turned. "Queen Sylvia doesn't belong to you."
+
+The witch's face twisted. With a sweep of her arm, a wave of frost slammed across the chamber. Chessie braced himself, claws scraping for grip. Mikyla grabbed his harness, while Chloe seized the edge of Mikyla's coat in her teeth. Together they held fast as the icy wind roared around them.
+
+The Sunstone slipped from Mikyla's hands.
+
+It skittered across the floor and stopped beside a shattered pillar.
+
+"No!" Mikyla cried.
+
+Morrigan lifted her palm. The Sunstone rose into the air, wrapped in black threads.
+
+"Warmth always fades," Morrigan said. "It leaves people cold. It leaves them alone. Ice is honest. Ice stays."
+
+Mikyla stared at her. The words sounded too heavy for a wicked laugh. They sounded like something Morrigan had carried for a very long time.
+
+Chloe pulled at Mikyla's coat. Chessie stood trembling but steady beside her.
+
+Mikyla remembered the maze's false voices. They had whispered that she was too small, that her dogs would leave her, that trust was a trick. Fear had made every lie sound true.
+
+She could fight Morrigan with the same fear. She could throw the Sunstone like a weapon and hope its heat destroyed the witch.
+
+But Queen Sylvia was still trapped between them.
+
+Mikyla stepped away from Chessie.
+
+"Mikyla!" Pip squeaked.
+
+She walked toward Morrigan with empty hands.
+
+The witch's eyes narrowed. "You have no shield."
+
+"I know."
+
+"You have no spell."
+
+"I know."
+
+"Then why are you coming closer?"
+
+Mikyla stopped beneath the spinning shards of light. "Because you're afraid."
+
+The chamber groaned.
+
+Morrigan's face hardened. "I am not afraid of a child."
+
+"Not of me." Mikyla glanced at the ice around Queen Sylvia. "You're afraid of losing the only thing that never left you."
+
+For a moment, the storm inside the spire faltered.
+
+A picture flickered in the dark ice. It showed a younger Morrigan in a small frozen valley, wrapped in a patched blue cloak. Beside her stood a little cottage with a glowing window. She held a bundle of tiny frost flowers against her chest.
+
+Morrigan reached toward the image. "Stop."
+
+Another picture appeared. The cottage window was dark. Snow covered the path. Morrigan stood alone, older now, holding one frost flower that had turned gray.
+
+"I said stop!"
+
+Ice spears shot from the floor.
+
+Chessie lunged. He caught Mikyla's coat and pulled her clear as the spears shattered behind her. Chloe sprang onto a fallen shard and barked fiercely at Morrigan. Pip zipped through the air, tugging at the black threads around the Sunstone.
+
+"Morrigan!" Mikyla called. "What happened?"
+
+"Nothing happened!"
+
+But the ice showed more.
+
+Morrigan had once cared for Frostveil's winter gardens. She had guarded the delicate frost flowers that bloomed only in cold moonlight. She had believed the kingdom would care for her in return. When a long storm came, the flowers froze, the gardens failed, and the fairies turned away from her grief.
+
+"She kept the winter gardens alive," Queen Sylvia's muffled voice said from inside the spell. "I should have gone to her."
+
+Morrigan's expression cracked. "You were Queen. You had celebrations, lights, warm halls. I had empty gardens."
+
+"I should have gone," Sylvia repeated.
+
+Mikyla looked from the queen to the witch. "You were lonely."
+
+Morrigan's fingers shook. "Loneliness is a door that freezes shut."
+
+"Then let us open it."
+
+Morrigan snarled and pulled the Sunstone close. Darkness swallowed its golden glow. "Warmth is what failed me!"
+
+"No," Mikyla said. "People failed to bring it."
+
+She turned and called to her dogs. "Chessie, Chloe, stay with me."
+
+Chessie pressed his broad shoulder against her leg. Chloe curled her tail around Mikyla's ankle. Their warmth was small, but it was real. Mikyla felt Chessie's rough fur beneath her hand and heard Chloe's soft, quick breathing.
+
+She faced Morrigan again.
+
+"You can keep fighting," Mikyla said. "You can freeze every window and seal every door. But it won't make you less alone."
+
+Morrigan's eyes shone like dark glass.
+
+Pip reached the Sunstone's threads and bit down. "A little help would be lovely!"
+
+Mikyla ran.
+
+She leaped onto the fallen pillar, then sprang toward the floating Sunstone.
+
+Morrigan flung a ribbon of frost at her. Chessie caught Mikyla's harness in his teeth and pulled, changing her path just enough for the ribbon to miss. Chloe bounded after them and knocked the Sunstone from the air with her nose.
+
+It dropped into Mikyla's hands.
+
+Heat rushed through her fingers.
+
+Morrigan raised both arms. The entire summit chamber shook. Dark ice rose around Queen Sylvia in a towering cage.
+
+Mikyla did not throw the Sunstone.
+
+She carried it to the cage and placed both hands against the ice.
+
+"Come with me," she whispered.
+
+Chessie barked once, deep and strong. Chloe yipped and pressed her nose beside Mikyla's hand. Pip hovered above them, his wings glowing with reflected gold.
+
+Mikyla thought of the maze. She thought of Glimmerwood, where the Sunstone had awakened only after warmth was shared instead of guarded. She had brought the relic here, but she could not make it shine alone.
+
+"Queen Sylvia," she called. "Morrigan, too. No more hiding."
+
+Queen Sylvia lifted her voice from within the ice. "I am here."
+
+Morrigan stared at the golden light spreading beneath Mikyla's hands.
+
+"I remember you," Sylvia said. "You brought spring frost to the palace gardens. You sang to every flower."
+
+"I was foolish," Morrigan whispered.
+
+"You were needed."
+
+The dark ice trembled.
+
+Mikyla felt the Sunstone's warmth move through her arms, into Chessie, into Chloe, and then outward toward the cage. Golden cracks opened through the black spell. Each one glowed brighter than the last.
+
+Morrigan stepped forward. Frost curled around her boots, begging her to hold on.
+
+Mikyla reached one hand toward her.
+
+Morrigan stared at it as if it were a strange and dangerous thing.
+
+"You'll burn me," she said.
+
+"Only if you keep holding the cold."
+
+Morrigan looked at Queen Sylvia. Then at the fading image of her younger self and the gray frost flower.
+
+Slowly, she placed her hand over Mikyla's.
+
+The cold was fierce. It raced up Mikyla's arm, numbing her fingers. Chessie growled, and Chloe whined, but Mikyla held on.
+
+Morrigan's hand shook.
+
+"I don't remember how to let go," she said.
+
+"You don't have to do it alone."
+
+Morrigan closed her eyes.
+
+The Sunstone blazed.
+
+Light burst through the summit, warm as morning sunlight on snow. The dark ice shattered in a thousand glittering pieces. Queen Sylvia stepped free, her silver gown flowing like moonlit water. She stumbled, and Mikyla caught her hand.
+
+Behind them, the Crystal Spire rang with a deep, beautiful note.
+
+Morrigan fell to her knees.
+
+The black frost vanished from her cloak. Beneath it, her old blue caretaker's dress appeared, faded and patched at the sleeves. In her hands lay a single living frost flower, white at its edges and gold at its center.
+
+Queen Sylvia approached her.
+
+For a moment, neither spoke.
+
+Then Sylvia knelt and held out her hand. "Will you help us grow again?"
+
+Morrigan looked toward the broken windows. Beyond them, Frostveil spread beneath the dawn. The frozen streets glittered, but tiny streams now ran between the stones. Far below, fairy lights flickered on one by one.
+
+"Not as a prisoner?" Morrigan asked.
+
+"As a gardener," Sylvia replied. "If you choose it."
+
+Morrigan touched the flower's golden center. "I don't know if I can make the gardens bloom."
+
+Mikyla smiled. "We can learn together."
+
+Pip landed on the Sunstone with a relieved puff. "Excellent! Wonderful! Very peaceful! Though perhaps next time we could save a kingdom without nearly being stabbed by ice?"
+
+Chloe licked his wing.
+
+Pip squealed and tumbled into Chessie's fur.
+
+Mikyla laughed, and the sound seemed to warm the whole summit.
+
+Queen Sylvia rose and lifted her arms. A soft silver light flowed from her palms through the Crystal Spire. It traveled down the tower and into the kingdom below. Bells began to ring in the streets. Frost fairies emerged from their homes, touching the melting seals and staring at the open sky.
+
+The kingdom had been saved, but its walls were cracked, its gardens frozen, and its people frightened of what came next.
+
+Queen Sylvia looked out over Frostveil. "We cannot rebuild the old kingdom exactly as it was."
+
+Morrigan stood beside her, still holding the living flower. "Then we build one with doors that open."
+
+Mikyla thought of the ancient rune-carved wooden door in the old oak, and of how it had carried her into a world she never knew existed.
+
+"Warmth needs somewhere to enter," she said.
+
+Chessie leaned against her knee. Chloe wagged so hard that her collar jingled.
+
+Below, the first golden shoots pushed through the snow.
+
+Morrigan knelt beside them. With careful fingers, she touched the soil. A ring of pale flowers opened around her hand, each one shining with a tiny sun at its heart.
+
+Queen Sylvia watched, tears bright in her eyes.` },
+  { type: 'chapter', title: 'Final Thoughts', emoji: '✨🌸', text: `By the time the last chill loosens its grip, the journey has taught more than magic- it has taught Mikyla how to listen with her whole heart. In this kingdom of frozen riddles and thawing hope, every step mattered, and every kindness became a key.
+
+When the wind calms, it feels as though warmth has been set back into the world like a promise waiting to be kept. And somewhere between one breath and the next, Mikyla And The Frostveil Kingdom leaves a bright thought behind: that even in the coldest places, trust can open doors.
+
+Mikyla held the Sunstone close as the morning spread across the Crystal Spire. Its warmth no longer felt like a weapon. It felt like a promise shared between many hands.
+
+And in Frostveil, for the first time in a very long winter, the doors stayed open.
+
+~ The End ~` }
+];
+
+let currentPage = 0;
+const totalPages = pages.length;
+let isPlaying = false;
+let isPaused = false;
+let synth = window.speechSynthesis;
+let currentSpeed = 1;
+let currentParagraphIndex = 0;
+let pausedParagraphIndex = 0;
+
+function checkAccess() {
+  if (!userEmail) {
+    document.getElementById('loginModal').classList.remove('hidden');
+    return false;
+  }
+  if (!isCreator && !hasPaid && currentPage >= 2) {
+    document.getElementById('paymentModal').classList.remove('hidden');
+    return false;
+  }
+  return true;
+}
+
+function handleLogin() {
+  const input = document.getElementById('emailInput').value.trim();
+  if (!input || !input.includes('@')) {
+    alert("Please enter a valid email address.");
+    return;
+  }
+  userEmail = input;
+  localStorage.setItem('mikyla_user_email', userEmail);
+  isCreator = userEmail.toLowerCase() === CREATOR_EMAIL.toLowerCase();
+  document.getElementById('loginModal').classList.add('hidden');
+  if (isCreator) {
+    document.getElementById('status').textContent = '👑 Creator Access Granted: Full Book Unlocked';
+  }
+}
+
+function confirmPayment() {
+  hasPaid = true;
+  localStorage.setItem('mikyla_has_paid', 'true');
+  document.getElementById('paymentModal').classList.add('hidden');
+  document.getElementById('status').textContent = '✅ Payment Verified: Full Book Unlocked!';
+}
+
+function resetAccess() {
+  if (confirm("This will clear your login and payment status to test the flow. Are you sure?")) {
+    localStorage.removeItem('mikyla_user_email');
+    localStorage.removeItem('mikyla_has_paid');
+    location.reload();
+  }
+}
+
+function renderPages() {
+  const container = document.getElementById('bookContainer');
+  container.innerHTML = '';
+  pages.forEach((page, index) => {
+    const pageDiv = document.createElement('div');
+    pageDiv.className = 'book-page';
+    pageDiv.style.zIndex = totalPages - index;
+    if (page.type === 'cover') {
+      pageDiv.innerHTML = '<div class="page-content cover-page"><div class="cover-emoji">' + page.emoji + '</div><h2>' + page.title + '</h2><p class="subtitle">' + page.subtitle + '</p><p class="content">' + page.content + '</p><div class="page-num">' + (index === 0 ? 'Cover' : 'Back') + '</div></div>';
+    } else {
+      const paragraphs = page.text.split('\n\n');
+      let html = '<div class="page-content"><div class="illustration">' + page.emoji + '</div><h2 class="chapter-title">' + page.title + '</h2><div class="story-text" id="story-' + index + '">';
+      paragraphs.forEach((p, i) => {
+        html += '<p id="p-' + index + '-' + i + '">' + p + '</p>';
+      });
+      html += '</div><div class="page-num">Page ' + index + '</div></div>';
+      pageDiv.innerHTML = html;
+    }
+    container.appendChild(pageDiv);
+  });
+  updateDisplay();
+}
+
+function updateDisplay() {
+  const pageElements = document.querySelectorAll('.book-page');
+  pageElements.forEach((page, index) => page.classList.toggle('flipped', index < currentPage));
+  document.getElementById('prevBtn').disabled = currentPage === 0;
+  document.getElementById('btnPrev').disabled = currentPage === 0;
+  document.getElementById('nextBtn').disabled = currentPage === totalPages - 1;
+  document.getElementById('btnNext').disabled = currentPage === totalPages - 1;
+  const statusEl = document.getElementById('status');
+  if (pages[currentPage].type === 'cover') statusEl.textContent = '📖 Cover page - Tap Next for Chapter 1';
+  else statusEl.textContent = '📖 Page ' + currentPage + ' of ' + (totalPages - 1);
+}
+
+function clearHighlights() {
+  document.querySelectorAll('.story-text p.active').forEach(el => el.classList.remove('active'));
+}
+
+function highlightParagraph(index) {
+  clearHighlights();
+  const para = document.getElementById('p-' + currentPage + '-' + index);
+  if (para) {
+    para.classList.add('active');
+    para.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+}
+
+function nextPage() {
+  if (currentPage === 1 && !isCreator && !hasPaid) {
+    document.getElementById('paymentModal').classList.remove('hidden');
+    return;
+  }
+  if (currentPage < totalPages - 1) {
+    currentPage++;
+    currentParagraphIndex = 0;
+    pausedParagraphIndex = 0;
+    clearHighlights();
+    updateDisplay();
+    if (isPlaying && !isPaused) setTimeout(() => speakCurrentPage(0), 800);
+  }
+}
+
+function prevPage() {
+  if (currentPage > 0) {
+    currentPage--;
+    currentParagraphIndex = 0;
+    pausedParagraphIndex = 0;
+    clearHighlights();
+    updateDisplay();
+    if (isPlaying && !isPaused) setTimeout(() => speakCurrentPage(0), 800);
+  }
+}
+
+function changeSpeed() {
+  currentSpeed = parseFloat(document.getElementById('speedSelect').value);
+}
+
+function speakCurrentPage(startIndex) {
+  if (pages[currentPage].type === 'cover') return;
+  synth.cancel();
+  clearHighlights();
+  const page = pages[currentPage];
+  const paragraphs = page.text.split('\n\n');
+  currentParagraphIndex = startIndex;
+  
+  function speakNext() {
+    if (currentParagraphIndex >= paragraphs.length || isPaused) {
+      if (!isPaused) {
+        isPlaying = false;
+        clearHighlights();
+        document.getElementById('status').textContent = '✅ Finished page ' + currentPage;
+        updatePlayButtons();
+      }
+      return;
+    }
+    highlightParagraph(currentParagraphIndex);
+    const text = paragraphs[currentParagraphIndex];
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.rate = currentSpeed;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    utterance.onend = function() {
+      if (!isPaused) {
+        currentParagraphIndex++;
+        setTimeout(speakNext, 400);
+      }
+    };
+    synth.speak(utterance);
+  }
+  document.getElementById('status').textContent = '🔊 Reading page ' + currentPage + '...';
+  speakNext();
+}
+
+function playAudio() {
+  if (!checkAccess()) return;
+  if (pages[currentPage].type === 'cover') {
+    document.getElementById('status').textContent = '⚠️ Navigate to Chapter 1 for audio';
+    return;
+  }
+  if (isPaused) {
+    isPaused = false;
+    isPlaying = true;
+    updatePlayButtons();
+    speakCurrentPage(pausedParagraphIndex); 
+  } else if (!isPlaying) {
+    isPlaying = true;
+    isPaused = false;
+    pausedParagraphIndex = 0;
+    updatePlayButtons();
+    speakCurrentPage(0);
+  }
+}
+
+function pauseAudio() {
+  if (isPlaying) {
+    synth.cancel();
+    isPaused = true;
+    isPlaying = false;
+    pausedParagraphIndex = currentParagraphIndex;
+    document.getElementById('status').textContent = '⏸️ Paused - Tap Play to resume';
+    updatePlayButtons();
+  }
+}
+
+function updatePlayButtons() {
+  document.getElementById('playBtn').disabled = isPlaying;
+  document.getElementById('pauseBtn').disabled = !isPlaying;
+}
+
+// Download to Home Screen Functions
+function showDownloadInstructions() {
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const iosInstructions = document.getElementById('iosInstructions');
+  
+  if (isIOS) {
+    iosInstructions.classList.add('show');
+    document.getElementById('status').textContent = '📱 Follow the instructions above to add to Home Screen';
+  } else if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        document.getElementById('status').textContent = '✅ App installed to Home Screen!';
+      }
+      deferredPrompt = null;
+    });
+  } else {
+    iosInstructions.classList.add('show');
+    iosInstructions.innerHTML = '<strong>📱 To install:</strong><br>• <strong>Chrome (Android):</strong> Tap the menu (⋮) → "Add to Home Screen"<br>• <strong>Safari (iOS):</strong> Tap Share → "Add to Home Screen"<br>• <strong>Desktop:</strong> Look for the install icon in the address bar';
+    document.getElementById('status').textContent = '📱 Follow the instructions above';
+  }
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  setTimeout(() => {
+    document.getElementById('installBanner').classList.add('show');
+  }, 3000);
+});
+
+function installApp() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        document.getElementById('installBanner').classList.remove('show');
+        document.getElementById('status').textContent = '✅ App installed!';
+      }
+      deferredPrompt = null;
+    });
+  }
+}
+
+function dismissInstall() {
+  document.getElementById('installBanner').classList.remove('show');
+  localStorage.setItem('installBannerDismissed', 'true');
+}
+
+function createSnowfall() {
+  for (let i = 0; i < 30; i++) {
+    const snowflake = document.createElement('div');
+    snowflake.className = 'snowflake';
+    snowflake.textContent = '❄';
+    snowflake.style.left = Math.random() * 100 + 'vw';
+    snowflake.style.animationDuration = (Math.random() * 3 + 2) + 's';
+    snowflake.style.animationDelay = Math.random() * 5 + 's';
+    snowflake.style.fontSize = (Math.random() * 10 + 10) + 'px';
+    document.body.appendChild(snowflake);
+  }
+}
+
+window.onload = function() {
+  if (localStorage.getItem('installBannerDismissed') !== 'true') {
+    // Banner will show via event listener
+  }
+  renderPages();
+  createSnowfall();
+  updatePlayButtons();
+  checkAccess();
+};
+</script>
+</body>
+</html>
