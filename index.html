@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#1e3c72">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="Frostveil">
 <meta name="apple-mobile-web-app-title" content="Frostveil">
 <title>Mikyla and the Frostveil Kingdom</title>
-<link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiTWlreWxhIGFuZCB0aGUgRnJvc3R2ZWlsIEtpbmdkb20iLCJzaG9ydF9uYW1lIjoiRnJvc3R2ZWlsIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzFlM2M3MiIsInRoZW1lX2NvbG9yIjoiIzFlM2M3MiIsInN0YXJ0X3VybCI6Ii4iLCJpY29ucyI6W3sic3JjIjoiaHR0cHM6Ly9pLmltZ3VyLmNvbS83WnBqRkxKLnBuZyIsInNpemVzIjoiMTkyeDE5MiIsInR5cGUiOiJpbWFnZS9wbmcifV19">
+<link rel="manifest" href='data:application/manifest+json,{"name":"Mikyla and the Frostveil Kingdom","short_name":"Frostveil","start_url":".","display":"standalone","background_color":"%231e3c72","theme_color":"%231e3c72","orientation":"portrait","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/2830/2830305.png","sizes":"192x192","type":"image/png"},{"src":"https://cdn-icons-png.flaticon.com/512/2830/2830305.png","sizes":"512x512","type":"image/png"}]}'>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: Georgia, serif; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); min-height: 100vh; padding: 10px; }
@@ -21,8 +23,7 @@ body { font-family: Georgia, serif; background: linear-gradient(135deg, #1e3c72 
 .btn { background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none; padding: 10px 15px; border-radius: 20px; cursor: pointer; font-size: 0.9em; flex: 1; min-width: 80px; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 .btn-paypal { background: linear-gradient(135deg, #0070ba, #003087); font-weight: bold; font-size: 1.1em; padding: 12px 20px; text-decoration: none; display: block; text-align: center; margin-bottom: 15px; color: white; border-radius: 20px; }
-.btn-download { background: linear-gradient(135deg, #11998e, #38ef7d); font-weight: bold; font-size: 1em; padding: 12px 20px; margin-top: 10px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; }
-.btn-download .icon { font-size: 1.3em; }
+.btn-install { background: linear-gradient(135deg, #11998e, #38ef7d); font-weight: bold; font-size: 1.05em; padding: 14px 20px; margin-top: 10px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4); }
 select { padding: 8px; border-radius: 5px; border: 1px solid #ddd; margin: 5px; width: 100%; font-size: 0.85em; }
 #status { text-align: center; color: #666; font-size: 0.85em; margin-top: 10px; padding: 8px; background: #f0f0f0; border-radius: 5px; }
 .book-container { position: relative; width: 100%; max-width: 500px; height: 600px; margin: 0 auto 15px; perspective: 1500px; }
@@ -86,8 +87,8 @@ select { padding: 8px; border-radius: 5px; border: 1px solid #ddd; margin: 5px; 
 </div>
 
 <div id="installBanner" class="install-banner">
-  <span>&#x1F4F1; Install this app</span>
-  <button onclick="installApp()">Install</button>
+  <span>&#x1F4F1; Install App</span>
+  <button onclick="triggerInstall()">Install Now</button>
   <button class="close-btn" onclick="dismissInstall()">&#x2715;</button>
 </div>
 
@@ -112,9 +113,9 @@ select { padding: 8px; border-radius: 5px; border: 1px solid #ddd; margin: 5px; 
       <option value="1.1">Slightly Faster</option>
     </select>
   </div>
-  <button class="btn btn-download" onclick="showDownloadInstructions()">
-    <span class="icon">&#x1F4E5;</span>
-    <span>Download to Home Screen</span>
+  <button class="btn btn-install" onclick="triggerInstall()">
+    <span style="font-size: 1.3em;">&#x1F4E5;</span>
+    <span>Install App to Home Screen</span>
   </button>
   <div id="iosInstructions" class="ios-instructions">
     <strong>&#x1F4F1; To install on iPhone/iPad:</strong><br>
@@ -1606,7 +1607,8 @@ function updatePlayButtons() {
   document.getElementById('pauseBtn').disabled = !isPlaying;
 }
 
-function showDownloadInstructions() {
+// ANDROID NATIVE INSTALL TRIGGER
+function triggerInstall() {
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const iosInstructions = document.getElementById('iosInstructions');
   
@@ -1614,16 +1616,19 @@ function showDownloadInstructions() {
     iosInstructions.classList.add('show');
     document.getElementById('status').textContent = 'Follow the instructions above to add to Home Screen';
   } else if (deferredPrompt) {
+    // This triggers the native Android "Install App" dialog directly
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
         document.getElementById('status').textContent = 'App installed to Home Screen!';
+        document.getElementById('installBanner').classList.remove('show');
       }
       deferredPrompt = null;
     });
   } else {
+    // Fallback for browsers that don't support the prompt
     iosInstructions.classList.add('show');
-    iosInstructions.innerHTML = '<strong>To install:</strong><br><strong>Chrome (Android):</strong> Tap the menu (three dots) then "Add to Home Screen"<br><strong>Safari (iOS):</strong> Tap Share then "Add to Home Screen"<br><strong>Desktop:</strong> Look for the install icon in the address bar';
+    iosInstructions.innerHTML = '<strong>To install:</strong><br><strong>Android Chrome:</strong> Tap the menu (three dots) then "Install app" or "Add to Home Screen"<br><strong>Safari (iOS):</strong> Tap Share then "Add to Home Screen"<br><strong>Desktop:</strong> Look for the install icon in the address bar';
     document.getElementById('status').textContent = 'Follow the instructions above';
   }
 }
@@ -1631,23 +1636,11 @@ function showDownloadInstructions() {
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
+  // Show the floating banner after 2 seconds
   setTimeout(() => {
     document.getElementById('installBanner').classList.add('show');
-  }, 3000);
+  }, 2000);
 });
-
-function installApp() {
-  if (deferredPrompt) {
-    deferredPrompt.prompt();
-    deferredPrompt.userChoice.then((choiceResult) => {
-      if (choiceResult.outcome === 'accepted') {
-        document.getElementById('installBanner').classList.remove('show');
-        document.getElementById('status').textContent = 'App installed!';
-      }
-      deferredPrompt = null;
-    });
-  }
-}
 
 function dismissInstall() {
   document.getElementById('installBanner').classList.remove('show');
