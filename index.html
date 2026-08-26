@@ -9,8 +9,11 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="application-name" content="Frostveil">
 <meta name="apple-mobile-web-app-title" content="Frostveil">
+<!-- Custom Frostveil Icon (Snowflake with Golden Sunstone Center) -->
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><defs><linearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:%231e3c72'/><stop offset='100%25' style='stop-color:%232a5298'/></linearGradient></defs><rect width='512' height='512' rx='110' fill='url(%23bg)'/><g stroke='%23e0f0ff' stroke-width='24' stroke-linecap='round'><line x1='256' y1='80' x2='256' y2='432'/><line x1='80' y1='256' x2='432' y2='256'/><line x1='131' y1='131' x2='381' y2='381'/><line x1='131' y1='381' x2='381' y2='131'/></g><circle cx='256' cy='256' r='50' fill='%23FFD700'/><circle cx='256' cy='256' r='30' fill='%23fff'/></svg>">
+<link rel="apple-touch-icon" href="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><defs><linearGradient id='bg' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' style='stop-color:%231e3c72'/><stop offset='100%25' style='stop-color:%232a5298'/></linearGradient></defs><rect width='512' height='512' rx='110' fill='url(%23bg)'/><g stroke='%23e0f0ff' stroke-width='24' stroke-linecap='round'><line x1='256' y1='80' x2='256' y2='432'/><line x1='80' y1='256' x2='432' y2='256'/><line x1='131' y1='131' x2='381' y2='381'/><line x1='131' y1='381' x2='381' y2='131'/></g><circle cx='256' cy='256' r='50' fill='%23FFD700'/><circle cx='256' cy='256' r='30' fill='%23fff'/></svg>">
 <title>Mikyla and the Frostveil Kingdom</title>
-<link rel="manifest" href='data:application/manifest+json,{"name":"Mikyla and the Frostveil Kingdom","short_name":"Frostveil","start_url":".","display":"standalone","background_color":"%231e3c72","theme_color":"%231e3c72","orientation":"portrait","icons":[{"src":"https://cdn-icons-png.flaticon.com/512/2830/2830305.png","sizes":"192x192","type":"image/png"},{"src":"https://cdn-icons-png.flaticon.com/512/2830/2830305.png","sizes":"512x512","type":"image/png"}]}'>
+<link rel="manifest" href='data:application/manifest+json,{"name":"Mikyla and the Frostveil Kingdom","short_name":"Frostveil","start_url":".","display":"standalone","background_color":"%231e3c72","theme_color":"%231e3c72","orientation":"portrait","icons":[{"src":"data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27><defs><linearGradient id=%27bg%27 x1=%270%25%27 y1=%270%25%27 x2=%27100%25%27 y2=%27100%25%27><stop offset=%270%25%27 style=%27stop-color:%231e3c72%27/><stop offset=%27100%25%27 style=%27stop-color:%232a5298%27/></linearGradient></defs><rect width=%27512%27 height=%27512%27 rx=%27110%27 fill=%27url(%23bg)%27/><g stroke=%23e0f0ff stroke-width=%2724%27 stroke-linecap=%27round%27><line x1=%27256%27 y1=%2780%27 x2=%27256%27 y2=%27432%27/><line x1=%2780%27 y1=%27256%27 x2=%27432%27 y2=%27256%27/><line x1=%27131%27 y1=%27131%27 x2=%27381%27 y2=%27381%27/><line x1=%27131%27 y1=%27381%27 x2=%27381%27 y2=%27131%27/></g><circle cx=%27256%27 cy=%27256%27 r=%2750%27 fill=%23FFD700/><circle cx=%27256%27 cy=%27256%27 r=%2730%27 fill=%23fff/></svg>","sizes":"192x192","type":"image/svg+xml"},{"src":"data:image/svg+xml;utf8,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 512 512%27><defs><linearGradient id=%27bg%27 x1=%270%25%27 y1=%270%25%27 x2=%27100%25%27 y2=%27100%25%27><stop offset=%270%25%27 style=%27stop-color:%231e3c72%27/><stop offset=%27100%25%27 style=%27stop-color:%232a5298%27/></linearGradient></defs><rect width=%27512%27 height=%27512%27 rx=%27110%27 fill=%27url(%23bg)%27/><g stroke=%23e0f0ff stroke-width=%2724%27 stroke-linecap=%27round%27><line x1=%27256%27 y1=%2780%27 x2=%27256%27 y2=%27432%27/><line x1=%2780%27 y1=%27256%27 x2=%27432%27 y2=%27256%27/><line x1=%27131%27 y1=%27131%27 x2=%27381%27 y2=%27381%27/><line x1=%27131%27 y1=%27381%27 x2=%27381%27 y2=%27131%27/></g><circle cx=%27256%27 cy=%27256%27 r=%2750%27 fill=%23FFD700/><circle cx=%27256%27 cy=%27256%27 r=%2730%27 fill=%23fff/></svg>","sizes":"512x512","type":"image/svg+xml"}]}'>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: Georgia, serif; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); min-height: 100vh; padding: 10px; }
@@ -1607,7 +1610,6 @@ function updatePlayButtons() {
   document.getElementById('pauseBtn').disabled = !isPlaying;
 }
 
-// ANDROID NATIVE INSTALL TRIGGER
 function triggerInstall() {
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const iosInstructions = document.getElementById('iosInstructions');
@@ -1616,7 +1618,6 @@ function triggerInstall() {
     iosInstructions.classList.add('show');
     document.getElementById('status').textContent = 'Follow the instructions above to add to Home Screen';
   } else if (deferredPrompt) {
-    // This triggers the native Android "Install App" dialog directly
     deferredPrompt.prompt();
     deferredPrompt.userChoice.then((choiceResult) => {
       if (choiceResult.outcome === 'accepted') {
@@ -1626,7 +1627,6 @@ function triggerInstall() {
       deferredPrompt = null;
     });
   } else {
-    // Fallback for browsers that don't support the prompt
     iosInstructions.classList.add('show');
     iosInstructions.innerHTML = '<strong>To install:</strong><br><strong>Android Chrome:</strong> Tap the menu (three dots) then "Install app" or "Add to Home Screen"<br><strong>Safari (iOS):</strong> Tap Share then "Add to Home Screen"<br><strong>Desktop:</strong> Look for the install icon in the address bar';
     document.getElementById('status').textContent = 'Follow the instructions above';
@@ -1636,7 +1636,6 @@ function triggerInstall() {
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  // Show the floating banner after 2 seconds
   setTimeout(() => {
     document.getElementById('installBanner').classList.add('show');
   }, 2000);
